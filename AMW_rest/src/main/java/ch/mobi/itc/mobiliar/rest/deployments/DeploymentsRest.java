@@ -409,80 +409,71 @@ public class DeploymentsRest {
         List<ApplicationWithVersion> applicationsWithVersion = new ArrayList<>();
         LinkedList<CustomFilter> filters = new LinkedList<>();
         ReleaseEntity release;
-        ResourceGroupEntity group;
+        ResourceGroupEntity resourceGroupEntity;
         LinkedList<Integer> contexts = new LinkedList<>();
         ArrayList<DeploymentParameter> deployParams;
 
-        // use default releaseId if no release in request
-        if (request.getReleaseName() == null) {
-            List<ReleaseEntity> releases = releaseService.loadAllReleases(false);
-            release = dependencyResolverService.findMostRelevantRelease(new TreeSet<>(releases), new Date());
-        } else {
-            // try to fetch release by name
-            release = releaseService.findByName(request.getReleaseName());
-            if (release == null) {
-                return Response.status(Status.BAD_REQUEST).entity(new ExceptionDto("Release " + request
-                        .getReleaseName() + " not found."))
-                        .build();
-            }
-        }
-
-        // get the id of the ApplicationServer
-        group = resourceGroupService.loadUniqueGroupByNameAndType(request.getAppServerName(), resourceTypeProvider
-                .getOrCreateDefaultResourceType(DefaultResourceTypeDefinition.APPLICATIONSERVER).getId());
-
-        if (group == null) {
-            return Response.status(Status.BAD_REQUEST).entity(new ExceptionDto("ApplicationServer with name " + request.getAppServerName() + " not found."))
-                    .build();
-        }
-        appServer = dependencyResolverService.getResourceEntityForRelease(group, release);
-        if (appServer == null) {
+        release = getReleaseEntity(request);
+        if (release == null) {
             return Response.status(Status.BAD_REQUEST)
-                    .entity(new ExceptionDto("ApplicationServer " + request.getAppServerName() + " does not exist in release " + release.getName()))
-                    .build();
+                           .entity(new ExceptionDto("Release " + request
+                                   .getReleaseName() + " not found."))
+                           .build();
         }
 
-        // get the id of the Environment
+        resourceGroupEntity = getResourceGroupEntity(request);
+        if (resourceGroupEntity == null) {
+            ExceptionDto exceptionDto = new ExceptionDto(
+                    "ApplicationServer with name " + request.getAppServerName() + " not found.");
+            return Response.status(Status.BAD_REQUEST)
+                           .entity(exceptionDto)
+                           .build();
+        }
+
+        appServer = getAppServer(resourceGroupEntity, release);
+        if (appServer == null) {
+            ExceptionDto exceptionDto = new ExceptionDto("ApplicationServer " + request.getAppServerName() + " does not exist in release " + release
+                    .getName());
+            return Response.status(Status.BAD_REQUEST)
+                           .entity(exceptionDto)
+                           .build();
+        }
+
         if (request.getEnvironmentName() != null) {
             try {
                 environment = environmentsService.getContextByName(request.getEnvironmentName());
-            } catch (RuntimeException e) {
+            } catch (NoResultException e) {
                 return catchNoResultException(e, "Environment " + request.getEnvironmentName() + " not found.");
             }
         }
 
-        // get the apps of the appServer
-        apps = dependencyResolverService.getConsumedRelatedResourcesByResourceType(appServer, DefaultResourceTypeDefinition.APPLICATION, release);
-
-        // convert the appsWithVersion
+        apps = getAppsOfApplicationServer(appServer, release);
         try {
-            if (apps == null) {
-                apps = new HashSet<>();
-            }
-            if (request.getAppsWithVersion() != null) {
-                applicationsWithVersion = convertToApplicationWithVersion(request.getAppsWithVersion(), apps);
-            } else {
-                applicationsWithVersion = deploymentBoundary.getVersions(appServer, new ArrayList<Integer>(environment.getId()), release);
-            }
+            applicationsWithVersion = convertToApplicationWithVersion(request, appServer, apps, environment, release);
 
         } catch (ValidationException e) {
-            return Response.status(Status.BAD_REQUEST).entity(
-                    new ExceptionDto("ValidationException", e.getMessage())).build();
+            return Response.status(Status.BAD_REQUEST)
+                           .entity(new ExceptionDto("ValidationException", e.getMessage()))
+                           .build();
         }
 
         try {
             deployParams = convertToDeploymentParameter(request.getDeploymentParameters());
         } catch (IllegalArgumentException e) {
-            return Response.status(Status.BAD_REQUEST).entity(new ExceptionDto("Could not create deployment", e.getMessage())).build();
+            return Response.status(Status.BAD_REQUEST)
+                           .entity(new ExceptionDto("Could not create deployment", e.getMessage()))
+                           .build();
         }
 
         // check whether the AS has at least one node with hostname to deploy to
         if (environment != null) {
-            boolean hasNode = generatorDomainServiceWithAppServerRelations.hasActiveNodeToDeployOnAtDate(appServer, environment, request.getStateToDeploy());
+            boolean hasNode = generatorDomainServiceWithAppServerRelations.hasActiveNodeToDeployOnAtDate(appServer,
+                                                                                                         environment,
+                                                                                                         request.getStateToDeploy());
             if (!hasNode) {
                 return Response.status(424)
-                        .entity(new ExceptionDto("No active Node found on Environement " + request.getEnvironmentName()))
-                        .build();
+                               .entity(new ExceptionDto("No active Node found on Environement " + request.getEnvironmentName()))
+                               .build();
             }
             contexts.add(environment.getId());
         } else if (request.getContextIds() != null && !request.getContextIds().isEmpty()) {
@@ -491,33 +482,100 @@ public class DeploymentsRest {
 
         if (contexts.isEmpty()) {
             return Response.status(Status.BAD_REQUEST)
-                    .entity(new ExceptionDto("No ContextIds"))
-                    .build();
+                           .entity(new ExceptionDto("No ContextIds"))
+                           .build();
         }
 
-        trackingId = deploymentBoundary.createDeploymentReturnTrackingId(group.getId(), release.getId(), request.getDeploymentDate(),
-                request.getStateToDeploy(), contexts,
-                applicationsWithVersion, deployParams, request.getSendEmail(), request.getRequestOnly(), request.getSimulate(), request.getExecuteShakedownTest(),
+        trackingId = deploymentBoundary.createDeploymentReturnTrackingId(
+                resourceGroupEntity.getId(),
+                release.getId(),
+                request.getDeploymentDate(),
+                request.getStateToDeploy(),
+                contexts,
+                applicationsWithVersion,
+                deployParams,
+                request.getSendEmail(),
+                request.getRequestOnly(),
+                request.getSimulate(),
+                request.getExecuteShakedownTest(),
                 request.getNeighbourhoodTest());
 
-        // get the deployment from the tracking id
+        Set<DeploymentEntity> result = getFileredDeployments(trackingId, filters);
+        DeploymentDTO deploymentDto = new DeploymentDTO(result.iterator().next());
+        return Response.status(Status.CREATED).header("Location", "/deployments/" + deploymentDto.getId())
+                       .entity(deploymentDto)
+                       .build();
+    }
+
+    private Set<DeploymentEntity> getFileredDeployments(Integer trackingId, LinkedList<CustomFilter> filters) {
         CustomFilter trackingIdFilter = CustomFilter.builder(TRACKING_ID).build();
         trackingIdFilter.setValue(trackingId.toString());
         filters.add(trackingIdFilter);
-        Tuple<Set<DeploymentEntity>, Integer> result = deploymentBoundary.getFilteredDeployments( 0, 1, filters, null, null, null);
-
-        DeploymentDTO deploymentDto = new DeploymentDTO(result.getA().iterator().next());
-
-        return Response.status(Status.CREATED).header("Location", "/deployments/" + deploymentDto.getId()).entity(deploymentDto).build();
+        Tuple<Set<DeploymentEntity>, Integer> result = deploymentBoundary.getFilteredDeployments(0,
+                                                                                                 1,
+                                                                                                 filters,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 null);
+        return result.getA();
     }
 
-    private ArrayList<DeploymentParameter> convertToDeploymentParameter(List<DeploymentParameterDTO> deploymentParameters) {
+    private List<ApplicationWithVersion> convertToApplicationWithVersion(DeploymentRequestDTO request,
+                                                                         ResourceEntity appServer,
+                                                                         Set<ResourceEntity> apps,
+                                                                         ContextEntity environment,
+                                                                         ReleaseEntity release) throws ValidationException {
+        List<ApplicationWithVersion> applicationsWithVersion;
+        if (apps == null) {
+            apps = new HashSet<>();
+        }
+        if (request.getAppsWithVersion() != null) {
+            applicationsWithVersion = convertToApplicationWithVersion(request.getAppsWithVersion(), apps);
+        } else {
+            applicationsWithVersion = deploymentBoundary.getVersions(appServer,
+                                                                     new ArrayList<Integer>(environment.getId()),
+                                                                     release);
+        }
+        return applicationsWithVersion;
+    }
+
+    private Set<ResourceEntity> getAppsOfApplicationServer(ResourceEntity appServer, ReleaseEntity release) {
+        return dependencyResolverService.getConsumedRelatedResourcesByResourceType(appServer,
+                                                                                   DefaultResourceTypeDefinition.APPLICATION,
+                                                                                   release);
+    }
+
+    private ResourceEntity getAppServer(ResourceGroupEntity resourceGroupEntity, ReleaseEntity release) {
+        return dependencyResolverService.getResourceEntityForRelease(resourceGroupEntity, release);
+    }
+
+    private ResourceGroupEntity getResourceGroupEntity(DeploymentRequestDTO request) {
+        ResourceGroupEntity group;
+        Integer applicationServerId = resourceTypeProvider.getOrCreateDefaultResourceType(DefaultResourceTypeDefinition.APPLICATIONSERVER)
+                                                          .getId();
+        group = resourceGroupService.loadUniqueGroupByNameAndType(request.getAppServerName(), applicationServerId);
+        return group;
+    }
+
+    private ReleaseEntity getReleaseEntity(DeploymentRequestDTO request) {
+        ReleaseEntity release;
+        if (request.getReleaseName() == null) {
+            List<ReleaseEntity> releases = releaseService.loadAllReleases(false);
+            release = dependencyResolverService.findMostRelevantRelease(new TreeSet<>(releases), new Date());
+        } else {
+            release = releaseService.findByName(request.getReleaseName());
+        }
+        return release;
+    }
+
+    private ArrayList<DeploymentParameter> convertToDeploymentParameter(
+            List<DeploymentParameterDTO> deploymentParameters) {
         ArrayList<DeploymentParameter> parameters = new ArrayList<>();
 
         if (deploymentParameters != null) {
             for (DeploymentParameterDTO deploymentParameterDto : deploymentParameters) {
                 String key = deploymentParameterDto.getKey().trim();
-            	parameters.add(new DeploymentParameter(key, deploymentParameterDto.getValue()));
+                parameters.add(new DeploymentParameter(key, deploymentParameterDto.getValue()));
             }
         }
 
