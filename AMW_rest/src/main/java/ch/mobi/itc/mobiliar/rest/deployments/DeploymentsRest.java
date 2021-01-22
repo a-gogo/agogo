@@ -115,18 +115,30 @@ public class DeploymentsRest {
         try {
             filterDTOs = new Gson().fromJson(jsonListOfFilters, DeploymentFilterDTO[].class);
         } catch (JsonSyntaxException e) {
-            String msg = String.format("json is not a valid representation for an object of type %s", DeploymentFilterDTO.class.getSimpleName());
+            String msg = String.format("json is not a valid representation for an object of type %s",
+                                       DeploymentFilterDTO.class.getSimpleName());
             String detail = "example: [{\"name\":\"Application\",\"comp\":\"eq\",\"val\":\"Latest\"},{\"name\":\"Id\",\"comp\":\"eq\",\"val\":\"25\"}]";
             return Response.status(Status.BAD_REQUEST).entity(new ExceptionDto(msg, detail)).build();
         }
         if (filterDTOs == null) {
-            return Response.status(Status.BAD_REQUEST).entity(new ExceptionDto("at least one filter must be set")).build();
+            return Response.status(Status.BAD_REQUEST)
+                           .entity(new ExceptionDto("at least one filter must be set"))
+                           .build();
         }
         CommonFilterService.SortingDirectionType sortingDirectionType = getSortingDirectionType(sortDirection);
         LinkedList<CustomFilter> filters = createCustomFilters(filterDTOs);
-        Tuple<Set<DeploymentEntity>, Integer> filteredDeployments = deploymentBoundary.getFilteredDeployments(offset, maxResults, filters, colToSort, sortingDirectionType, null);
+        Tuple<Set<DeploymentEntity>, Integer> filteredDeployments = deploymentBoundary.getFilteredDeployments(offset,
+                                                                                                              maxResults,
+                                                                                                              filters,
+                                                                                                              colToSort,
+                                                                                                              sortingDirectionType,
+                                                                                                              null);
         List<DeploymentDTO> deploymentDTOs = createDeploymentDTOs(filteredDeployments);
-        return Response.status(Status.OK).header("X-Total-Count", filteredDeployments.getB()).entity(new GenericEntity<List<DeploymentDTO>>(deploymentDTOs) {}).build();
+        return Response.status(Status.OK)
+                       .header("X-Total-Count", filteredDeployments.getB())
+                       .entity(new GenericEntity<List<DeploymentDTO>>(deploymentDTOs) {
+                       })
+                       .build();
     }
 
     private CommonFilterService.SortingDirectionType getSortingDirectionType(String sortDirection) {
@@ -196,14 +208,16 @@ public class DeploymentsRest {
         actionsDTO.setRedeployPossible(permissionService.hasPermissionForDeploymentCreation(deployment));
         actionsDTO.setHasLogFiles(deploymentBoundary.getLogFileNames(deployment.getId()).length > 0);
         actionsDTO.setEditPossible(deploymentBoundary.isChangeDeploymentDatePossible(deployment).isPossible()
-                && (permissionService.hasPermissionToCreateDeployment() || permissionService.hasPermissionToEditDeployment()));
+                                           && (permissionService.hasPermissionToCreateDeployment() || permissionService.hasPermissionToEditDeployment()));
         return actionsDTO;
     }
 
     private CustomFilter createCustomFilterByDeploymentFilterDTO(DeploymentFilterDTO filterDTO) {
         DeploymentFilterTypes filterType = DeploymentFilterTypes.getByDisplayName(filterDTO.getName());
         if (filterDTO.getName().equals("Release")) {
-            filterDTO.setVal(Long.toString(deploymentBoundary.getReleaseByName(filterDTO.getVal()).getInstallationInProductionAt().getTime()));
+            filterDTO.setVal(Long.toString(deploymentBoundary.getReleaseByName(filterDTO.getVal())
+                                                             .getInstallationInProductionAt()
+                                                             .getTime()));
         }
         ComparatorFilterOption filterOption = ComparatorFilterOption.valueOf(filterDTO.getComp());
         CustomFilter filter = CustomFilter
@@ -218,9 +232,8 @@ public class DeploymentsRest {
      * Query for deployments. All parameters are optional.
      * Date format: epoch timestamp (number of milliseconds since January 1st, 1970, UTC)
      *
-     * @deprecated use {@link #getDeployments(String, String, String, Integer, Integer)} instead
-     *
      * @return the deployments. The header X-Total-Count contains the total result count.
+     * @deprecated use {@link #getDeployments(String, String, String, Integer, Integer)} instead
      **/
     @Deprecated
     @GET
@@ -248,17 +261,23 @@ public class DeploymentsRest {
             filters.add(trackingIdFilter);
         }
         if (deploymentState != null) {
-            CustomFilter deploymentStateFilter = CustomFilter.builder(DEPLOYMENT_STATE).enumType(DeploymentState.class).build();
+            CustomFilter deploymentStateFilter = CustomFilter.builder(DEPLOYMENT_STATE)
+                                                             .enumType(DeploymentState.class)
+                                                             .build();
             deploymentStateFilter.setValue(deploymentState.name());
             filters.add(deploymentStateFilter);
         }
         if (fromDate != null) {
-            CustomFilter deploymentDateFromFilter = CustomFilter.builder(DEPLOYMENT_DATE).comparatorSelection(ComparatorFilterOption.gte).build();
+            CustomFilter deploymentDateFromFilter = CustomFilter.builder(DEPLOYMENT_DATE)
+                                                                .comparatorSelection(ComparatorFilterOption.gte)
+                                                                .build();
             deploymentDateFromFilter.setDateValue(new Date(fromDate));
             filters.add(deploymentDateFromFilter);
         }
         if (toDate != null) {
-            CustomFilter deploymentDateFilter = CustomFilter.builder(DEPLOYMENT_DATE).comparatorSelection(ComparatorFilterOption.lte).build();
+            CustomFilter deploymentDateFilter = CustomFilter.builder(DEPLOYMENT_DATE)
+                                                            .comparatorSelection(ComparatorFilterOption.lte)
+                                                            .build();
             deploymentDateFilter.setDateValue(new Date(toDate));
             filters.add(deploymentDateFilter);
         }
@@ -283,14 +302,23 @@ public class DeploymentsRest {
         if (deploymentParameterValues != null) {
             createFiltersAndAddToList(DEPLOYMENT_PARAMETER, deploymentParameterValues, filters);
         }
-        Tuple<Set<DeploymentEntity>, Integer> filteredDeployments = deploymentBoundary.getFilteredDeployments(offset, maxResults, filters, null, null, null);
+        Tuple<Set<DeploymentEntity>, Integer> filteredDeployments = deploymentBoundary.getFilteredDeployments(offset,
+                                                                                                              maxResults,
+                                                                                                              filters,
+                                                                                                              null,
+                                                                                                              null,
+                                                                                                              null);
 
         List<DeploymentDTO> deploymentDTOs = createDeploymentDTOs(filteredDeployments);
 
-        return Response.status(Status.OK).header("X-Total-Count", filteredDeployments.getB()).entity(deploymentDTOs).build();
+        return Response.status(Status.OK)
+                       .header("X-Total-Count", filteredDeployments.getB())
+                       .entity(deploymentDTOs)
+                       .build();
     }
 
-    private void createFiltersAndAddToList(DeploymentFilterTypes deploymentFilterType, List<String> values, LinkedList<CustomFilter> filters) {
+    private void createFiltersAndAddToList(DeploymentFilterTypes deploymentFilterType, List<String> values,
+                                           LinkedList<CustomFilter> filters) {
         for (String value : values) {
             CustomFilter deploymentParameterValueFilter = CustomFilter.builder(deploymentFilterType).build();
             deploymentParameterValueFilter.setValue(value);
@@ -326,10 +354,13 @@ public class DeploymentsRest {
     @Path("/{id : \\d+}/logs/{fileName}")
     @ApiOperation(value = "get the log file content as plain text for a given deployment and file name")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getDeploymentLogFileContent(@ApiParam("Deployment ID") @PathParam("id") Integer id, @PathParam("fileName") String fileName) {
+    public Response getDeploymentLogFileContent(@ApiParam("Deployment ID") @PathParam("id") Integer id,
+                                                @PathParam("fileName") String fileName) {
         List<String> availableLogFiles = Arrays.asList(deploymentBoundary.getLogFileNames(id));
         if (!availableLogFiles.contains(fileName)) {
-            return Response.status(Status.BAD_REQUEST).entity("No logfile with name " + fileName + " for deployment with id " + id).build();
+            return Response.status(Status.BAD_REQUEST)
+                           .entity("No logfile with name " + fileName + " for deployment with id " + id)
+                           .build();
         }
 
         String logfileContent = "";
@@ -349,7 +380,9 @@ public class DeploymentsRest {
     @ApiOperation(value = "get list of log files meta data for a given deployment id")
     public Response getDeploymentLogFileNames(@PathParam("deploymentId") Integer deploymentId) {
         String[] fileNames = deploymentBoundary.getLogFileNames(deploymentId);
-        List<DeploymentLog> deploymentLogFiles = Arrays.stream(fileNames).map(fileName -> new DeploymentLog(deploymentId, fileName)).collect(Collectors.toList());
+        List<DeploymentLog> deploymentLogFiles = Arrays.stream(fileNames)
+                                                       .map(fileName -> new DeploymentLog(deploymentId, fileName))
+                                                       .collect(Collectors.toList());
         return Response.ok(deploymentLogFiles).build();
     }
 
@@ -370,7 +403,8 @@ public class DeploymentsRest {
     public Response getAllDeploymentFilterTypes() {
         List<DeploymentFilterTypeDTO> deploymentFilterTypes = new ArrayList<>();
         for (DeploymentFilterTypes filterType : deploymentBoundary.getDeploymentFilterTypes()) {
-            deploymentFilterTypes.add(new DeploymentFilterTypeDTO(filterType.getFilterDisplayName(), filterType.getFilterType().name()));
+            deploymentFilterTypes.add(new DeploymentFilterTypeDTO(filterType.getFilterDisplayName(),
+                                                                  filterType.getFilterType().name()));
         }
         return Response.status(Status.OK).entity(deploymentFilterTypes).build();
     }
@@ -381,7 +415,8 @@ public class DeploymentsRest {
     public Response getAllComparatorFilterOptions() {
         List<ComparatorFilterOptionDTO> comparatorFilterOptions = new ArrayList<>();
         for (ComparatorFilterOption filterOption : deploymentBoundary.getComparatorFilterOptions()) {
-            comparatorFilterOptions.add(new ComparatorFilterOptionDTO(filterOption.name(), filterOption.getDisplayName()));
+            comparatorFilterOptions.add(new ComparatorFilterOptionDTO(filterOption.name(),
+                                                                      filterOption.getDisplayName()));
         }
         return Response.status(Status.OK).entity(comparatorFilterOptions).build();
     }
@@ -586,12 +621,15 @@ public class DeploymentsRest {
     @Path("/{id : \\d+}/state")
     @Consumes("text/plain")
     @ApiOperation(value = "Update the state of a deployment")
-    public Response patchDeployment(@ApiParam("deployment Id") @PathParam("id") Integer deploymentId, @ApiParam("New status") String stateStr) {
+    public Response patchDeployment(@ApiParam("deployment Id") @PathParam("id") Integer deploymentId,
+                                    @ApiParam("New status") String stateStr) {
         DeploymentState newState = DeploymentState.getByString(stateStr);
 
         if (newState == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ExceptionDto("Invalid status",
-                    "Allowed values are " + Arrays.asList(DeploymentState.values()))).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ExceptionDto("Invalid status",
+                                                    "Allowed values are " + Arrays.asList(DeploymentState.values())))
+                           .build();
         }
 
         try {
@@ -609,13 +647,13 @@ public class DeploymentsRest {
     @ApiOperation(value = "Confirm a deployment")
     public Response confirmDeployment(@ApiParam("deployment Id") @PathParam("id") Integer deploymentId,
                                       @ApiParam("New status") DeploymentDTO deploymentDTO) {
-        try{
+        try {
             deploymentBoundary.confirmDeployment(deploymentId,
-                    deploymentDTO.isSendEmailWhenDeployed(),
-                    deploymentDTO.isShakedownTestsWhenDeployed(),
-                    deploymentDTO.isNeighbourhoodTest(),
-                    deploymentDTO.isSimulateBeforeDeployment(),
-                    deploymentDTO.getDeploymentDate());
+                                                 deploymentDTO.isSendEmailWhenDeployed(),
+                                                 deploymentDTO.isShakedownTestsWhenDeployed(),
+                                                 deploymentDTO.isNeighbourhoodTest(),
+                                                 deploymentDTO.isSimulateBeforeDeployment(),
+                                                 deploymentDTO.getDeploymentDate());
             return Response.status(Response.Status.OK).build();
         } catch (RuntimeException e) {
             return catchDeploymentStateException(e);
@@ -634,8 +672,10 @@ public class DeploymentsRest {
 
         NodeJobStatus status = NodeJobStatus.getNodeJobStatusByString(statusStr);
         if (status == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ExceptionDto("Invalid status",
-                    "Allowed values are " + Arrays.asList(NodeJobStatus.values()))).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ExceptionDto("Invalid status",
+                                                    "Allowed values are " + Arrays.asList(NodeJobStatus.values())))
+                           .build();
         }
 
         try {
@@ -652,10 +692,13 @@ public class DeploymentsRest {
     @PUT
     @Path("/{id : \\d+}/date")
     @ApiOperation(value = "Update the DeploymentDate of a Deployment - used by Angular")
-    public Response changeDeploymentDate(@ApiParam("deployment Id") @PathParam("id") Integer deploymentId, @ApiParam("New date") long date) {
+    public Response changeDeploymentDate(@ApiParam("deployment Id") @PathParam("id") Integer deploymentId,
+                                         @ApiParam("New date") long date) {
         Date newDate = new Date(date);
         if (newDate == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ExceptionDto("Invalid deployment date")).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ExceptionDto("Invalid deployment date"))
+                           .build();
         }
         try {
             deploymentBoundary.changeDeploymentDate(deploymentId, newDate);
@@ -677,7 +720,9 @@ public class DeploymentsRest {
             state = DeploymentState.valueOf(statusStr);
         } catch (IllegalArgumentException e) {
             String possibleValues = Arrays.toString(DeploymentState.values());
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ExceptionDto(String.format("invalid state. must be one of %s", possibleValues) )).build();
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ExceptionDto(String.format("invalid state. must be one of %s", possibleValues)))
+                           .build();
         }
 
         try {
@@ -689,7 +734,10 @@ public class DeploymentsRest {
                     deploymentBoundary.rejectDeployment(deploymentId);
                     break;
                 default:
-                    return Response.status(Response.Status.SERVICE_UNAVAILABLE).entity(new ExceptionDto(String.format("Change state to '%s' not implemented yet", state.toString()) )).build();
+                    return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                                   .entity(new ExceptionDto(String.format("Change state to '%s' not implemented yet",
+                                                                          state.toString())))
+                                   .build();
             }
             return Response.status(Status.OK).build();
         } catch (RuntimeException e) {
@@ -725,7 +773,10 @@ public class DeploymentsRest {
         boolean hasPermission = false;
         for (Integer contextId : contextIds) {
             ContextEntity context = contextLocator.getContextById(contextId);
-            hasPermission = permissionBoundary.hasPermission(Permission.DEPLOYMENT, Action.CREATE, context, resourceGroup)
+            hasPermission = permissionBoundary.hasPermission(Permission.DEPLOYMENT,
+                                                             Action.CREATE,
+                                                             context,
+                                                             resourceGroup)
                     && permissionBoundary.hasPermission(Permission.DEPLOYMENT, Action.UPDATE, context, resourceGroup);
             if (!hasPermission) {
                 return Response.ok(hasPermission).build();
@@ -738,7 +789,7 @@ public class DeploymentsRest {
     @Path("/canRequestDeployment/{resourceGroupId}")
     @ApiOperation(value = "Checks if caller is allowed to request a deployment a given ResourceGroup on the specified Environment(s) - used by Angular")
     public Response canRequestDeployment(@PathParam("resourceGroupId") Integer resourceGroupId,
-                              @QueryParam("contextId") Set<Integer> contextIds) {
+                                         @QueryParam("contextId") Set<Integer> contextIds) {
         ResourceGroupEntity resourceGroup = resourceGroupService.getById(resourceGroupId);
         if (resourceGroup == null) {
             return Response.status(Status.BAD_REQUEST).build();
@@ -746,7 +797,10 @@ public class DeploymentsRest {
         boolean hasPermission = false;
         for (Integer contextId : contextIds) {
             ContextEntity context = contextLocator.getContextById(contextId);
-            hasPermission = permissionBoundary.hasPermission(Permission.DEPLOYMENT, Action.CREATE, context, resourceGroup);
+            hasPermission = permissionBoundary.hasPermission(Permission.DEPLOYMENT,
+                                                             Action.CREATE,
+                                                             context,
+                                                             resourceGroup);
             if (!hasPermission) {
                 return Response.ok(hasPermission).build();
             }
@@ -766,7 +820,7 @@ public class DeploymentsRest {
     @Path("/isAngularDeploymentsGuiActive/")
     @ApiOperation(value = "Check if angular deployments gui is active - used by Angular")
     public Response isAngularDeploymentsGuiActive() {
-        boolean isActive = ! ConfigurationService.getPropertyAsBoolean(FEATURE_DISABLE_ANGULAR_DEPLOYMENT_GUI);
+        boolean isActive = !ConfigurationService.getPropertyAsBoolean(FEATURE_DISABLE_ANGULAR_DEPLOYMENT_GUI);
         return Response.ok(isActive).build();
     }
 
@@ -774,7 +828,8 @@ public class DeploymentsRest {
      * Convert AppWithVersion to ApplicationWithVersion. Checks if
      * AppWithVersion contains all the Applications and adds the Application id.
      **/
-    private List<ApplicationWithVersion> convertToApplicationWithVersion(List<AppWithVersionDTO> requestedApps, Set<ResourceEntity> apps)
+    private List<ApplicationWithVersion> convertToApplicationWithVersion(List<AppWithVersionDTO> requestedApps,
+                                                                         Set<ResourceEntity> apps)
             throws ValidationException {
         LinkedList<ApplicationWithVersion> result = new LinkedList<>();
         List<AppWithVersionDTO> requestedAppsCopy = new LinkedList<>(requestedApps);
