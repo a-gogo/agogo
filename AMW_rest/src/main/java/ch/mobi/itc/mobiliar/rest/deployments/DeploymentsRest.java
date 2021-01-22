@@ -136,7 +136,7 @@ public class DeploymentsRest {
         List<DeploymentDTO> deploymentDTOs = createDeploymentDTOs(filteredDeployments);
         return Response.status(Status.OK)
                        .header("X-Total-Count", filteredDeployments.getB())
-                       .entity(new GenericEntity<List<DeploymentDTO>>(deploymentDTOs) {
+                       .entity(new GenericEntity<>(deploymentDTOs) {
                        })
                        .build();
     }
@@ -363,7 +363,7 @@ public class DeploymentsRest {
                            .build();
         }
 
-        String logfileContent = "";
+        String logfileContent;
         try {
             logfileContent = deploymentBoundary.getDeploymentLog(fileName);
         } catch (IllegalAccessException e) {
@@ -441,7 +441,7 @@ public class DeploymentsRest {
         ResourceEntity appServer;
         Set<ResourceEntity> apps;
         ContextEntity environment = null;
-        List<ApplicationWithVersion> applicationsWithVersion = new ArrayList<>();
+        List<ApplicationWithVersion> applicationsWithVersion;
         LinkedList<CustomFilter> filters = new LinkedList<>();
         ReleaseEntity release;
         ResourceGroupEntity resourceGroupEntity;
@@ -568,7 +568,7 @@ public class DeploymentsRest {
             applicationsWithVersion = convertToApplicationWithVersion(request.getAppsWithVersion(), apps);
         } else {
             applicationsWithVersion = deploymentBoundary.getVersions(appServer,
-                                                                     new ArrayList<Integer>(environment.getId()),
+                                                                     new ArrayList<>(environment.getId()),
                                                                      release);
         }
         return applicationsWithVersion;
