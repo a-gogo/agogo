@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavigationStoreService } from '@core/services';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
-import { NavigationStoreService } from 'src/app/navigation/navigation-store.service';
 import { Deployment } from '../deployment/deployment';
 import { DeploymentService } from '../deployment/deployment.service';
 import { DeploymentLog, DeploymentLogContent } from './deployment-log';

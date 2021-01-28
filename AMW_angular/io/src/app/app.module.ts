@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 /*
  * Feature Modules
@@ -22,13 +20,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { DeploymentsModule } from './deployments/deployments.module';
-import { NavigationStoreService } from './navigation/navigation-store.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { CoreModule } from '@core/core.module';
-
-// Application wide providers
-const APP_PROVIDERS = [NavigationStoreService];
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,7 +43,7 @@ const APP_PROVIDERS = [NavigationStoreService];
     NgbModule,
     CodemirrorModule,
   ],
-  providers: [APP_PROVIDERS],
+  providers: [],
   bootstrap: [AppComponent],
   exports: [AppComponent],
 })

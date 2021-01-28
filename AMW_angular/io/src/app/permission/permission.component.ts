@@ -8,9 +8,9 @@ import { Restriction } from './restriction';
 import { RestrictionsCreation } from './restrictions-creation';
 import { Permission } from './permission';
 import * as _ from 'lodash';
-import { NavigationStoreService } from '../navigation/navigation-store.service';
 import { Environment } from '../deployments/deployment/environment';
 import { EnvironmentService } from '../deployments/deployment/environment.service';
+import { NavigationStoreService } from '@core/services';
 
 @Component({
   selector: 'amw-permission',

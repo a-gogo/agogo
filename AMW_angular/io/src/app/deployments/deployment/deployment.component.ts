@@ -11,13 +11,13 @@ import { AppWithVersion } from './app-with-version';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
 import { DeploymentsStore } from 'src/app/core/deployments.store';
-import { NavigationStoreService } from 'src/app/navigation/navigation-store.service';
 import { Relation } from 'src/app/resource/relation';
 import { Release } from 'src/app/resource/release';
 import { Resource } from 'src/app/resource/resource';
 import { ResourceTag } from 'src/app/resource/resource-tag';
 import { ResourceService } from 'src/app/resource/resource.service';
 import { DateTimeModel } from '@shared/components';
+import { NavigationStoreService } from '@core/services';
 
 @Component({
   selector: 'amw-deployment',

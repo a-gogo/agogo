@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Subscription, timer } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
-import { NavigationStoreService } from '../navigation/navigation-store.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeploymentsEditModalComponent } from './deployments-edit-modal.component';
 import { ComparatorFilterOption } from './deployment/comparator-filter-option';
@@ -15,6 +14,7 @@ import { DeploymentFilter } from './deployment/deployment-filter';
 import { DeploymentFilterType } from './deployment/deployment-filter-type';
 import { DeploymentService } from './deployment/deployment.service';
 import { DateTimeModel } from '@shared/components';
+import { NavigationStoreService } from '@core/services';
 
 declare var $: any;
 

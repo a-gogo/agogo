@@ -18,18 +18,12 @@ const initial = {
   visible: false,
 };
 
-// inspired by https://dev.to/avatsaev/simple-state-management-in-angular-with-only-services-and-rxjs-41p8
 @Injectable({
   providedIn: 'root',
 })
 export class NavigationStoreService {
-  // - We set the initial state in BehaviorSubject's constructor
-  // - Nobody outside the Store should have access to the BehaviorSubject
-  //   because it has the write rights
-  // - Writing to state should be handled by specialized Store methods (setPageTitle, setItems)
   private readonly _navigation = new BehaviorSubject<Navigation>(initial);
 
-  // Expose the observable$ part of the _navigation subject (read only stream)
   readonly navigation$ = this._navigation.asObservable();
 
   get navigation(): Navigation {
@@ -40,23 +34,23 @@ export class NavigationStoreService {
     this._navigation.next(nav);
   }
 
-  setPageTitle(pageTitle: string) {
+  setPageTitle(pageTitle: string): void {
     this.navigation = { ...this.navigation, pageTitle };
   }
 
-  setCurrent(current: string) {
+  setCurrent(current: string): void {
     this.navigation = { ...this.navigation, current };
   }
 
-  setItems(items: NavigationItem[]) {
+  setItems(items: NavigationItem[]): void {
     this.navigation = { ...this.navigation, items };
   }
 
-  setLogoutUrl(logoutUrl: string) {
+  setLogoutUrl(logoutUrl: string): void {
     this.navigation = { ...this.navigation, logoutUrl };
   }
 
-  setVisible(visible: boolean) {
+  setVisible(visible: boolean): void {
     this.navigation = { ...this.navigation, visible };
   }
 }

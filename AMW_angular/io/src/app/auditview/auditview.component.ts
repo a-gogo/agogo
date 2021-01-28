@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuditviewService } from './auditview.service';
 import { ResourceService } from '../resource/resource.service';
 import { AuditLogEntry } from './auditview-entry';
-import { NavigationStoreService } from '../navigation/navigation-store.service';
+import { NavigationStoreService } from '@core/services';
 
 @Component({
   selector: 'amw-auditview',

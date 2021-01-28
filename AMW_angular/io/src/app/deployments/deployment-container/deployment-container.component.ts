@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationStoreService } from 'src/app/navigation/navigation-store.service';
+import { NavigationStoreService } from '@core/services';
 
 @Component({
   selector: 'app-deployment-container',

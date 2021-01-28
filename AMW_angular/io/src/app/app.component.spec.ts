@@ -1,5 +1,5 @@
 import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -10,7 +10,7 @@ import { NavigationSidebarComponent } from './navigation/navigation-sidebar.comp
 import { AppConfiguration } from './setting/app-configuration';
 import { SettingService } from './setting/setting.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NavigationStoreService } from './navigation/navigation-store.service';
+import { NavigationStoreService } from '@core/services';
 
 class RouterStub {
   navigateByUrl(url: string) {
@@ -27,11 +27,7 @@ describe('App', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        NavigationComponent,
-        NavigationSidebarComponent,
-      ],
+      declarations: [AppComponent, NavigationComponent, NavigationSidebarComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
         NavigationStoreService,

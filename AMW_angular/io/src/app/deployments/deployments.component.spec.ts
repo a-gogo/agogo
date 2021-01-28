@@ -9,13 +9,13 @@ import { DeploymentsComponent } from './deployments.component';
 import { SharedModule } from '@shared/shared.module';
 import { DeploymentsListComponent } from './deployments-list.component';
 import { DeploymentsEditModalComponent } from './deployments-edit-modal.component';
-import { NavigationStoreService } from '../navigation/navigation-store.service';
 import { ComparatorFilterOption } from './deployment/comparator-filter-option';
 import { Deployment } from './deployment/deployment';
 import { DeploymentFilter } from './deployment/deployment-filter';
 import { DeploymentFilterType } from './deployment/deployment-filter-type';
 import { DeploymentService } from './deployment/deployment.service';
 import { PaginationComponent } from '@shared/components';
+import { NavigationStoreService } from '@core/services';
 
 declare var $: any;
 

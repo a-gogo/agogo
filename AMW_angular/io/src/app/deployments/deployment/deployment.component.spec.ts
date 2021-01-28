@@ -17,9 +17,9 @@ import { DeploymentService } from './deployment.service';
 import { Environment } from './environment';
 import { EnvironmentService } from './environment.service';
 import { SharedModule } from '@shared/shared.module';
-import { NavigationStoreService } from '../../navigation/navigation-store.service';
 import { ResourceService } from 'src/app/resource/resource.service';
 import { DateTimeModel } from '@shared/components';
+import { NavigationStoreService } from '@core/services';
 @Component({
   template: '',
 })

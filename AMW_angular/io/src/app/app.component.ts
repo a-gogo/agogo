@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { SettingService } from './setting/setting.service';
 import { AppConfiguration } from './setting/app-configuration';
 import { AMW_LOGOUT_URL } from '@core/amw-constants';
-import { NavigationItem } from './navigation/navigation-item';
-import { NavigationStoreService } from './navigation/navigation-store.service';
+import { NavigationItem } from '@core/services/navigation/navigation-item';
+import { NavigationStoreService } from '@core/services';
 
 @Component({
   selector: 'app',
