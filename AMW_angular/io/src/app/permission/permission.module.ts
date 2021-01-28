@@ -11,19 +11,8 @@ import { RestrictionAddComponent } from './restriction-add.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgSelectModule,
-    PermissionRoutingModule,
-    SharedModule
-  ],
-  declarations: [
-    PermissionComponent,
-    RestrictionEditComponent,
-    RestrictionListComponent,
-    RestrictionAddComponent
-  ],
-  providers: [PermissionService]
+  imports: [CommonModule, NgSelectModule, PermissionRoutingModule, SharedModule],
+  declarations: [PermissionComponent, RestrictionEditComponent, RestrictionListComponent, RestrictionAddComponent],
+  providers: [PermissionService],
 })
 export class PermissionModule {}

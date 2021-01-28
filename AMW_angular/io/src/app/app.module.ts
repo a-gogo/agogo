@@ -25,6 +25,7 @@ import { DeploymentsModule } from './deployments/deployments.module';
 import { NavigationStoreService } from './navigation/navigation-store.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { CoreModule } from './core/core.module';
 
 // Application wide providers
 const APP_PROVIDERS = [NavigationStoreService];
@@ -32,11 +33,10 @@ const APP_PROVIDERS = [NavigationStoreService];
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    CoreModule,
     BrowserModule,
     BrowserAnimationsModule,
     NgSelectModule,
-    FormsModule,
-    HttpClientModule,
     AppRoutingModule,
     ResourceModule,
     DeploymentsModule,

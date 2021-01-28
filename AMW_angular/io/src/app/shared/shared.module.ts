@@ -37,6 +37,7 @@ import { IconComponent } from './icon/icon.component';
     NotificationComponent,
     DateTimePickerComponent,
     IconComponent,
+    FormsModule,
   ],
 })
 export class SharedModule {}
