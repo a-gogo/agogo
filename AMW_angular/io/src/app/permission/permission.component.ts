@@ -10,7 +10,7 @@ import { Permission } from './permission';
 import * as _ from 'lodash';
 import { Environment } from '../deployments/deployment/environment';
 import { EnvironmentService } from '../deployments/deployment/environment.service';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 @Component({
   selector: 'amw-permission',
@@ -56,7 +56,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
     private environmentService: EnvironmentService,
     private resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
-    public navigationStore: NavigationStoreService
+    public navigationStore: NavigationService
   ) {
     this.navigationStore.setPageTitle('Permissions');
     this.navigationStore.setVisible(true);

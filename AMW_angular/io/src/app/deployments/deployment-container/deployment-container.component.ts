@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 @Component({
   selector: 'app-deployment-container',
@@ -7,7 +7,7 @@ import { NavigationStoreService } from '@core/services';
   styles: [],
 })
 export class DeploymentContainerComponent implements OnInit {
-  constructor(public navigationStore: NavigationStoreService) {
+  constructor(public navigationStore: NavigationService) {
     this.navigationStore.setPageTitle('Deployments');
     this.navigationStore.setCurrent('Deployments');
   }

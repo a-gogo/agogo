@@ -1,1 +1,1 @@
-export * from './navigation/navigation-store.service';
+export * from './navigation/navigation.service';

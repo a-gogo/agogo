@@ -14,7 +14,7 @@ import { DeploymentFilter } from './deployment/deployment-filter';
 import { DeploymentFilterType } from './deployment/deployment-filter-type';
 import { DeploymentService } from './deployment/deployment.service';
 import { DateTimeModel } from '@shared/components';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 declare var $: any;
 
@@ -88,7 +88,7 @@ export class DeploymentsComponent implements OnInit {
     private location: Location,
     private deploymentService: DeploymentService,
     private resourceService: ResourceService,
-    public navigationStore: NavigationStoreService,
+    public navigationStore: NavigationService,
     private modalService: NgbModal // public deploymentStore: DeploymentsStore
   ) {
     this.navigationStore.setVisible(false);

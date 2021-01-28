@@ -19,7 +19,7 @@ import { EnvironmentService } from './environment.service';
 import { SharedModule } from '@shared/shared.module';
 import { ResourceService } from 'src/app/resource/resource.service';
 import { DateTimeModel } from '@shared/components';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 @Component({
   template: '',
 })
@@ -35,7 +35,7 @@ describe('DeploymentComponent (create deployment)', () => {
     TestBed.configureTestingModule({
       declarations: [DeploymentComponent, DummyComponent],
       imports: [FormsModule, RouterTestingModule, HttpClientTestingModule, SharedModule],
-      providers: [ResourceService, EnvironmentService, DeploymentService, NavigationStoreService],
+      providers: [ResourceService, EnvironmentService, DeploymentService, NavigationService],
     });
     fixture = TestBed.createComponent(DeploymentComponent);
     component = fixture.componentInstance;
@@ -378,7 +378,7 @@ describe('DeploymentComponent (create deployment with params)', () => {
         ResourceService,
         EnvironmentService,
         DeploymentService,
-        NavigationStoreService,
+        NavigationService,
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
     });
@@ -433,7 +433,7 @@ describe('DeploymentComponent (redeployment)', () => {
         ResourceService,
         EnvironmentService,
         DeploymentService,
-        NavigationStoreService,
+        NavigationService,
       ],
     });
     fixture = TestBed.createComponent(DeploymentComponent);

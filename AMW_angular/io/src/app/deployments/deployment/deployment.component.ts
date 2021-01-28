@@ -17,7 +17,7 @@ import { Resource } from 'src/app/resource/resource';
 import { ResourceTag } from 'src/app/resource/resource-tag';
 import { ResourceService } from 'src/app/resource/resource.service';
 import { DateTimeModel } from '@shared/components';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 @Component({
   selector: 'amw-deployment',
@@ -79,7 +79,7 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     private deploymentService: DeploymentService,
     private activatedRoute: ActivatedRoute,
     private location: Location,
-    public navigationStore: NavigationStoreService,
+    public navigationStore: NavigationService,
     public deploymentsStore: DeploymentsStore
   ) {
     this.navigationStore.setVisible(false);

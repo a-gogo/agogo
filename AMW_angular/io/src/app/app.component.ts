@@ -4,7 +4,7 @@ import { SettingService } from './setting/setting.service';
 import { AppConfiguration } from './setting/app-configuration';
 import { AMW_LOGOUT_URL } from '@core/amw-constants';
 import { NavigationItem } from '@core/services/navigation/navigation-item';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 @Component({
   selector: 'app',
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   logoutUrl: string;
 
   constructor(
-    public navigationStore: NavigationStoreService,
+    public navigationStore: NavigationService,
     private router: Router,
     private settingService: SettingService
   ) {}

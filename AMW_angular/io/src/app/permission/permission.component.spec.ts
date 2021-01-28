@@ -18,7 +18,7 @@ import { Tag } from './tag';
 import { SharedModule } from '@shared/shared.module';
 import { Environment } from '../deployments/deployment/environment';
 import { EnvironmentService } from '../deployments/deployment/environment.service';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 describe('PermissionComponent without any params (default: type Role)', () => {
   let fixture: ComponentFixture<PermissionComponent>;
@@ -39,7 +39,7 @@ describe('PermissionComponent without any params (default: type Role)', () => {
         EnvironmentService,
         PermissionService,
         ResourceService,
-        NavigationStoreService,
+        NavigationService,
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -396,7 +396,7 @@ describe('PermissionComponent with param restrictionType (type User)', () => {
         EnvironmentService,
         PermissionService,
         ResourceService,
-        NavigationStoreService,
+        NavigationService,
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -479,7 +479,7 @@ describe('PermissionComponent with param actingUser (delegation mode)', () => {
         EnvironmentService,
         PermissionService,
         ResourceService,
-        NavigationStoreService,
+        NavigationService,
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

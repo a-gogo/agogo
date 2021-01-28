@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
 import { Deployment } from '../deployment/deployment';
@@ -29,7 +29,7 @@ export class DeploymentLogsComponent implements OnInit, OnDestroy {
     private deploymentService: DeploymentService,
     private route: ActivatedRoute,
     private location: Location,
-    private navigationStore: NavigationStoreService
+    private navigationStore: NavigationService
   ) {
     this.pagetitle$.subscribe((title) => this.navigationStore.setPageTitle(title));
   }

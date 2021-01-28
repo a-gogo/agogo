@@ -15,7 +15,7 @@ import { DeploymentFilter } from './deployment/deployment-filter';
 import { DeploymentFilterType } from './deployment/deployment-filter-type';
 import { DeploymentService } from './deployment/deployment.service';
 import { PaginationComponent } from '@shared/components';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 declare var $: any;
 
@@ -39,7 +39,7 @@ describe('DeploymentsComponent (with query params)', () => {
       providers: [
         DeploymentService,
         ResourceService,
-        NavigationStoreService,
+        NavigationService,
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
       declarations: [
@@ -187,7 +187,7 @@ describe('DeploymentsComponent (with illegal query params)', () => {
       providers: [
         DeploymentService,
         ResourceService,
-        NavigationStoreService,
+        NavigationService,
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
       declarations: [
@@ -243,7 +243,7 @@ describe('DeploymentsComponent (without query params)', () => {
       providers: [
         DeploymentService,
         ResourceService,
-        NavigationStoreService,
+        NavigationService,
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
       declarations: [

@@ -21,7 +21,7 @@ const initial = {
 @Injectable({
   providedIn: 'root',
 })
-export class NavigationStoreService {
+export class NavigationService {
   private readonly _navigation = new BehaviorSubject<Navigation>(initial);
 
   readonly navigation$ = this._navigation.asObservable();

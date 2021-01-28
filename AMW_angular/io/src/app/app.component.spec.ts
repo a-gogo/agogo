@@ -6,11 +6,10 @@ import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { NavigationSidebarComponent } from './navigation/navigation-sidebar.component';
-
 import { AppConfiguration } from './setting/app-configuration';
 import { SettingService } from './setting/setting.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 class RouterStub {
   navigateByUrl(url: string) {
@@ -19,7 +18,7 @@ class RouterStub {
 }
 
 describe('App', () => {
-  let navigationStore: NavigationStoreService;
+  let navigationStore: NavigationService;
   let router: Router;
   let app: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -30,14 +29,14 @@ describe('App', () => {
       declarations: [AppComponent, NavigationComponent, NavigationSidebarComponent],
       imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
-        NavigationStoreService,
+        NavigationService,
         SettingService,
         ChangeDetectorRef,
         AppComponent,
         { provide: Router, useClass: RouterStub },
       ],
     }).compileComponents();
-    navigationStore = TestBed.inject(NavigationStoreService);
+    navigationStore = TestBed.inject(NavigationService);
     router = TestBed.inject(Router);
     settingService = TestBed.inject(SettingService);
 

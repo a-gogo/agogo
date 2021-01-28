@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuditviewService } from './auditview.service';
 import { ResourceService } from '../resource/resource.service';
 import { AuditLogEntry } from './auditview-entry';
-import { NavigationStoreService } from '@core/services';
+import { NavigationService } from '@core/services';
 
 @Component({
   selector: 'amw-auditview',
@@ -19,7 +19,7 @@ export class AuditviewComponent implements OnInit {
   isLoading: boolean = true;
 
   constructor(
-    public navigationStore: NavigationStoreService,
+    public navigationStore: NavigationService,
     private auditViewService: AuditviewService,
     private resourceService: ResourceService,
     private activatedRoute: ActivatedRoute
