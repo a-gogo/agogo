@@ -11,6 +11,13 @@ import { DateTimePickerComponent } from './date-time-picker/date-time-picker.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { IconComponent } from './icon/icon.component';
 
+/**
+ * The shared module exports components, directives, filters, pipes that are used everwhere in the application.
+ * Import the SharedModule in your FeatureModules to use them.
+ *
+ * Important: Do not provide services in here, since these could be instantiated more than once.
+ * Singleton services should be provided in the CoreModule
+ */
 @NgModule({
   declarations: [
     SortableIconComponent,
