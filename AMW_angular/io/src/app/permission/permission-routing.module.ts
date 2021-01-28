@@ -1,7 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { PermissionComponent } from './permission.component';
 import { NgModule } from '@angular/core';
-import { PageNotFoundComponent } from '../shared/components';
+import { PageNotFoundComponent } from '@shared/components';
 
 @NgModule({
   imports: [

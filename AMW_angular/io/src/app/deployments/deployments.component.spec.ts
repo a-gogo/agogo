@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
 import { DeploymentsComponent } from './deployments.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { DeploymentsListComponent } from './deployments-list.component';
 import { DeploymentsEditModalComponent } from './deployments-edit-modal.component';
 import { NavigationStoreService } from '../navigation/navigation-store.service';
@@ -15,7 +15,7 @@ import { Deployment } from './deployment/deployment';
 import { DeploymentFilter } from './deployment/deployment-filter';
 import { DeploymentFilterType } from './deployment/deployment-filter-type';
 import { DeploymentService } from './deployment/deployment.service';
-import { PaginationComponent } from '../shared/components';
+import { PaginationComponent } from '@shared/components';
 
 declare var $: any;
 

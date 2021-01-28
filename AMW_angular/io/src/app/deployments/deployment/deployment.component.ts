@@ -17,7 +17,7 @@ import { Release } from 'src/app/resource/release';
 import { Resource } from 'src/app/resource/resource';
 import { ResourceTag } from 'src/app/resource/resource-tag';
 import { ResourceService } from 'src/app/resource/resource.service';
-import { DateTimeModel } from 'src/app/shared/components';
+import { DateTimeModel } from '@shared/components';
 
 @Component({
   selector: 'amw-deployment',

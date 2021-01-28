@@ -1,7 +1,7 @@
 import { DeploymentsEditModalComponent } from './deployments-edit-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Deployment } from './deployment/deployment';
-import { DateTimeModel } from '../shared/components';
+import { DateTimeModel } from '@shared/components';
 
 describe('DeploymentsEditModalComponent (with query params)', () => {
   let component: DeploymentsEditModalComponent;

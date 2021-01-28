@@ -19,7 +19,7 @@ export const components: any[] = [
 
 /**
  * Export all components to simplify imports from anywhere -just import the shared components like this:
- * import { IconComponent } from '/path/to/shared/components';
+ * import { IconComponent } from '@shared/components';
  */
 export * from './date-time-picker/date-time-picker.component';
 export * from './icon/icon.component';

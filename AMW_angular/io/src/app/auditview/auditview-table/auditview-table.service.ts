@@ -4,7 +4,7 @@ import { tap, debounceTime, map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { AuditLogEntry } from '../auditview-entry';
 import { SortDirection } from './sortable.directive';
-import { DATE_FORMAT_ANGULAR } from '../../core/amw-constants';
+import { DATE_FORMAT_ANGULAR } from '@core/amw-constants';
 
 interface State {
   searchTerm: string;
@@ -12,11 +12,7 @@ interface State {
   sortDirection: SortDirection;
 }
 
-function sort(
-  entries: AuditLogEntry[],
-  column: string,
-  direction: string
-): AuditLogEntry[] {
+function sort(entries: AuditLogEntry[], column: string, direction: string): AuditLogEntry[] {
   if (direction === '') {
     return entries;
   } else {
@@ -63,24 +59,14 @@ export class AuditviewTableService {
   private sortDirection$ = new BehaviorSubject<SortDirection>('');
   private auditlogEntries$: Subject<AuditLogEntry[]> = new Subject();
 
-  private _search$ = combineLatest(
-    this.searchTerm$,
-    this.sortColumn$,
-    this.sortDirection$,
-    this.auditlogEntries$
-  );
+  private _search$ = combineLatest(this.searchTerm$, this.sortColumn$, this.sortDirection$, this.auditlogEntries$);
 
   constructor(private pipe: DatePipe) {
     this._result$ = this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
       map(([searchTerm, sortColumn, sortDirection, auditlogEntries]) => {
-        return this._search(
-          searchTerm,
-          sortColumn,
-          sortDirection,
-          auditlogEntries
-        );
+        return this._search(searchTerm, sortColumn, sortDirection, auditlogEntries);
       }),
       tap(() => this._loading$.next(false))
     );
@@ -112,9 +98,7 @@ export class AuditviewTableService {
   ): AuditLogEntry[] {
     let auditviewEntries = sort(auditlogEntries, sortColumn, sortDirection);
 
-    let result = auditviewEntries.filter((entry) =>
-      matches(entry, searchTerm, this.pipe)
-    );
+    let result = auditviewEntries.filter((entry) => matches(entry, searchTerm, this.pipe));
     return result;
   }
 }

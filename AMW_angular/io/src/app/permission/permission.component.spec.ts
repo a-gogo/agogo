@@ -15,7 +15,7 @@ import { RestrictionEditComponent } from './restriction-edit.component';
 import { RestrictionListComponent } from './restriction-list.component';
 import { Restriction } from './restriction';
 import { Tag } from './tag';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { NavigationStoreService } from '../navigation/navigation-store.service';
 import { Environment } from '../deployments/deployment/environment';
 import { EnvironmentService } from '../deployments/deployment/environment.service';

@@ -12,7 +12,7 @@ import { PermissionModule } from './permission/permission.module';
 import { AuditviewModule } from './auditview/auditview.module';
 import { SettingModule } from './setting/setting.module';
 import { BaseModule } from './base/base.module';
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { NavigationModule } from './navigation/navigation.module';
 /*
  * Platform and Environment providers/directives/pipes
@@ -25,7 +25,7 @@ import { DeploymentsModule } from './deployments/deployments.module';
 import { NavigationStoreService } from './navigation/navigation-store.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
-import { CoreModule } from './core/core.module';
+import { CoreModule } from '@core/core.module';
 
 // Application wide providers
 const APP_PROVIDERS = [NavigationStoreService];

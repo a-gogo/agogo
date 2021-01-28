@@ -1,23 +1,16 @@
-import {
-  Component,
-  QueryList,
-  ViewChildren,
-  OnChanges,
-  SimpleChanges,
-  Input
-} from '@angular/core';
+import { Component, QueryList, ViewChildren, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuditLogEntry } from '../auditview-entry';
 import { AuditviewService } from '../auditview.service';
 import { AuditviewTableService } from './auditview-table.service';
 import { SortEvent, SortableHeader } from './sortable.directive';
-import { DATE_FORMAT_ANGULAR } from '../../core/amw-constants';
+import { DATE_FORMAT_ANGULAR } from '@core/amw-constants';
 
 @Component({
   selector: 'app-auditview-table',
   templateUrl: './auditview-table.component.html',
   styleUrls: ['./auditview-table.component.scss'],
-  providers: [AuditviewService]
+  providers: [AuditviewService],
 })
 export class AuditviewTableComponent implements OnChanges {
   @Input() auditlogEntries;
@@ -39,7 +32,7 @@ export class AuditviewTableComponent implements OnChanges {
   }
 
   onSort({ column, direction }: SortEvent) {
-    this.headers.forEach(header => {
+    this.headers.forEach((header) => {
       if (header.sortable !== column) {
         header.direction = '';
       }

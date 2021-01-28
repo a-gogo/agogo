@@ -14,7 +14,7 @@ import { Deployment } from './deployment/deployment';
 import { DeploymentFilter } from './deployment/deployment-filter';
 import { DeploymentFilterType } from './deployment/deployment-filter-type';
 import { DeploymentService } from './deployment/deployment.service';
-import { DateTimeModel } from '../shared/components';
+import { DateTimeModel } from '@shared/components';
 
 declare var $: any;
 

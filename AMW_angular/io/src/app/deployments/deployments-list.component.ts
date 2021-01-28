@@ -2,11 +2,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ResourceService } from '../resource/resource.service';
 import * as _ from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DATE_FORMAT_ANGULAR } from '../core/amw-constants';
-import { DeploymentsStore } from '../core/deployments.store';
+import { DATE_FORMAT_ANGULAR } from '@core/amw-constants';
+import { DeploymentsStore } from '@core/deployments.store';
 import { Deployment } from './deployment/deployment';
 import { DeploymentFilter } from './deployment/deployment-filter';
-import { DateTimeModel } from '../shared/components';
+import { DateTimeModel } from '@shared/components';
 
 @Component({
   selector: 'amw-deployments-list',

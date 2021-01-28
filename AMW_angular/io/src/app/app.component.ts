@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SettingService } from './setting/setting.service';
 import { AppConfiguration } from './setting/app-configuration';
-import { AMW_LOGOUT_URL } from './core/amw-constants';
+import { AMW_LOGOUT_URL } from '@core/amw-constants';
 import { NavigationItem } from './navigation/navigation-item';
 import { NavigationStoreService } from './navigation/navigation-store.service';
 
@@ -22,9 +22,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.settingService
-      .getAllAppSettings()
-      .subscribe((r) => this.configureSettings(r));
+    this.settingService.getAllAppSettings().subscribe((r) => this.configureSettings(r));
   }
 
   navigateTo(item: NavigationItem): void {
@@ -33,9 +31,7 @@ export class AppComponent implements OnInit {
   }
 
   private configureSettings(settings: AppConfiguration[]) {
-    const logoutUrl = settings.find(
-      (config) => config.key.value === AMW_LOGOUT_URL
-    );
+    const logoutUrl = settings.find((config) => config.key.value === AMW_LOGOUT_URL);
     this.logoutUrl = logoutUrl ? logoutUrl.value : '';
   }
 }

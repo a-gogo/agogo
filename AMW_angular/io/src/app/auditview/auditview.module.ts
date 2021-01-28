@@ -6,7 +6,7 @@ import { AuditviewService } from './auditview.service';
 import { AuditviewTableComponent } from './auditview-table/auditview-table.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BaseModule } from '../base/base.module';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { NewlineFilterPipe } from './auditview-table/newlineFilterPipe';
 import { SortableHeader } from './auditview-table/sortable.directive';
 
