@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Environment } from './environment';
-import { BaseService } from '../base/base.service';
+import { BaseService } from '../../base/base.service';
 
 @Injectable()
 export class EnvironmentService extends BaseService {
@@ -29,7 +29,7 @@ export class EnvironmentService extends BaseService {
     return this.http
       .get<Environment[]>(`${this.getBaseUrl()}/environments`, {
         params,
-        headers
+        headers,
       })
       .pipe(catchError(this.handleError));
   }

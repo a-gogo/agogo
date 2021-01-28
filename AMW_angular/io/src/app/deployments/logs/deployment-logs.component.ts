@@ -3,9 +3,9 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
-import { Deployment } from 'src/app/deployment/deployment';
-import { DeploymentService } from 'src/app/deployment/deployment.service';
 import { NavigationStoreService } from 'src/app/navigation/navigation-store.service';
+import { Deployment } from '../deployment/deployment';
+import { DeploymentService } from '../deployment/deployment.service';
 import { DeploymentLog, DeploymentLogContent } from './deployment-log';
 import { DeploymentLogsService } from './deployment-logs.service';
 

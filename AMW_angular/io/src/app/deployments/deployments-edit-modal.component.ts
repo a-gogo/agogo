@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Deployment } from '../deployment/deployment';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DateTimeModel } from '../shared/date-time-picker/date-time.model';
+import { Deployment } from './deployment/deployment';
 
 @Component({
   selector: 'amw-deployments-edit-modal',
@@ -50,7 +50,7 @@ export class DeploymentsEditModalComponent {
         break;
     }
     this.clear();
-    this.activeModal.close('Close click')
+    this.activeModal.close('Close click');
   }
 
   private clear() {

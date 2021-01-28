@@ -8,7 +8,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
  * Feature Modules
  */
 import { ResourceModule } from './resource/resource.module';
-import { DeploymentModule } from './deployment/deployment.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuditviewModule } from './auditview/auditview.module';
 import { SettingModule } from './setting/setting.module';
@@ -40,7 +39,6 @@ const APP_PROVIDERS = [NavigationStoreService];
     HttpClientModule,
     AppRoutingModule,
     ResourceModule,
-    DeploymentModule,
     DeploymentsModule,
     AuditviewModule,
     PermissionModule,

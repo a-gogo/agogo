@@ -1,16 +1,16 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { RestrictionEditComponent } from './restriction-edit.component';
 import { Restriction } from './restriction';
-import { Environment } from '../deployment/environment';
 import { Resource } from '../resource/resource';
 import { Permission } from './permission';
 import { ChangeDetectorRef } from '@angular/core';
+import { Environment } from '../deployments/deployment/environment';
 
 describe('RestrictionEditComponent', () => {
   // provide our implementations or mocks to the dependency injector
   beforeEach(() =>
     TestBed.configureTestingModule({
-      providers: [RestrictionEditComponent, ChangeDetectorRef]
+      providers: [RestrictionEditComponent, ChangeDetectorRef],
     })
   );
 
@@ -25,8 +25,8 @@ describe('RestrictionEditComponent', () => {
           nameAlias: null,
           parent: 'All',
           selected: false,
-          disabled: false
-        }
+          disabled: false,
+        },
       ];
       const devEnvironments: Environment[] = [
         {
@@ -35,7 +35,7 @@ describe('RestrictionEditComponent', () => {
           nameAlias: 'Test',
           parent: 'Dev',
           selected: false,
-          disabled: false
+          disabled: false,
         },
         {
           id: 2,
@@ -43,26 +43,20 @@ describe('RestrictionEditComponent', () => {
           nameAlias: null,
           parent: 'Dev',
           selected: false,
-          disabled: false
-        }
+          disabled: false,
+        },
       ];
       restrictionComponent.groupedEnvironments = {
         All: emptyEnvironment,
-        Dev: devEnvironments
+        Dev: devEnvironments,
       };
       restrictionComponent.restriction = { contextName: 'C' } as Restriction;
       // when
       restrictionComponent.ngOnChanges();
       // then
-      expect(
-        restrictionComponent.groupedEnvironments['All'][0]['selected']
-      ).toBeFalsy();
-      expect(
-        restrictionComponent.groupedEnvironments['Dev'][0]['selected']
-      ).toBeFalsy();
-      expect(
-        restrictionComponent.groupedEnvironments['Dev'][1]['selected']
-      ).toBeTruthy();
+      expect(restrictionComponent.groupedEnvironments['All'][0]['selected']).toBeFalsy();
+      expect(restrictionComponent.groupedEnvironments['Dev'][0]['selected']).toBeFalsy();
+      expect(restrictionComponent.groupedEnvironments['Dev'][1]['selected']).toBeTruthy();
     }
   ));
 
@@ -80,12 +74,10 @@ describe('RestrictionEditComponent', () => {
     [RestrictionEditComponent],
     (restrictionComponent: RestrictionEditComponent) => {
       // given
-      restrictionComponent.resourceGroups = [
-        { id: 21, name: 'Test' } as Resource
-      ];
+      restrictionComponent.resourceGroups = [{ id: 21, name: 'Test' } as Resource];
       restrictionComponent.resourceGroup = {
         id: null,
-        name: 'West'
+        name: 'West',
       } as Resource;
       // when then
       expect(restrictionComponent.checkGroup()).toBeFalsy();
@@ -98,11 +90,11 @@ describe('RestrictionEditComponent', () => {
       // given
       restrictionComponent.resourceGroups = [
         { id: 21, name: 'Test' } as Resource,
-        { id: 42, name: 'Rest' } as Resource
+        { id: 42, name: 'Rest' } as Resource,
       ];
       restrictionComponent.resourceGroup = {
         id: null,
-        name: 'rest'
+        name: 'rest',
       } as Resource;
       restrictionComponent.restriction = {} as Restriction;
       // when then
@@ -116,10 +108,10 @@ describe('RestrictionEditComponent', () => {
       // given
       restrictionComponent.resourceTypes = [
         { id: 1, name: 'APP' },
-        { id: 2, name: 'APPSERVER' }
+        { id: 2, name: 'APPSERVER' },
       ];
       restrictionComponent.restriction = {
-        resourceTypeName: 'INVALID'
+        resourceTypeName: 'INVALID',
       } as Restriction;
       // when then
       expect(restrictionComponent.isValidForm()).toBeFalsy();
@@ -132,10 +124,10 @@ describe('RestrictionEditComponent', () => {
       // given
       restrictionComponent.resourceTypes = [
         { id: 1, name: 'APP' },
-        { id: 2, name: 'APPSERVER' }
+        { id: 2, name: 'APPSERVER' },
       ];
       restrictionComponent.restriction = {
-        resourceTypeName: 'APPSERVER'
+        resourceTypeName: 'APPSERVER',
       } as Restriction;
       // when then
       expect(restrictionComponent.isValidForm()).toBeTruthy();
@@ -147,7 +139,7 @@ describe('RestrictionEditComponent', () => {
     (restrictionComponent: RestrictionEditComponent) => {
       // given
       restrictionComponent.restriction = {
-        resourceTypeName: ''
+        resourceTypeName: '',
       } as Restriction;
       // when
       restrictionComponent.persistRestriction();
@@ -166,11 +158,11 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: 9,
         resourceTypeName: null,
         resourceTypePermission: 'ANY',
-        permission: { name: 'NEO' }
+        permission: { name: 'NEO' },
       } as Restriction;
       restrictionComponent.permissions = [
         { name: 'NEO', old: false } as Permission,
-        { name: 'OLD_GLOBAL', old: true } as Permission
+        { name: 'OLD_GLOBAL', old: true } as Permission,
       ];
       // when
       restrictionComponent.defineAvailableOptions();
@@ -179,9 +171,7 @@ describe('RestrictionEditComponent', () => {
       expect(restrictionComponent.restriction.contextName).toBe('T');
       expect(restrictionComponent.restriction.resourceGroupId).toBe(9);
       expect(restrictionComponent.restriction.resourceTypeName).toBeNull();
-      expect(restrictionComponent.restriction.resourceTypePermission).toBe(
-        'ANY'
-      );
+      expect(restrictionComponent.restriction.resourceTypePermission).toBe('ANY');
     }
   ));
 
@@ -195,11 +185,11 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: 9,
         resourceTypeName: null,
         resourceTypePermission: 'ANY',
-        permission: { name: 'OLD_GLOBAL' } as Permission
+        permission: { name: 'OLD_GLOBAL' } as Permission,
       } as Restriction;
       restrictionComponent.permissions = [
         { name: 'NEO', old: false } as Permission,
-        { name: 'OLD_GLOBAL', old: true } as Permission
+        { name: 'OLD_GLOBAL', old: true } as Permission,
       ];
       // when
       restrictionComponent.defineAvailableOptions();
@@ -208,9 +198,7 @@ describe('RestrictionEditComponent', () => {
       expect(restrictionComponent.restriction.contextName).toBeNull();
       expect(restrictionComponent.restriction.resourceGroupId).toBeNull();
       expect(restrictionComponent.restriction.resourceTypeName).toBeNull();
-      expect(restrictionComponent.restriction.resourceTypePermission).toBe(
-        'ANY'
-      );
+      expect(restrictionComponent.restriction.resourceTypePermission).toBe('ANY');
     }
   ));
 
@@ -225,11 +213,11 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: 9,
         resourceTypeName: null,
         resourceTypePermission: 'ANY',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       restrictionComponent.permissions = [
         { name: 'NEO', old: false } as Permission,
-        { name: 'OLD_GLOBAL', old: true } as Permission
+        { name: 'OLD_GLOBAL', old: true } as Permission,
       ];
       restrictionComponent.availableRestrictions = [
         {
@@ -238,7 +226,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 9,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'UPDATE',
@@ -246,7 +234,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 10,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'UPDATE',
@@ -254,25 +242,19 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 11,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'nada' } as Permission
-        } as Restriction
+          permission: { name: 'nada' } as Permission,
+        } as Restriction,
       ];
       // when
       restrictionComponent.defineAvailableOptions();
       // then
       expect(restrictionComponent.similarRestrictions.length).toEqual(2);
-      expect(restrictionComponent.similarRestrictions[0].permission.name).toBe(
-        'NEO'
-      );
-      expect(restrictionComponent.similarRestrictions[1].permission.name).toBe(
-        'NEO'
-      );
+      expect(restrictionComponent.similarRestrictions[0].permission.name).toBe('NEO');
+      expect(restrictionComponent.similarRestrictions[1].permission.name).toBe('NEO');
       expect(restrictionComponent.restriction.contextName).toBeNull();
       expect(restrictionComponent.restriction.resourceGroupId).toBeNull();
       expect(restrictionComponent.restriction.resourceTypeName).toBeNull();
-      expect(
-        restrictionComponent.restriction.resourceTypePermission
-      ).toBeNull();
+      expect(restrictionComponent.restriction.resourceTypePermission).toBeNull();
     }
   ));
 
@@ -281,27 +263,21 @@ describe('RestrictionEditComponent', () => {
     (restrictionComponent: RestrictionEditComponent) => {
       // given
       restrictionComponent.delegationMode = true;
-      const emptyEnvironment: Environment[] = [
-        { id: null, name: null, parent: 'All' } as Environment
-      ];
+      const emptyEnvironment: Environment[] = [{ id: null, name: null, parent: 'All' } as Environment];
       const devEnvironments: Environment[] = [
         { id: 1, name: 'B', parent: 'Dev' } as Environment,
-        { id: 2, name: 'C', parent: 'Dev' } as Environment
+        { id: 2, name: 'C', parent: 'Dev' } as Environment,
       ];
       const prodEnvironments: Environment[] = [
         { id: 12, name: 'P', parent: 'Dev' } as Environment,
-        { id: 22, name: 'S', parent: 'Dev' } as Environment
+        { id: 22, name: 'S', parent: 'Dev' } as Environment,
       ];
       restrictionComponent.groupedEnvironments = {
         All: emptyEnvironment,
         Dev: devEnvironments,
-        Pro: prodEnvironments
+        Pro: prodEnvironments,
       };
-      restrictionComponent.resourceGroups = [
-        { id: 1 } as Resource,
-        { id: 9 } as Resource,
-        { id: 10 } as Resource
-      ];
+      restrictionComponent.resourceGroups = [{ id: 1 } as Resource, { id: 9 } as Resource, { id: 10 } as Resource];
       // should match parent Dev
       restrictionComponent.restriction = {
         action: 'CREATE',
@@ -309,7 +285,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: 9,
         resourceTypeName: null,
         resourceTypePermission: 'ALL',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       restrictionComponent.similarRestrictions = [
         {
@@ -318,7 +294,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 9,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'CREATE',
@@ -326,8 +302,8 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 10,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
-        } as Restriction
+          permission: { name: 'NEO' } as Permission,
+        } as Restriction,
       ];
       // when
       const groups = restrictionComponent.getAvailableResourceGroups();
@@ -341,18 +317,14 @@ describe('RestrictionEditComponent', () => {
     [RestrictionEditComponent],
     (restrictionComponent: RestrictionEditComponent) => {
       // given
-      restrictionComponent.resourceGroups = [
-        { id: 1 } as Resource,
-        { id: 9 } as Resource,
-        { id: 10 } as Resource
-      ];
+      restrictionComponent.resourceGroups = [{ id: 1 } as Resource, { id: 9 } as Resource, { id: 10 } as Resource];
       restrictionComponent.restriction = {
         action: 'CREATE',
         contextName: 'T',
         resourceGroupId: 9,
         resourceTypeName: null,
         resourceTypePermission: 'ALL',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       // when
       const groups = restrictionComponent.getAvailableResourceGroups();
@@ -372,7 +344,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: 9,
         resourceTypeName: null,
         resourceTypePermission: 'ALL',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       restrictionComponent.similarRestrictions = [
         {
@@ -381,7 +353,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 9,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'READ',
@@ -389,8 +361,8 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 10,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
-        } as Restriction
+          permission: { name: 'NEO' } as Permission,
+        } as Restriction,
       ];
       // when
       const actions = restrictionComponent.getAvailableActions();
@@ -410,7 +382,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: 9,
         resourceTypeName: null,
         resourceTypePermission: 'ALL',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       restrictionComponent.similarRestrictions = [
         {
@@ -419,7 +391,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 9,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'ALL',
@@ -427,8 +399,8 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: 10,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
-        } as Restriction
+          permission: { name: 'NEO' } as Permission,
+        } as Restriction,
       ];
       // when
       const actions = restrictionComponent.getAvailableActions();
@@ -455,7 +427,7 @@ describe('RestrictionEditComponent', () => {
       restrictionComponent.resourceTypes = [
         { id: 1, name: 'APP' },
         { id: 2, name: 'AS' },
-        { id: 3, name: 'FOO' }
+        { id: 3, name: 'FOO' },
       ];
       restrictionComponent.restriction = {
         action: 'CREATE',
@@ -463,7 +435,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: 'APP',
         resourceTypePermission: 'ALL',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       restrictionComponent.similarRestrictions = [
         {
@@ -472,7 +444,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: null,
           resourceTypeName: 'FOO',
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'CREATE',
@@ -480,8 +452,8 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: null,
           resourceTypeName: 'AS',
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
-        } as Restriction
+          permission: { name: 'NEO' } as Permission,
+        } as Restriction,
       ];
       // when
       const types = restrictionComponent.getAvailableResourceTypes();
@@ -499,7 +471,7 @@ describe('RestrictionEditComponent', () => {
       restrictionComponent.resourceTypes = [
         { id: 1, name: 'APP' },
         { id: 2, name: 'AS' },
-        { id: 3, name: 'FOO' }
+        { id: 3, name: 'FOO' },
       ];
       restrictionComponent.restriction = {
         action: 'CREATE',
@@ -507,7 +479,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: 'APP',
         resourceTypePermission: 'ALL',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       restrictionComponent.similarRestrictions = [
         {
@@ -516,7 +488,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: null,
           resourceTypeName: 'FOO',
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'CREATE',
@@ -524,8 +496,8 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: null,
           resourceTypeName: 'AS',
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
-        } as Restriction
+          permission: { name: 'NEO' } as Permission,
+        } as Restriction,
       ];
       // when
       const types = restrictionComponent.getAvailableResourceTypes();
@@ -542,7 +514,7 @@ describe('RestrictionEditComponent', () => {
       restrictionComponent.resourceTypes = [
         { id: 1, name: 'APP' },
         { id: 2, name: 'AS' },
-        { id: 3, name: 'FOO' }
+        { id: 3, name: 'FOO' },
       ];
       restrictionComponent.restriction = {
         action: 'CREATE',
@@ -550,7 +522,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: 'APP',
         resourceTypePermission: 'ALL',
-        permission: { name: 'NEO' } as Permission
+        permission: { name: 'NEO' } as Permission,
       } as Restriction;
       restrictionComponent.similarRestrictions = [
         {
@@ -559,7 +531,7 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: null,
           resourceTypeName: null,
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
+          permission: { name: 'NEO' } as Permission,
         } as Restriction,
         {
           action: 'CREATE',
@@ -567,8 +539,8 @@ describe('RestrictionEditComponent', () => {
           resourceGroupId: null,
           resourceTypeName: 'AS',
           resourceTypePermission: 'ANY',
-          permission: { name: 'NEO' } as Permission
-        } as Restriction
+          permission: { name: 'NEO' } as Permission,
+        } as Restriction,
       ];
       // when
       const types = restrictionComponent.getAvailableResourceTypes();
@@ -587,7 +559,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: null,
         resourceTypePermission: 'ANY',
-        permission: { name: 'test' } as Permission
+        permission: { name: 'test' } as Permission,
       } as Restriction;
       // when
       const possible: boolean = restrictionComponent.isResourceTypeAssignable();
@@ -606,7 +578,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: 8,
         resourceTypeName: null,
         resourceTypePermission: 'ANY',
-        permission: { name: 'test' } as Permission
+        permission: { name: 'test' } as Permission,
       } as Restriction;
       // when
       const possible: boolean = restrictionComponent.isResourceTypeAssignable();
@@ -625,7 +597,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: null,
         resourceTypePermission: 'DEFAULT_ONLY',
-        permission: { name: 'test' } as Permission
+        permission: { name: 'test' } as Permission,
       } as Restriction;
       // when
       const possible: boolean = restrictionComponent.isResourceTypeAssignable();
@@ -644,7 +616,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: null,
         resourceTypePermission: 'ANY',
-        permission: { name: 'test' } as Permission
+        permission: { name: 'test' } as Permission,
       } as Restriction;
       // when
       const possible: boolean = restrictionComponent.isResourceGroupAssignable();
@@ -663,7 +635,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: 'test',
         resourceTypePermission: 'ANY',
-        permission: { name: 'test' } as Permission
+        permission: { name: 'test' } as Permission,
       } as Restriction;
       // when
       const possible: boolean = restrictionComponent.isResourceGroupAssignable();
@@ -682,7 +654,7 @@ describe('RestrictionEditComponent', () => {
         resourceGroupId: null,
         resourceTypeName: null,
         resourceTypePermission: 'DEFAULT_ONLY',
-        permission: { name: 'test' } as Permission
+        permission: { name: 'test' } as Permission,
       } as Restriction;
       // when
       const possible: boolean = restrictionComponent.isResourceGroupAssignable();

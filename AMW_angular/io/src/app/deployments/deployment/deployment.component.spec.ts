@@ -5,10 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject } from 'rxjs';
-import { Release } from '../resource/release';
-import { Resource } from '../resource/resource';
-import { ResourceTag } from '../resource/resource-tag';
-import { ResourceService } from '../resource/resource.service';
+import { Release } from '../../resource/release';
+import { Resource } from '../../resource/resource';
+import { ResourceTag } from '../../resource/resource-tag';
 import { AppWithVersion } from './app-with-version';
 import { Deployment } from './deployment';
 import { DeploymentParameter } from './deployment-parameter';
@@ -17,11 +16,10 @@ import { DeploymentComponent } from './deployment.component';
 import { DeploymentService } from './deployment.service';
 import { Environment } from './environment';
 import { EnvironmentService } from './environment.service';
-import * as moment from 'moment';
-import { SharedModule } from '../shared/shared.module';
-import { NavigationStoreService } from '../navigation/navigation-store.service';
-import { DateTimeModel } from '../shared/date-time-picker/date-time.model';
-import { DATE_FORMAT_ANGULAR } from '../core/amw-constants';
+import { SharedModule } from '../../shared/shared.module';
+import { NavigationStoreService } from '../../navigation/navigation-store.service';
+import { DateTimeModel } from '../../shared/date-time-picker/date-time.model';
+import { ResourceService } from 'src/app/resource/resource.service';
 @Component({
   template: '',
 })

@@ -1,11 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { ResourceService } from '../resource/resource.service';
-import { ResourceTag } from '../resource/resource-tag';
-import { Resource } from '../resource/resource';
-import { Release } from '../resource/release';
-import { Relation } from '../resource/relation';
 import { Deployment } from './deployment';
 import { DeploymentParameter } from './deployment-parameter';
 import { DeploymentService } from './deployment.service';
@@ -15,9 +10,14 @@ import { DeploymentRequest } from './deployment-request';
 import { AppWithVersion } from './app-with-version';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
-import { NavigationStoreService } from '../navigation/navigation-store.service';
-import { DateTimeModel } from '../shared/date-time-picker/date-time.model';
-import { DeploymentsStore } from '../core/deployments.store';
+import { DeploymentsStore } from 'src/app/core/deployments.store';
+import { NavigationStoreService } from 'src/app/navigation/navigation-store.service';
+import { Relation } from 'src/app/resource/relation';
+import { Release } from 'src/app/resource/release';
+import { Resource } from 'src/app/resource/resource';
+import { ResourceTag } from 'src/app/resource/resource-tag';
+import { ResourceService } from 'src/app/resource/resource.service';
+import { DateTimeModel } from 'src/app/shared/date-time-picker/date-time.model';
 
 @Component({
   selector: 'amw-deployment',

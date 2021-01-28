@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PermissionService } from './permission.service';
-import { Environment } from '../deployment/environment';
-import { EnvironmentService } from '../deployment/environment.service';
 import { Resource } from '../resource/resource';
 import { ResourceType } from '../resource/resource-type';
 import { ResourceService } from '../resource/resource.service';
@@ -11,6 +9,8 @@ import { RestrictionsCreation } from './restrictions-creation';
 import { Permission } from './permission';
 import * as _ from 'lodash';
 import { NavigationStoreService } from '../navigation/navigation-store.service';
+import { Environment } from '../deployments/deployment/environment';
+import { EnvironmentService } from '../deployments/deployment/environment.service';
 
 @Component({
   selector: 'amw-permission',
@@ -21,9 +21,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
   roleNames: string[] = [];
   userNames: string[] = [];
   permissions: Permission[] = [];
-  environments: Environment[] = [
-    { id: null, name: null, parent: 'All', selected: false } as Environment,
-  ];
+  environments: Environment[] = [{ id: null, name: null, parent: 'All', selected: false } as Environment];
   groupedEnvironments: { [key: string]: Environment[] } = {
     All: [],
     Global: [],
@@ -84,9 +82,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getAllPermissions();
         this.onChangeType(this.restrictionType);
       }
-      this.navigationStore.setCurrent(
-        this.restrictionType === 'user' ? 'Users' : 'Roles'
-      );
+      this.navigationStore.setCurrent(this.restrictionType === 'user' ? 'Users' : 'Roles');
     });
   }
 
@@ -114,10 +110,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onChangeUser(users: any) {
     this.convertToSelectedUserNames(users);
-    if (
-      this.selectedUserNames.length === 1 &&
-      this.isExistingUser(this.selectedUserNames[0])
-    ) {
+    if (this.selectedUserNames.length === 1 && this.isExistingUser(this.selectedUserNames[0])) {
       this.getUserWithRestrictions(this.selectedUserNames[0]);
     } else {
       this.assignedRestrictions = [];
@@ -172,38 +165,34 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       );
     } else {
-      this.permissionService
-        .createRestriction(this.restriction, this.delegationMode)
-        .subscribe(
-          /* happy path */ (r) => (this.restriction = r),
-          /* error path */ (e) => (this.errorMessage = e),
-          /* onComplete */ () => {
-            this.updatePermissions(this.restriction);
-            this.updateNamesLists();
-            this.restriction = null;
-            this.isLoading = false;
-            this.successMessage = 'Restriction created successfully';
-          }
-        );
+      this.permissionService.createRestriction(this.restriction, this.delegationMode).subscribe(
+        /* happy path */ (r) => (this.restriction = r),
+        /* error path */ (e) => (this.errorMessage = e),
+        /* onComplete */ () => {
+          this.updatePermissions(this.restriction);
+          this.updateNamesLists();
+          this.restriction = null;
+          this.isLoading = false;
+          this.successMessage = 'Restriction created successfully';
+        }
+      );
     }
   }
 
   createRestrictions(restrictionsCreation: RestrictionsCreation) {
     this.clearMessages();
     this.isLoading = true;
-    this.permissionService
-      .createRestrictions(restrictionsCreation, this.delegationMode)
-      .subscribe(
-        /* happy path */ (r) => '',
-        /* error path */ (e) => (this.errorMessage = e),
-        /* onComplete */ () => {
-          this.create = false;
-          this.updateExistingNamesLists(restrictionsCreation);
-          this.reloadAssignedRestrictions(restrictionsCreation);
-          this.isLoading = false;
-          this.successMessage = 'Restriction(s) created successfully';
-        }
-      );
+    this.permissionService.createRestrictions(restrictionsCreation, this.delegationMode).subscribe(
+      /* happy path */ (r) => '',
+      /* error path */ (e) => (this.errorMessage = e),
+      /* onComplete */ () => {
+        this.create = false;
+        this.updateExistingNamesLists(restrictionsCreation);
+        this.reloadAssignedRestrictions(restrictionsCreation);
+        this.isLoading = false;
+        this.successMessage = 'Restriction(s) created successfully';
+      }
+    );
   }
 
   addRestriction() {
@@ -228,9 +217,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  private reloadAssignedRestrictions(
-    restrictionsCreation: RestrictionsCreation
-  ) {
+  private reloadAssignedRestrictions(restrictionsCreation: RestrictionsCreation) {
     if (restrictionsCreation.roleName) {
       this.getRoleWithRestrictions(restrictionsCreation.roleName);
     } else if (restrictionsCreation.userNames.length === 1) {
@@ -240,25 +227,16 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private updateNamesLists() {
     if (this.restriction) {
-      if (
-        this.restriction.roleName &&
-        !this.isExistingRole(this.restriction.roleName)
-      ) {
+      if (this.restriction.roleName && !this.isExistingRole(this.restriction.roleName)) {
         this.roleNames.push(this.restriction.roleName.toLowerCase());
-      } else if (
-        this.restriction.userName &&
-        !this.isExistingUser(this.restriction.userName)
-      ) {
+      } else if (this.restriction.userName && !this.isExistingUser(this.restriction.userName)) {
         this.userNames.push(this.restriction.userName.toLowerCase());
       }
     }
   }
 
   private updateExistingNamesLists(restrictionsCreation: RestrictionsCreation) {
-    if (
-      restrictionsCreation.roleName &&
-      !this.isExistingRole(restrictionsCreation.roleName)
-    ) {
+    if (restrictionsCreation.roleName && !this.isExistingRole(restrictionsCreation.roleName)) {
       this.roleNames.push(restrictionsCreation.roleName.toLowerCase());
     } else if (restrictionsCreation.userNames.length > 0) {
       restrictionsCreation.userNames.forEach((userName) => {
@@ -270,15 +248,11 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private isExistingRole(roleName: string) {
-    return (
-      roleName !== null && this.roleNames.indexOf(roleName.toLowerCase()) > -1
-    );
+    return roleName !== null && this.roleNames.indexOf(roleName.toLowerCase()) > -1;
   }
 
   private isExistingUser(userName: string) {
-    return (
-      userName !== null && this.userNames.indexOf(userName.toLowerCase()) > -1
-    );
+    return userName !== null && this.userNames.indexOf(userName.toLowerCase()) > -1;
   }
 
   private onChangeType(type: string) {
@@ -350,9 +324,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private markGlobalPermissions(permissions: Permission[]) {
     permissions.forEach((permission) => {
-      permission.longName = permission.old
-        ? permission.name + ' (GLOBAL)'
-        : permission.name;
+      permission.longName = permission.old ? permission.name + ' (GLOBAL)' : permission.name;
     });
   }
 
@@ -394,9 +366,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
         this.assignablePermissions.push(restriction.permission);
       }
     });
-    this.assignablePermissions = _.sortBy(this.assignablePermissions, function (
-      s: Permission
-    ) {
+    this.assignablePermissions = _.sortBy(this.assignablePermissions, function (s: Permission) {
       return s.name.replace(/[_]/, '');
     });
   }
@@ -413,8 +383,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
   private getAllResourceTypes() {
     this.isLoading = true;
     this.resourceService.getAllResourceTypes().subscribe(
-      /* happy path */ (r) =>
-        (this.resourceTypes = this.resourceTypes.concat(r)),
+      /* happy path */ (r) => (this.resourceTypes = this.resourceTypes.concat(r)),
       /* error path */ (e) => (this.errorMessage = e),
       /* onComplete */ () => (this.isLoading = false)
     );
@@ -445,10 +414,7 @@ export class PermissionComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private updatePermissions(restriction: Restriction) {
-    const i: number = _.findIndex(
-      this.assignedRestrictions,
-      _.pick(restriction, 'id')
-    );
+    const i: number = _.findIndex(this.assignedRestrictions, _.pick(restriction, 'id'));
     if (i !== -1) {
       this.assignedRestrictions.splice(i, 1, restriction);
     } else {

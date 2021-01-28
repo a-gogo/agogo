@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
-import { Deployment } from 'src/app/deployment/deployment';
+import { Deployment } from '../deployments/deployment/deployment';
 
 @Injectable({ providedIn: 'root' })
 export class DeploymentsStore {
