@@ -9,12 +9,12 @@ import { ResourceService } from '../resource/resource.service';
 import { NavigationStoreService } from '../navigation/navigation-store.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeploymentsEditModalComponent } from './deployments-edit-modal.component';
-import { DateTimeModel } from '../shared/date-time-picker/date-time.model';
 import { ComparatorFilterOption } from './deployment/comparator-filter-option';
 import { Deployment } from './deployment/deployment';
 import { DeploymentFilter } from './deployment/deployment-filter';
 import { DeploymentFilterType } from './deployment/deployment-filter-type';
 import { DeploymentService } from './deployment/deployment.service';
+import { DateTimeModel } from '../shared/components';
 
 declare var $: any;
 

@@ -18,8 +18,8 @@ import { Environment } from './environment';
 import { EnvironmentService } from './environment.service';
 import { SharedModule } from '../../shared/shared.module';
 import { NavigationStoreService } from '../../navigation/navigation-store.service';
-import { DateTimeModel } from '../../shared/date-time-picker/date-time.model';
 import { ResourceService } from 'src/app/resource/resource.service';
+import { DateTimeModel } from 'src/app/shared/components';
 @Component({
   template: '',
 })

@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DateTimeModel } from '../shared/date-time-picker/date-time.model';
+import { DateTimeModel } from '../shared/components';
 import { Deployment } from './deployment/deployment';
 
 @Component({

@@ -1,20 +1,20 @@
 import { RouterModule } from '@angular/router';
 import { PermissionComponent } from './permission.component';
 import { NgModule } from '@angular/core';
-import { PageNotFoundComponent } from '../shared/page-not-found.component';
+import { PageNotFoundComponent } from '../shared/components';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'permission/delegation/:actingUser',
-        component: PermissionComponent
+        component: PermissionComponent,
       },
       { path: 'permission/:restrictionType', component: PermissionComponent },
       { path: 'permission', component: PermissionComponent },
-      { path: '**', component: PageNotFoundComponent }
-    ])
+      { path: '**', component: PageNotFoundComponent },
+    ]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class PermissionRoutingModule {}
