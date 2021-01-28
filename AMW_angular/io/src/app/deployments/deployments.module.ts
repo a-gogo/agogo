@@ -13,16 +13,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { DeploymentLogsComponent } from './logs/deployment-logs.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeploymentsStore } from './deployment-container/deployments.store';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    DeploymentsRoutingModule,
-    SharedModule,
-    NgbModule,
-    CodemirrorModule,
-  ],
+  imports: [CommonModule, FormsModule, DeploymentsRoutingModule, SharedModule, NgbModule, CodemirrorModule],
   declarations: [
     DeploymentsComponent,
     DeploymentsListComponent,
@@ -31,6 +25,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     DeploymentContainerComponent,
   ],
   providers: [DeploymentService, EnvironmentService, NgbActiveModal],
-  entryComponents: [DeploymentsEditModalComponent]
+  entryComponents: [DeploymentsEditModalComponent],
 })
 export class DeploymentsModule {}

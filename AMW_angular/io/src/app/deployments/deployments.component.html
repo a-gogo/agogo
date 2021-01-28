@@ -2,16 +2,8 @@
 
 <div class="col main-full">
   <div>
-    <app-notification
-      *ngIf="successMessage"
-      [message]="successMessage"
-      [messageType]="'success'"
-    ></app-notification>
-    <app-notification
-      *ngIf="errorMessage"
-      [message]="errorMessage"
-      [messageType]="'warning'"
-    ></app-notification>
+    <app-notification *ngIf="successMessage" [message]="successMessage" [messageType]="'success'"></app-notification>
+    <app-notification *ngIf="errorMessage" [message]="errorMessage" [messageType]="'warning'"></app-notification>
 
     <div>
       <div class="form-group row">
@@ -24,27 +16,15 @@
             [(ngModel)]="selectedFilterType"
             (change)="addFilter()"
           >
-            <option
-              *ngFor="let filterType of filterTypes"
-              [ngValue]="filterType"
-              >{{ filterType.name }}</option
-            >
+            <option *ngFor="let filterType of filterTypes" [ngValue]="filterType">{{ filterType.name }}</option>
           </select>
         </div>
       </div>
 
       <ng-container *ngIf="filters.length > 0">
-        <div
-          class="form-group row"
-          *ngFor="let filter of filters; let i = index"
-        >
+        <div class="form-group row" *ngFor="let filter of filters; let i = index">
           <div class="col-sm-4 offset-1">
-            <input
-              class="form-control"
-              disabled
-              type="text"
-              value="{{ filter.name }}"
-            />
+            <input class="form-control" disabled type="text" value="{{ filter.name }}" />
           </div>
           <ng-container *ngIf="filter.type === 'SpecialFilterType'">
             <div class="col-sm-6"></div>
@@ -57,42 +37,21 @@
                 [attr.disabled]="filter.compOptions.length == 1 ? '' : null"
                 [(ngModel)]="filter.comp"
               >
-                <option
-                  *ngFor="let compOption of filter.compOptions"
-                  [ngValue]="compOption.name"
-                  >{{ compOption.displayName }}</option
-                >
+                <option *ngFor="let compOption of filter.compOptions" [ngValue]="compOption.name">{{
+                  compOption.displayName
+                }}</option>
               </select>
             </div>
             <ng-container *ngIf="filter.type !== 'DateType'">
-              <div
-                class="col-sm-4"
-                *ngIf="
-                  filter.type !== 'booleanType' && filter.type !== 'ENUM_TYPE'
-                "
-              >
-                <input
-                  class="form-control"
-                  attr.list="list{{ i }}"
-                  type="text"
-                  [(ngModel)]="filter.val"
-                />
+              <div class="col-sm-4" *ngIf="filter.type !== 'booleanType' && filter.type !== 'ENUM_TYPE'">
+                <input class="form-control" attr.list="list{{ i }}" type="text" [(ngModel)]="filter.val" />
                 <datalist attr.id="list{{ i }}">
-                  <option *ngFor="let filterValueOption of filter.valOptions">{{
-                    filterValueOption
-                  }}</option>
+                  <option *ngFor="let filterValueOption of filter.valOptions">{{ filterValueOption }}</option>
                 </datalist>
               </div>
-              <div
-                class="col-sm-4"
-                *ngIf="
-                  filter.type === 'booleanType' || filter.type === 'ENUM_TYPE'
-                "
-              >
+              <div class="col-sm-4" *ngIf="filter.type === 'booleanType' || filter.type === 'ENUM_TYPE'">
                 <select class="form-control" [(ngModel)]="filter.val">
-                  <option *ngFor="let filterValueOption of filter.valOptions">{{
-                    filterValueOption
-                  }}</option>
+                  <option *ngFor="let filterValueOption of filter.valOptions">{{ filterValueOption }}</option>
                 </select>
               </div>
             </ng-container>
@@ -108,11 +67,7 @@
             </div>
           </ng-container>
           <div class="col-sm-1">
-            <button
-              type="button"
-              class="btn btn-link"
-              (click)="removeFilter(filter)"
-            >
+            <button type="button" class="btn btn-link" (click)="removeFilter(filter)">
               <app-icon icon="trash"></app-icon>
             </button>
           </div>
@@ -121,11 +76,7 @@
 
       <div class="form-group row">
         <div class="col-sm-11 offset-1">
-          <button
-            type="submit"
-            class="btn btn-primary btn-main"
-            (click)="applyFilters()"
-          >
+          <button type="submit" class="btn btn-primary btn-main" (click)="applyFilters()">
             Apply filter
           </button>
           <button
@@ -170,6 +121,14 @@
               </button>
             </a>
           </ng-container>
+          <ng-container *ngIf="hasPermissionToRequestDeployments">
+            <a href="#/deployment/">
+              <button type="submit" class="btn btn-secondary btn-main">
+                <app-icon icon="plus-circle"></app-icon>
+                Redeploy selected
+              </button>
+            </a>
+          </ng-container>
         </div>
       </div>
 
@@ -182,9 +141,7 @@
             [(ngModel)]="refreshInterval"
             (change)="autoRefresh()"
           >
-            <option *ngFor="let interval of refreshIntervals">{{
-              interval
-            }}</option>
+            <option *ngFor="let interval of refreshIntervals">{{ interval }}</option>
           </select>
           <span class="col-sm-2 d-inline">Seconds</span>
         </div>

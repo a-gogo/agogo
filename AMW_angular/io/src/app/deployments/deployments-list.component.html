@@ -1,9 +1,5 @@
 <div class="table-responsive">
-  <table
-    id="deployment-list"
-    class="table table-sm"
-    *ngIf="deployments.length > 0"
-  >
+  <table id="deployment-list" class="table table-sm" *ngIf="deployments.length > 0">
     <thead>
       <tr>
         <th class="has-checkbox">
@@ -11,9 +7,7 @@
           <span class="link" (click)="reSort('d.trackingId')"
             >&nbsp;Tracking id
             <ng-container *ngIf="sortCol === 'd.trackingId'">
-              <app-sortable-icon
-                [sortDirection]="sortDirection"
-              ></app-sortable-icon>
+              <app-sortable-icon [sortDirection]="sortDirection"></app-sortable-icon>
             </ng-container>
           </span>
         </th>
@@ -21,9 +15,7 @@
           <span class="link" (click)="reSort('d.deploymentState')"
             >State
             <ng-container *ngIf="sortCol === 'd.deploymentState'">
-              <app-sortable-icon
-                [sortDirection]="sortDirection"
-              ></app-sortable-icon>
+              <app-sortable-icon [sortDirection]="sortDirection"></app-sortable-icon>
             </ng-container>
           </span>
         </th>
@@ -31,23 +23,15 @@
           <span class="link" (click)="reSort('d.resourceGroup.name')"
             >App server
             <ng-container *ngIf="sortCol === 'd.resourceGroup.name'">
-              <app-sortable-icon
-                [sortDirection]="sortDirection"
-              ></app-sortable-icon>
+              <app-sortable-icon [sortDirection]="sortDirection"></app-sortable-icon>
             </ng-container>
           </span>
         </th>
         <th>
-          <span
-            class="link"
-            (click)="reSort('d.release.installationInProductionAt')"
+          <span class="link" (click)="reSort('d.release.installationInProductionAt')"
             >Release
-            <ng-container
-              *ngIf="sortCol === 'd.release.installationInProductionAt'"
-            >
-              <app-sortable-icon
-                [sortDirection]="sortDirection"
-              ></app-sortable-icon>
+            <ng-container *ngIf="sortCol === 'd.release.installationInProductionAt'">
+              <app-sortable-icon [sortDirection]="sortDirection"></app-sortable-icon>
             </ng-container>
           </span>
         </th>
@@ -55,9 +39,7 @@
           <span class="link" (click)="reSort('d.context.name')"
             >Env
             <ng-container *ngIf="sortCol === 'd.context.name'">
-              <app-sortable-icon
-                [sortDirection]="sortDirection"
-              ></app-sortable-icon>
+              <app-sortable-icon [sortDirection]="sortDirection"></app-sortable-icon>
             </ng-container>
           </span>
         </th>
@@ -65,9 +47,7 @@
           <span class="link" (click)="reSort('d.deploymentDate')"
             >Deployment date
             <ng-container *ngIf="sortCol === 'd.deploymentDate'">
-              <app-sortable-icon
-                [sortDirection]="sortDirection"
-              ></app-sortable-icon>
+              <app-sortable-icon [sortDirection]="sortDirection"></app-sortable-icon>
             </ng-container>
           </span>
         </th>
@@ -75,12 +55,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let deployment of deployments"
-        class="deploy-{{ deployment.state }}"
-      >
+      <tr *ngFor="let deployment of deployments" class="deploy-{{ deployment.state }}">
         <td class="has-checkbox">
-          <input type="checkbox" [(ngModel)]="deployment.selected" />
+          <input type="checkbox" [(ngModel)]="deployment.selected" (click)="toggle(deployment)" />
           {{ deployment.trackingId }}
         </td>
         <td>
@@ -90,25 +67,17 @@
             title="Show details about this deployment"
             (click)="showDetails(deploymentDetails, deployment.id)"
           ></app-icon>
-          <span class="state">{{
-            deployment.reason
-              ? failureReason[deployment.reason]
-              : deployment.state
-          }}</span>
+          <span class="state">{{ deployment.reason ? failureReason[deployment.reason] : deployment.state }}</span>
         </td>
         <td>
-          <span class="link" (click)="appServerLink(deployment.resourceId)">{{
-            deployment.appServerName
-          }}</span>
+          <span class="link" (click)="appServerLink(deployment.resourceId)">{{ deployment.appServerName }}</span>
           <ul class="nob">
             <li
               *ngFor="let appWithVersion of deployment.appsWithVersion"
               class="link"
               (click)="appLink(appWithVersion.applicationId)"
             >
-              {{ appWithVersion.applicationName }} ({{
-                appWithVersion.version
-              }})
+              {{ appWithVersion.applicationName }} ({{ appWithVersion.version }})
             </li>
           </ul>
         </td>
@@ -116,53 +85,32 @@
         <td>
           <strong
             >{{ deployment.environmentName }}
-            <ng-container *ngIf="deployment.environmentNameAlias"
-              >({{ deployment.environmentNameAlias }})</ng-container
-            >
+            <ng-container *ngIf="deployment.environmentNameAlias">({{ deployment.environmentNameAlias }})</ng-container>
           </strong>
         </td>
         <td>
           <ng-container *ngIf="deployment.actions.editPossible">
-            <app-icon
-              *ngIf="deployment.deploymentDelayed"
-              icon="hourglass-split"
-            ></app-icon>
+            <app-icon *ngIf="deployment.deploymentDelayed" icon="hourglass-split"></app-icon>
             <span
               class="pointer"
               (click)="showDateChange(deploymentDateChange, deployment.id)"
               title="change the deployment date"
             >
-              <span
-                [attr.class]="
-                  deployment.deploymentDelayed
-                    ? 'align-text-top delayed'
-                    : 'align-text-top action'
-                "
-                >{{ deployment.deploymentDate | date: dateFormat }}</span
-              >
+              <span [attr.class]="deployment.deploymentDelayed ? 'align-text-top delayed' : 'align-text-top action'">{{
+                deployment.deploymentDate | date: dateFormat
+              }}</span>
             </span>
           </ng-container>
           <ng-container *ngIf="!deployment.actions.editPossible">
-            <app-icon
-              *ngIf="deployment.deploymentDelayed"
-              icon="hourglass-split"
-            ></app-icon>
-            <span
-              [attr.class]="
-                deployment.deploymentDelayed
-                  ? 'align-text-top delayed'
-                  : 'align-text-top action'
-              "
-              >{{ deployment.deploymentDate | date: dateFormat }}</span
-            >
+            <app-icon *ngIf="deployment.deploymentDelayed" icon="hourglass-split"></app-icon>
+            <span [attr.class]="deployment.deploymentDelayed ? 'align-text-top delayed' : 'align-text-top action'">{{
+              deployment.deploymentDate | date: dateFormat
+            }}</span>
           </ng-container>
         </td>
         <td>
           <ng-container *ngIf="deployment.actions.confirmPossible">
-            <span
-              class="text-success cursor-pointer"
-              (click)="showConfirm(deploymentConfirmation, deployment.id)"
-            >
+            <span class="text-success cursor-pointer" (click)="showConfirm(deploymentConfirmation, deployment.id)">
               <app-icon icon="check-circle"></app-icon>
               <span class="ml-1">confirm</span>
             </span>
@@ -190,10 +138,7 @@
             <br />
           </ng-container>
           <ng-container *ngIf="deployment.actions.hasLogFiles">
-            <a
-              [routerLink]="['/deployments', deployment.id, 'logs']"
-              class="cursor-pointer"
-            >
+            <a [routerLink]="['/deployments', deployment.id, 'logs']" class="cursor-pointer">
               <app-icon icon="journal-text"></app-icon>
               <span class="ml-1">logs</span>
             </a>
@@ -208,8 +153,8 @@
 <ng-template #deploymentDetails let-modal>
   <div class="modal-header">
     <h6 class="modal-title">
-      Details for deployment #{{ deployment.id }} [tracking id:
-      {{ deployment.trackingId }}] for app server: {{ deployment.appServerName }}
+      Details for deployment #{{ deployment.id }} [tracking id: {{ deployment.trackingId }}] for app server:
+      {{ deployment.appServerName }}
     </h6>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -235,9 +180,7 @@
     </ng-container>
     <ng-container *ngIf="deployment.deploymentDelayed">
       <h6>deployment job delayed</h6>
-      <p>
-        planed deployment date: {{ deployment.deploymentDate | date: dateFormat }}
-      </p>
+      <p>planed deployment date: {{ deployment.deploymentDate | date: dateFormat }}</p>
     </ng-container>
     <ng-container *ngIf="deployment.cancelUser">
       <h6>deployment job canceled</h6>
@@ -268,8 +211,7 @@
 <ng-template #deploymentDateChange let-modal>
   <div class="modal-header">
     <h6 class="modal-title">
-      Change deployment date of deployment #{{ deployment.id }} for app
-      server {{ deployment.appServerName }}
+      Change deployment date of deployment #{{ deployment.id }} for app server {{ deployment.appServerName }}
     </h6>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -337,9 +279,7 @@
 
 <ng-template #deploymentRejection let-modal>
   <div class="modal-header">
-    <h6 class="modal-title">
-      Reject deployment #{{ deployment.id }} for app server {{ deployment.appServerName }}
-    </h6>
+    <h6 class="modal-title">Reject deployment #{{ deployment.id }} for app server {{ deployment.appServerName }}</h6>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -358,9 +298,7 @@
 
 <ng-template #deploymentCancelation let-modal>
   <div class="modal-header">
-    <h6 class="modal-title">
-      Cancel deployment #{{ deployment.id }} for app server {{ deployment.appServerName }}
-    </h6>
+    <h6 class="modal-title">Cancel deployment #{{ deployment.id }} for app server {{ deployment.appServerName }}</h6>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
