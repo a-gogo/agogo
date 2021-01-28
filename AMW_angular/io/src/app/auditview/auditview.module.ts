@@ -5,13 +5,12 @@ import { AuditviewRoutingModule } from './auditview-routing.module';
 import { AuditviewService } from './auditview.service';
 import { AuditviewTableComponent } from './auditview-table/auditview-table.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { BaseModule } from '../base/base.module';
 import { SharedModule } from '@shared/shared.module';
 import { NewlineFilterPipe } from './auditview-table/newlineFilterPipe';
 import { SortableHeader } from './auditview-table/sortable.directive';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, AuditviewRoutingModule, NgbModule, BaseModule],
+  imports: [CommonModule, SharedModule, AuditviewRoutingModule, NgbModule],
   declarations: [AuditviewComponent, NewlineFilterPipe, AuditviewTableComponent, SortableHeader],
   providers: [AuditviewService, DatePipe],
 })

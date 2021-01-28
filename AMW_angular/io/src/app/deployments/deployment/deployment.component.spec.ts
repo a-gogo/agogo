@@ -515,8 +515,6 @@ describe('DeploymentComponent (redeployment)', () => {
     expect(component.selectedAppserver.name).toEqual('testServer');
     expect(component.appsWithVersion).toEqual(appsWithVersion);
     expect(component.transDeploymentParameters).toEqual([deploymentParameter]);
-    expect(component.redeploymentAppserverDisplayName).toContain('testServer');
-    expect(component.redeploymentAppserverDisplayName).toContain('testRelease');
     expect(component.environments[0].selected).toBeFalsy();
     expect(component.environments[1].selected).toBeTruthy();
   });

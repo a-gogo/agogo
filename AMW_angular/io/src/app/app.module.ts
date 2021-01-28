@@ -9,7 +9,6 @@ import { ResourceModule } from './resource/resource.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuditviewModule } from './auditview/auditview.module';
 import { SettingModule } from './setting/setting.module';
-import { BaseModule } from './base/base.module';
 import { SharedModule } from '@shared/shared.module';
 import { NavigationModule } from './navigation/navigation.module';
 /*
@@ -37,7 +36,6 @@ import { CoreModule } from '@core/core.module';
     AuditviewModule,
     PermissionModule,
     SettingModule,
-    BaseModule,
     SharedModule,
     NavigationModule,
     NgbModule,
