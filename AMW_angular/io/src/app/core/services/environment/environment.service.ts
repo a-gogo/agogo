@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { BaseService } from '@base/base.service';
 
 export interface Environment {
@@ -17,6 +17,22 @@ export interface Environment {
   providedIn: 'root',
 })
 export class EnvironmentService extends BaseService {
+  groupedEnvironments$: Observable<Map<string, Environment[]>> = this.getAllIncludingGroups().pipe(
+    map((environments) => {
+      const groupNames = environments
+        .filter((environment) => environment.parent === 'Global')
+        .map((environment) => environment.name);
+      const map = new Map();
+      groupNames.forEach((groupName) => {
+        map.set(
+          groupName,
+          environments.filter((environment) => environment.parent === groupName)
+        );
+      });
+      return map;
+    })
+  );
+
   constructor(private http: HttpClient) {
     super();
   }

@@ -136,10 +136,10 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
   }
 
   onChangeEnvironment(): void {
-    if (!this.isRedeployment) {
-      this.getAppVersions();
-    } else {
+    if (this.isRedeployment) {
       this.verifyRedeployment();
+    } else {
+      this.getAppVersions();
     }
     this.canDeploy();
   }

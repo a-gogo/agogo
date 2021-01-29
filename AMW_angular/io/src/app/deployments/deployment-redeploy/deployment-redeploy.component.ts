@@ -1,6 +1,6 @@
 import { Component, TemplateRef } from '@angular/core';
 import { DeploymentsStore } from '@core/deployments.store';
-import { EnvironmentService, NavigationService } from '@core/services';
+import { Environment, EnvironmentService, NavigationService } from '@core/services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { Deployment } from '../deployment/deployment';
@@ -13,7 +13,7 @@ import { Deployment } from '../deployment/deployment';
 export class DeploymentRedeployComponent {
   selectedDeployments$: Observable<Deployment[]> = this.deploymentStore.selectedDeployments$;
 
-  environments$ = this.environmentService.getAllIncludingGroups();
+  groupedEnvironments$: Observable<Map<string, Environment[]>> = this.environmentService.groupedEnvironments$;
 
   constructor(
     public deploymentStore: DeploymentsStore,
@@ -26,5 +26,9 @@ export class DeploymentRedeployComponent {
 
   showAppserverNames(appServerNamesModal: TemplateRef<unknown>): void {
     this.modalService.open(appServerNamesModal);
+  }
+
+  onChangeEnvironment(): void {
+    // TODO: the original component checked if deployment ist possible...
   }
 }
