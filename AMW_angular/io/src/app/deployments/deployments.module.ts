@@ -14,6 +14,7 @@ import { DeploymentRedeployComponent } from './deployment-redeploy/deployment-re
 import { DeploymentService } from './deployment/deployment.service';
 import { CoreModule } from '@core/core.module';
 import { AppServerDisplayNameComponent } from './appserver-displayname/appserver-displayname.component';
+import { ParameterComponent } from './parameter/parameter.component';
 
 @NgModule({
   imports: [CommonModule, CoreModule, DeploymentsRoutingModule, SharedModule, NgbModule, CodemirrorModule],
@@ -26,6 +27,7 @@ import { AppServerDisplayNameComponent } from './appserver-displayname/appserver
     DeploymentLogsComponent,
     DeploymentContainerComponent,
     DeploymentRedeployComponent,
+    ParameterComponent,
   ],
   providers: [DeploymentService, NgbActiveModal],
   entryComponents: [DeploymentsEditModalComponent],

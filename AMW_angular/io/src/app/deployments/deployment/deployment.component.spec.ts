@@ -10,7 +10,7 @@ import { Resource } from '../../resource/resource';
 import { ResourceTag } from '../../resource/resource-tag';
 import { AppWithVersion } from './app-with-version';
 import { Deployment } from './deployment';
-import { DeploymentParameter } from './deployment-parameter';
+import { DeploymentParameter } from '@deployments/types';
 import { DeploymentRequest } from './deployment-request';
 import { DeploymentComponent } from './deployment.component';
 import { DeploymentService } from './deployment.service';
@@ -81,16 +81,6 @@ describe('DeploymentComponent (create deployment)', () => {
     expect(component.groupedEnvironments).toEqual({});
     component.ngOnInit();
     expect(component.groupedEnvironments['DEV'].length).toBe(1);
-  });
-
-  it('should call deploymentService on ngAfterViewInit', () => {
-    // given
-    spyOn(deploymentService, 'getAllDeploymentParameterKeys').and.returnValue(of([]));
-    expect(deploymentService.getAllDeploymentParameterKeys).not.toHaveBeenCalled();
-    // when
-    component.ngAfterViewInit();
-    // then
-    expect(deploymentService.getAllDeploymentParameterKeys).toHaveBeenCalled();
   });
 
   it('should set selectedAppserver and selectedRelease', () => {
@@ -207,12 +197,12 @@ describe('DeploymentComponent (create deployment)', () => {
   it('should replace deploymentParameters with same key onAddParam', () => {
     // given
     component.transDeploymentParameters = [{ key: 'atest', value: 'foo' } as DeploymentParameter];
-    component.transDeploymentParameter = {
+    const newDeploymentParameter = {
       key: 'atest',
       value: 'bar',
     } as DeploymentParameter;
     // when
-    component.onAddParam();
+    component.onAddParam(newDeploymentParameter);
     // then
     expect(component.transDeploymentParameters.length).toBe(1);
     expect(component.transDeploymentParameters[0].value).toEqual('bar');
@@ -363,7 +353,7 @@ describe('DeploymentComponent (create deployment)', () => {
 describe('DeploymentComponent (create deployment with params)', () => {
   let component: DeploymentComponent;
   let fixture: ComponentFixture<DeploymentComponent>;
-  let mockRoute: any = { snapshot: {} };
+  const mockRoute: any = { snapshot: {} };
 
   mockRoute.params = new Subject<any>();
   mockRoute.queryParams = new Subject<any>();

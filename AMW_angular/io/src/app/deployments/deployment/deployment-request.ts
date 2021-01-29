@@ -1,5 +1,5 @@
+import { DeploymentParameter } from '@deployments/types';
 import { AppWithVersion } from './app-with-version';
-import { DeploymentParameter } from './deployment-parameter';
 
 export interface DeploymentRequest {
   appServerName: string;

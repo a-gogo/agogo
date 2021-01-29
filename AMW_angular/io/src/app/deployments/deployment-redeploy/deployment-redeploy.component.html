@@ -23,16 +23,39 @@
       </div>
       <div class="form-group row">
         <label class="col-sm-2 font-weight-bold text-right" for="deploymentDate">Deploy at</label>
-        <div class="col-sm-10 col-md-5">datepicker</div>
+
+        <div class="col-sm-10 col-md-5">
+          <app-date-time-picker name="dateDeployment" id="dateDeployment"></app-date-time-picker>
+        </div>
       </div>
-      <div class="form-group row">
-        <label class="col-sm-2 font-weight-bold text-right" for="deploymentParameter">Deployment parameter</label>
-        <div class="col-sm-10 col-md-5">list of deployment parameters...</div>
-      </div>
+      <app-parameter [deploymentParameters]="deploymentParameters" (addParamEvent)="onAddParam($event)"></app-parameter>
       <div class="form-group row">
         <label class="col-sm-2 font-weight-bold text-right" for="details">Details</label>
         <div class="col-sm-10 col-md-5">
-          checkboxes
+          <div>
+            <label>
+              <input type="checkbox" />
+              simulate before deployment
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" />
+              send an email when deployed
+            </label>
+          </div>
+          <div *ngIf="hasPermissionShakedownTest">
+            <label>
+              <input type="checkbox" />
+              execute shakedown tests when deployed
+            </label>
+          </div>
+          <div *ngIf="doExecuteShakedownTest">
+            <label>
+              <input type="checkbox" />
+              test neighbourhood
+            </label>
+          </div>
         </div>
       </div>
     </form>

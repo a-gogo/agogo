@@ -1,9 +1,7 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Deployment } from './deployment';
-import { DeploymentParameter } from './deployment-parameter';
-import { DeploymentService } from './deployment.service';
 import { DeploymentRequest } from './deployment-request';
 import { AppWithVersion } from './app-with-version';
 import { Subscription } from 'rxjs';
@@ -16,12 +14,14 @@ import { ResourceTag } from 'src/app/resource/resource-tag';
 import { ResourceService } from 'src/app/resource/resource.service';
 import { DateTimeModel } from '@shared/components';
 import { Environment, EnvironmentService, NavigationService } from '@core/services';
+import { DeploymentService } from './deployment.service';
+import { DeploymentParameter } from '@deployments/types';
 
 @Component({
   selector: 'amw-deployment',
   templateUrl: './deployment.component.html',
 })
-export class DeploymentComponent implements OnInit, AfterViewInit {
+export class DeploymentComponent implements OnInit {
   // from url
   appserverName = '';
   releaseName = '';
@@ -32,7 +32,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
   appservers: Resource[] = [];
   environments: Environment[] = [];
   groupedEnvironments: { [key: string]: Environment[] } = {};
-  deploymentParameters: DeploymentParameter[] = [];
   defaultResourceTag: ResourceTag = { label: 'HEAD' } as ResourceTag;
   isRedeployment = false;
 
@@ -45,7 +44,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
   selectedResourceTag: ResourceTag = this.defaultResourceTag;
   deploymentDate: DateTimeModel = null;
   appsWithVersion: AppWithVersion[] = [];
-  transDeploymentParameter: DeploymentParameter = {} as DeploymentParameter;
   transDeploymentParameters: DeploymentParameter[] = [];
   deploymentResponse: Deployment = {} as Deployment;
   hasPermissionShakedownTest = false;
@@ -98,11 +96,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    // we dont need this right away
-    this.loadDeploymentParameters();
-  }
-
   initAppservers(): void {
     this.isLoading = true;
     this.resourceService.getByType('APPLICATIONSERVER').subscribe(
@@ -144,12 +137,9 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     this.canDeploy();
   }
 
-  onAddParam(): void {
-    _.remove(this.transDeploymentParameters, {
-      key: this.transDeploymentParameter.key,
-    });
-    this.transDeploymentParameters.push(this.transDeploymentParameter);
-    this.transDeploymentParameter = {} as DeploymentParameter;
+  onAddParam(deploymentParam: DeploymentParameter): void {
+    this.transDeploymentParameters = this.transDeploymentParameters.filter((d) => d.key !== deploymentParam.key);
+    this.transDeploymentParameters.push(deploymentParam);
   }
 
   onRemoveParam(deParam: DeploymentParameter): void {
@@ -279,7 +269,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     this.doExecuteShakedownTest = false;
     this.doNeighbourhoodTest = false;
     this.appsWithVersion = [];
-    this.transDeploymentParameter = {} as DeploymentParameter;
     this.transDeploymentParameters = [];
   }
 
@@ -407,16 +396,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
       }
       this.groupedEnvironments[environment['parent']].push(environment);
     });
-  }
-
-  private loadDeploymentParameters() {
-    this.deploymentService.getAllDeploymentParameterKeys().subscribe(
-      /* happy path */ (r) =>
-        (this.deploymentParameters = r.sort(function (a, b) {
-          return a.key.localeCompare(b.key, undefined, { sensitivity: 'base' });
-        })),
-      /* error path */ (e) => (this.errorMessage = e)
-    );
   }
 
   // for url params only

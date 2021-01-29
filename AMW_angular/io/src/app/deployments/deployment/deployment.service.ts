@@ -6,7 +6,6 @@ import { ComparatorFilterOption } from './comparator-filter-option';
 import { Deployment } from './deployment';
 import { DeploymentFilterType } from './deployment-filter-type';
 import { DeploymentRequest } from './deployment-request';
-import { DeploymentParameter } from './deployment-parameter';
 import { BaseService } from '../../base/base.service';
 
 @Injectable()
@@ -22,14 +21,14 @@ export class DeploymentService extends BaseService {
     offset: number,
     maxResults: number
   ): Observable<{ deployments: Deployment[]; total: number }> {
-    let paramObj = {
+    const paramObj = {
       filters: filterString,
       colToSort: sortCol,
       sortDirection: sortDir,
       offset: String(offset),
       maxResults: String(maxResults),
     };
-    let params = new HttpParams({ fromObject: paramObj });
+    const params = new HttpParams({ fromObject: paramObj });
     return this.http
       .get<Deployment[]>(`${this.getBaseUrl()}/deployments/filter`, {
         headers: new HttpHeaders({
@@ -83,29 +82,21 @@ export class DeploymentService extends BaseService {
       .pipe(catchError(this.handleError));
   }
 
-  cancelDeployment(deploymentId: number) {
+  cancelDeployment(deploymentId: number): Observable<unknown> {
     return this.http
       .put(`${this.getBaseUrl()}/deployments/${deploymentId}/updateState`, 'canceled', { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
-  confirmDeployment(deployment: Deployment) {
+  confirmDeployment(deployment: Deployment): Observable<unknown> {
     return this.http
       .put(`${this.getBaseUrl()}/deployments/${deployment.id}/confirm`, deployment, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
 
-  rejectDeployment(deploymentId: number) {
+  rejectDeployment(deploymentId: number): Observable<unknown> {
     return this.http
       .put(`${this.getBaseUrl()}/deployments/${deploymentId}/updateState`, 'rejected', { headers: this.getHeaders() })
-      .pipe(catchError(this.handleError));
-  }
-
-  getAllDeploymentParameterKeys(): Observable<DeploymentParameter[]> {
-    return this.http
-      .get<DeploymentParameter[]>(`${this.getBaseUrl()}/deployments/deploymentParameterKeys/`, {
-        headers: this.getHeaders(),
-      })
       .pipe(catchError(this.handleError));
   }
 
@@ -170,7 +161,7 @@ export class DeploymentService extends BaseService {
       .pipe(catchError(this.handleError));
   }
 
-  setDeploymentDate(deploymentId: number, deploymentDate: number) {
+  setDeploymentDate(deploymentId: number, deploymentDate: number): Observable<unknown> {
     return this.http
       .put(`${this.getBaseUrl()}/deployments/${deploymentId}/date`, deploymentDate, { headers: this.postHeaders() })
       .pipe(catchError(this.handleError));
@@ -186,8 +177,8 @@ export class DeploymentService extends BaseService {
     return new HttpHeaders().append('Accept', 'text/csv');
   }
 
-  private extractDeploymentsAndTotalCount(res: HttpResponse<any>) {
-    const headerField: string = 'X-Total-Count';
+  private extractDeploymentsAndTotalCount(res: HttpResponse<Deployment[]>) {
+    const headerField = 'X-Total-Count';
     const ob: { deployments: Deployment[]; total: number } = {
       deployments: [],
       total: 0,

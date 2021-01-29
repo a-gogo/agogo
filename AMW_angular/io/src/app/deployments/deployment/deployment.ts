@@ -1,4 +1,4 @@
-import { DeploymentParameter } from './deployment-parameter';
+import { DeploymentParameter } from '@deployments/types';
 import { AppWithVersion } from './app-with-version';
 import { DeploymentAction } from './deployment-action';
 

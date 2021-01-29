@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BaseService } from 'src/app/base/base.service';
-import { DeploymentLog, DeploymentLogContent } from './deployment-log';
+import { DeploymentLog } from './deployment-log';
 
 @Injectable({
   providedIn: 'root',

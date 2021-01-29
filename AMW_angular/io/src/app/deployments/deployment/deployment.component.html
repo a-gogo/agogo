@@ -99,28 +99,7 @@
         </div>
       </div>
 
-      <div class="form-group row">
-        <label class="col-sm-2 font-weight-bold text-right">Deployment parameter</label>
-        <div class="col-sm-2">
-          <input class="form-control" list="depParamList" type="text" [(ngModel)]="transDeploymentParameter.key" />
-          <datalist id="depParamList">
-            <option *ngFor="let depParam of deploymentParameters">{{ depParam.key }}</option>
-          </datalist>
-        </div>
-        <div class="col-sm-3">
-          <input class="form-control" type="text" [(ngModel)]="transDeploymentParameter.value" />
-        </div>
-        <div class="col-sm-2">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            *ngIf="transDeploymentParameter.key && transDeploymentParameter.value"
-            (click)="onAddParam()"
-          >
-            <app-icon icon="plus"></app-icon>
-          </button>
-        </div>
-      </div>
+      <app-parameter (addParamEvent)="onAddParam($event)"></app-parameter>
 
       <ng-container *ngIf="transDeploymentParameters.length > 0">
         <div class="form-group row" *ngFor="let transDepParam of transDeploymentParameters">
