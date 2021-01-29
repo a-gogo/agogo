@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { DeploymentContainerComponent } from './deployment-container/deployment-container.component';
 import { DeploymentLogsComponent } from './logs/deployment-logs.component';
 import { DeploymentComponent } from './deployment/deployment.component';
+import { DeploymentRedeployComponent } from './deployment-redeploy/deployment-redeploy.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { DeploymentComponent } from './deployment/deployment.component';
           { path: '', component: DeploymentsComponent },
           { path: ':deploymentId/logs', component: DeploymentLogsComponent },
           { path: ':deploymentId/logs/:fileName', component: DeploymentLogsComponent },
+          { path: 'redeploy', component: DeploymentRedeployComponent },
         ],
       },
       { path: 'deployment', component: DeploymentComponent },

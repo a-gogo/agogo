@@ -89,7 +89,7 @@ export class DeploymentsComponent implements OnInit {
     private deploymentService: DeploymentService,
     private resourceService: ResourceService,
     public navigationStore: NavigationService,
-    private modalService: NgbModal // public deploymentStore: DeploymentsStore
+    private modalService: NgbModal
   ) {
     this.navigationStore.setVisible(false);
   }

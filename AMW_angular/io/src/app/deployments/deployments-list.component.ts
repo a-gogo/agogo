@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { ResourceService } from '../resource/resource.service';
 import * as _ from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +27,7 @@ export class DeploymentsListComponent {
   deployment: Deployment;
   deploymentDate: DateTimeModel = new DateTimeModel();
   hasPermissionShakedownTest: boolean = null;
-  allSelected: boolean = false;
+  allSelected = false;
   // TODO: show this error somewhere?
   errorMessage = '';
   dateFormat = DATE_FORMAT_ANGULAR;
@@ -49,79 +49,72 @@ export class DeploymentsListComponent {
     private modalService: NgbModal
   ) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.deploymentsStore.clear();
+  }
 
-  showDetails(content, deploymentId: number) {
+  showDetails(content: TemplateRef<unknown>, deploymentId: number): void {
     this.deployment = _.find(this.deployments, ['id', deploymentId]);
     this.modalService.open(content);
   }
 
-  showDateChange(content, deploymentId: number) {
+  showDateChange(content: TemplateRef<unknown>, deploymentId: number): void {
     this.deployment = _.find(this.deployments, ['id', deploymentId]);
     this.deploymentDate = DateTimeModel.fromEpoch(this.deployment.deploymentDate);
     this.modalService.open(content).result.then(
-      (result) => {
+      () => {
         this.deployment.deploymentDate = this.deploymentDate.toEpoch();
         this.editDeploymentDate.emit(this.deployment);
         delete this.deploymentDate;
       },
-      (reason) => {
+      () => {
         delete this.deploymentDate;
       }
     );
   }
 
-  showConfirm(content, deploymentId: number) {
+  showConfirm(content: TemplateRef<unknown>, deploymentId: number): void {
     this.deployment = _.find(this.deployments, ['id', deploymentId]);
     this.resourceService.canCreateShakedownTest(this.deployment.appServerId).subscribe(
       /* happy path */ (r) => (this.hasPermissionShakedownTest = r),
       /* error path */ (e) => (this.errorMessage = e),
       /* onComplete */ () =>
-        this.modalService.open(content).result.then(
-          (result) => {
-            this.doConfirmDeployment.emit(this.deployment);
-          },
-          (reason) => {}
-        )
+        this.modalService.open(content).result.then(() => {
+          this.doConfirmDeployment.emit(this.deployment);
+        })
     );
   }
 
-  showReject(content, deploymentId: number) {
+  showReject(content: TemplateRef<unknown>, deploymentId: number): void {
     this.deployment = _.find(this.deployments, ['id', deploymentId]);
-    this.modalService.open(content).result.then(
-      (result) => {
-        this.doRejectDeployment.emit(this.deployment);
-      },
-      (reason) => {}
-    );
+    this.modalService.open(content).result.then(() => {
+      this.doRejectDeployment.emit(this.deployment);
+    });
   }
 
-  showCancel(content, deploymentId: number) {
+  showCancel(content: TemplateRef<unknown>, deploymentId: number): void {
     this.deployment = _.find(this.deployments, ['id', deploymentId]);
-    this.modalService.open(content).result.then(
-      (result) => {
-        this.doCancelDeployment.emit(this.deployment);
-      },
-      (reason) => {}
-    );
+    this.modalService.open(content).result.then(() => {
+      this.doCancelDeployment.emit(this.deployment);
+    });
   }
 
-  reSort(col: string) {
+  reSort(col: string): void {
     this.doSort.emit(col);
   }
 
-  switchAllDeployments() {
+  switchAllDeployments(): void {
     this.allSelected = !this.allSelected;
     this.selectAllDeployments.emit(this.allSelected);
   }
 
-  appServerLink(appServerId: number) {
+  appServerLink(appServerId: number): void {
     if (appServerId) {
       window.location.href = '/AMW_web/pages/editResourceView.xhtml?id=' + appServerId + '&ctx=1';
     }
   }
 
-  appLink(appId: number) {
+  appLink(appId: number): void {
     this.resourceService.resourceExists(appId).subscribe(
       /* happy path */ (r) => {
         if (r) {
@@ -131,7 +124,7 @@ export class DeploymentsListComponent {
     );
   }
 
-  toggle(deployment: Deployment) {
+  toggle(deployment: Deployment): void {
     if (deployment.selected) {
       this.deploymentsStore.deselect(deployment);
     } else {

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { DeploymentsStore } from '@core/deployments.store';
 import { NavigationService } from '@core/services';
 
 @Component({
@@ -6,11 +7,9 @@ import { NavigationService } from '@core/services';
   template: ` <router-outlet></router-outlet> `,
   styles: [],
 })
-export class DeploymentContainerComponent implements OnInit {
-  constructor(public navigationStore: NavigationService) {
+export class DeploymentContainerComponent {
+  constructor(public navigationStore: NavigationService, private deploymentsStore: DeploymentsStore) {
     this.navigationStore.setPageTitle('Deployments');
     this.navigationStore.setCurrent('Deployments');
   }
-
-  ngOnInit(): void {}
 }

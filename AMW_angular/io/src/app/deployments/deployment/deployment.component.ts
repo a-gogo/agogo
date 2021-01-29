@@ -25,8 +25,8 @@ import { NavigationService } from '@core/services';
 })
 export class DeploymentComponent implements OnInit, AfterViewInit {
   // from url
-  appserverName: string = '';
-  releaseName: string = '';
+  appserverName = '';
+  releaseName = '';
   // redeploy only
   deploymentId: number;
 
@@ -36,7 +36,7 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
   groupedEnvironments: { [key: string]: Environment[] } = {};
   deploymentParameters: DeploymentParameter[] = [];
   defaultResourceTag: ResourceTag = { label: 'HEAD' } as ResourceTag;
-  isRedeployment: boolean = false;
+  isRedeployment = false;
 
   // per appserver/deployment request
   selectedAppserver: Resource = null;
@@ -49,28 +49,28 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
   appsWithVersion: AppWithVersion[] = [];
   transDeploymentParameter: DeploymentParameter = {} as DeploymentParameter;
   transDeploymentParameters: DeploymentParameter[] = [];
-  deploymentResponse: any = {};
-  hasPermissionShakedownTest: boolean = false;
-  hasPermissionToDeploy: boolean = false;
-  hasPermissionToRequestDeployment: boolean = false;
+  deploymentResponse: Deployment = {} as Deployment;
+  hasPermissionShakedownTest = false;
+  hasPermissionToDeploy = false;
+  hasPermissionToRequestDeployment = false;
 
   // redeploy only
   selectedDeployment: Deployment = {} as Deployment;
   appsWithVersionForRedeployment: AppWithVersion[] = [];
 
-  simulate: boolean = false;
-  requestOnly: boolean = false;
-  doSendEmail: boolean = false;
-  doExecuteShakedownTest: boolean = false;
+  simulate = false;
+  requestOnly = false;
+  doSendEmail = false;
+  doExecuteShakedownTest = false;
   // may only be enabled if above is true
-  doNeighbourhoodTest: boolean = false;
+  doNeighbourhoodTest = false;
 
   bestForSelectedRelease: Release = null;
 
-  errorMessage: string = '';
-  successMessage: string = '';
-  isLoading: boolean = false;
-  isDeploymentBlocked: boolean = false;
+  errorMessage = '';
+  successMessage = '';
+  isLoading = false;
+  isDeploymentBlocked = false;
 
   constructor(
     private resourceService: ResourceService,
@@ -85,9 +85,9 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     this.navigationStore.setCurrent('Deployments');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initEnvironments();
-    this.activatedRoute.params.subscribe((param: any) => {
+    this.activatedRoute.params.subscribe((param: string[]) => {
       this.appserverName = param['appserverName'];
       this.releaseName = param['releaseName'];
       this.deploymentId = param['deploymentId'];
@@ -100,12 +100,12 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // we dont need this right away
     this.loadDeploymentParameters();
   }
 
-  initAppservers() {
+  initAppservers(): void {
     this.isLoading = true;
     this.resourceService.getByType('APPLICATIONSERVER').subscribe(
       /* happy path */ (r) =>
@@ -122,14 +122,14 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     );
   }
 
-  onChangeAppserver() {
+  onChangeAppserver(): void {
     this.resetVars();
     this.loadReleases();
     this.canCreateShakedownTest();
     this.canDeploy();
   }
 
-  onChangeRelease() {
+  onChangeRelease(): void {
     if (!this.selectedRelease) {
       this.selectedRelease = this.releases[0];
     }
@@ -137,7 +137,7 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     this.goTo(this.selectedAppserver.name + '/' + this.selectedRelease.release);
   }
 
-  onChangeEnvironment() {
+  onChangeEnvironment(): void {
     if (!this.isRedeployment) {
       this.getAppVersions();
     } else {
@@ -146,7 +146,7 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     this.canDeploy();
   }
 
-  onAddParam() {
+  onAddParam(): void {
     _.remove(this.transDeploymentParameters, {
       key: this.transDeploymentParameter.key,
     });
@@ -154,7 +154,7 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     this.transDeploymentParameter = {} as DeploymentParameter;
   }
 
-  onRemoveParam(deParam: DeploymentParameter) {
+  onRemoveParam(deParam: DeploymentParameter): void {
     _.pull(this.transDeploymentParameters, deParam);
   }
 
@@ -167,17 +167,17 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     );
   }
 
-  requestDeployment() {
+  requestDeployment(): void {
     this.requestOnly = true;
     this.prepareDeployment();
   }
 
-  createDeployment() {
+  createDeployment(): void {
     this.requestOnly = false;
     this.prepareDeployment();
   }
 
-  getEnvironmentGroups() {
+  getEnvironmentGroups(): string[] {
     return Object.keys(this.groupedEnvironments);
   }
 

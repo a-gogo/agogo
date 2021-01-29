@@ -10,6 +10,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { DeploymentLogsComponent } from './logs/deployment-logs.component';
 import { DeploymentComponent } from './deployment/deployment.component';
+import { DeploymentRedeployComponent } from './deployment-redeploy/deployment-redeploy.component';
 import { DeploymentService } from './deployment/deployment.service';
 import { EnvironmentService } from './deployment/environment.service';
 import { CoreModule } from '@core/core.module';
@@ -25,6 +26,7 @@ import { AppServerDisplayNameComponent } from './appserver-displayname/appserver
     DeploymentsEditModalComponent,
     DeploymentLogsComponent,
     DeploymentContainerComponent,
+    DeploymentRedeployComponent,
   ],
   providers: [DeploymentService, EnvironmentService, NgbActiveModal],
   entryComponents: [DeploymentsEditModalComponent],

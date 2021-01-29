@@ -122,10 +122,10 @@
             </a>
           </ng-container>
           <ng-container *ngIf="hasPermissionToRequestDeployments">
-            <a href="#/deployment/">
+            <a routerLink="/deployments/redeploy">
               <button type="submit" class="btn btn-secondary btn-main">
                 <app-icon icon="plus-circle"></app-icon>
-                Redeploy selected
+                Redeploy
               </button>
             </a>
           </ng-container>
