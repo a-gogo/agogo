@@ -6,18 +6,19 @@ import { SharedModule } from '@shared/shared.module';
 import { DeploymentsEditModalComponent } from './deployments-edit-modal.component';
 import { DeploymentsRoutingModule } from './deployments-routing.module';
 import { DeploymentContainerComponent } from './deployment-container/deployment-container.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { DeploymentLogsComponent } from './logs/deployment-logs.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeploymentComponent } from './deployment/deployment.component';
 import { DeploymentService } from './deployment/deployment.service';
 import { EnvironmentService } from './deployment/environment.service';
 import { CoreModule } from '@core/core.module';
+import { AppServerDisplayNameComponent } from './appserver-displayname/appserver-displayname.component';
 
 @NgModule({
   imports: [CommonModule, CoreModule, DeploymentsRoutingModule, SharedModule, NgbModule, CodemirrorModule],
   declarations: [
+    AppServerDisplayNameComponent,
     DeploymentComponent,
     DeploymentsComponent,
     DeploymentsListComponent,

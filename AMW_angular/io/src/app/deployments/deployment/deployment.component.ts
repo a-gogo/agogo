@@ -56,7 +56,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
 
   // redeploy only
   selectedDeployment: Deployment = {} as Deployment;
-  redeploymentAppserverDisplayName: string = '';
   appsWithVersionForRedeployment: AppWithVersion[] = [];
 
   simulate: boolean = false;
@@ -192,7 +191,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
 
   private initRedeploymentValues() {
     this.isLoading = false;
-    this.composeRedeploymentAppserverDisplayName();
     this.transDeploymentParameters = this.selectedDeployment.deploymentParameters;
     this.appsWithVersion = this.selectedDeployment.appsWithVersion;
     this.selectedAppserver = {
@@ -202,27 +200,6 @@ export class DeploymentComponent implements OnInit, AfterViewInit {
     this.loadReleases();
     this.setPreSelectedEnvironment();
     this.canDeploy();
-  }
-
-  private composeRedeploymentAppserverDisplayName() {
-    this.redeploymentAppserverDisplayName = this.redeploymentAppserverDisplayName.concat(
-      '<h5>',
-      this.selectedDeployment.appServerName,
-      ' (',
-      this.selectedDeployment.releaseName,
-      ')',
-      '</h5>'
-    );
-    this.selectedDeployment.appsWithVersion.forEach((appWithVersion) => {
-      this.redeploymentAppserverDisplayName = this.redeploymentAppserverDisplayName.concat(
-        '<h6>',
-        appWithVersion.applicationName,
-        ' (',
-        appWithVersion.version,
-        ')',
-        '</h6>'
-      );
-    });
   }
 
   private setPreSelectedEnvironment() {
