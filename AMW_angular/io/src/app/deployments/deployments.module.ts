@@ -12,7 +12,6 @@ import { DeploymentLogsComponent } from './logs/deployment-logs.component';
 import { DeploymentComponent } from './deployment/deployment.component';
 import { DeploymentRedeployComponent } from './deployment-redeploy/deployment-redeploy.component';
 import { DeploymentService } from './deployment/deployment.service';
-import { EnvironmentService } from './deployment/environment.service';
 import { CoreModule } from '@core/core.module';
 import { AppServerDisplayNameComponent } from './appserver-displayname/appserver-displayname.component';
 
@@ -28,7 +27,7 @@ import { AppServerDisplayNameComponent } from './appserver-displayname/appserver
     DeploymentContainerComponent,
     DeploymentRedeployComponent,
   ],
-  providers: [DeploymentService, EnvironmentService, NgbActiveModal],
+  providers: [DeploymentService, NgbActiveModal],
   entryComponents: [DeploymentsEditModalComponent],
 })
 export class DeploymentsModule {}

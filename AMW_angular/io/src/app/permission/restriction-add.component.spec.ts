@@ -5,7 +5,7 @@ import { RestrictionAddComponent } from './restriction-add.component';
 import { Restriction } from './restriction';
 import { Resource } from '../resource/resource';
 import * as _ from 'lodash';
-import { Environment } from '../deployments/deployment/environment';
+import { Environment } from '@core/services';
 
 describe('RestrictionAddComponent', () => {
   // provide our implementations or mocks to the dependency injector

@@ -14,12 +14,10 @@ import { DeploymentParameter } from './deployment-parameter';
 import { DeploymentRequest } from './deployment-request';
 import { DeploymentComponent } from './deployment.component';
 import { DeploymentService } from './deployment.service';
-import { Environment } from './environment';
-import { EnvironmentService } from './environment.service';
 import { SharedModule } from '@shared/shared.module';
 import { ResourceService } from 'src/app/resource/resource.service';
 import { DateTimeModel } from '@shared/components';
-import { NavigationService } from '@core/services';
+import { Environment, EnvironmentService, NavigationService } from '@core/services';
 @Component({
   template: '',
 })

@@ -16,9 +16,7 @@ import { RestrictionListComponent } from './restriction-list.component';
 import { Restriction } from './restriction';
 import { Tag } from './tag';
 import { SharedModule } from '@shared/shared.module';
-import { Environment } from '../deployments/deployment/environment';
-import { EnvironmentService } from '../deployments/deployment/environment.service';
-import { NavigationService } from '@core/services';
+import { Environment, EnvironmentService, NavigationService } from '@core/services';
 
 describe('PermissionComponent without any params (default: type Role)', () => {
   let fixture: ComponentFixture<PermissionComponent>;

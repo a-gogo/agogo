@@ -6,7 +6,7 @@ import { Permission } from './permission';
 import { Resource } from '../resource/resource';
 import { ResourceType } from '../resource/resource-type';
 import * as _ from 'lodash';
-import { Environment } from '../deployments/deployment/environment';
+import { Environment } from '@core/services';
 
 @Component({
   selector: 'amw-restriction-add',

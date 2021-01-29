@@ -2,10 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Environment } from './environment';
-import { BaseService } from '../../base/base.service';
+import { BaseService } from '@base/base.service';
 
-@Injectable()
+export interface Environment {
+  id: number;
+  name: string;
+  nameAlias: string;
+  parent: string;
+  selected: boolean;
+  disabled: boolean;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class EnvironmentService extends BaseService {
   constructor(private http: HttpClient) {
     super();

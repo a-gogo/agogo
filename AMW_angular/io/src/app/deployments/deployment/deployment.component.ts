@@ -4,8 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Deployment } from './deployment';
 import { DeploymentParameter } from './deployment-parameter';
 import { DeploymentService } from './deployment.service';
-import { EnvironmentService } from './environment.service';
-import { Environment } from './environment';
 import { DeploymentRequest } from './deployment-request';
 import { AppWithVersion } from './app-with-version';
 import { Subscription } from 'rxjs';
@@ -17,7 +15,7 @@ import { Resource } from 'src/app/resource/resource';
 import { ResourceTag } from 'src/app/resource/resource-tag';
 import { ResourceService } from 'src/app/resource/resource.service';
 import { DateTimeModel } from '@shared/components';
-import { NavigationService } from '@core/services';
+import { Environment, EnvironmentService, NavigationService } from '@core/services';
 
 @Component({
   selector: 'amw-deployment',

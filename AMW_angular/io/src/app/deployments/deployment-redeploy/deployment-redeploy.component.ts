@@ -1,6 +1,6 @@
 import { Component, TemplateRef } from '@angular/core';
 import { DeploymentsStore } from '@core/deployments.store';
-import { NavigationService } from '@core/services';
+import { EnvironmentService, NavigationService } from '@core/services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { Deployment } from '../deployment/deployment';
@@ -13,9 +13,12 @@ import { Deployment } from '../deployment/deployment';
 export class DeploymentRedeployComponent {
   selectedDeployments$: Observable<Deployment[]> = this.deploymentStore.selectedDeployments$;
 
+  environments$ = this.environmentService.getAllIncludingGroups();
+
   constructor(
     public deploymentStore: DeploymentsStore,
     private navigationService: NavigationService,
+    private environmentService: EnvironmentService,
     private modalService: NgbModal
   ) {
     this.navigationService.setPageTitle('Redeploy');
