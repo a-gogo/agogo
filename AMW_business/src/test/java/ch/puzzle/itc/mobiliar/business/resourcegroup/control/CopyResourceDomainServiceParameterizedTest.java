@@ -373,9 +373,9 @@ public class CopyResourceDomainServiceParameterizedTest {
 	}
 
 	/**
-	 * If a propertyDescript of the targetResources has already a properyValue, this value should not be
+	 * If a propertyDescriptor of the targetResources has already a propertyValue, this value should not be
 	 * overwritten.
-	 * 
+	 *
 	 * @param propDescOwner
 	 * @throws ForeignableOwnerViolationException
 	 */
@@ -467,11 +467,58 @@ public class CopyResourceDomainServiceParameterizedTest {
 		assertEquals(targetPropDesc, prop.getDescriptor());
 	}
 
+
+	private void shouldMergePropertyValuesIfTargetPropertyExists(CopyUnit copyUnit, ForeignableOwner propDescOwner) throws ForeignableOwnerViolationException {
+
+		// given
+		ContextEntity context = contextEntityBuilder.mockContextEntity("GLOBAL", null, null);
+
+		ResourceRelationContextEntity origin = resRelContextBuilder.mockResourceRelationContextEntity(context);
+		ResourceRelationContextEntity target = resRelContextBuilder.buildResourceRelationContextEntity(context);
+
+		String descName = "descriptorA";
+		String origPropValue = "origPropValue";
+
+		// Original descriptor with property value
+		PropertyDescriptorEntity originPropDesc = createPropDesc(1, descName, origPropValue, propDescOwner);
+		when(origin.getPropertyDescriptors()).thenReturn(Collections.singleton(originPropDesc));
+		when(origin.getProperties()).thenReturn(Collections.singleton(originPropDesc.getProperties().iterator().next()));
+
+
+		// Target descriptor without property value
+		PropertyDescriptorEntity targetPropDesc = createPropDesc(10, descName, null, propDescOwner);
+		target.addPropertyDescriptor(targetPropDesc);
+
+		// add a property to the target context
+
+		PropertyEntity targetProperty = new PropertyEntityBuilder().buildPropertyEntity("my-value", origin.getPropertyDescriptors().iterator().next());
+		targetProperty.setDescriptor(targetPropDesc);
+		target.addProperty(targetProperty);
+
+
+		// when
+		Map<String, PropertyDescriptorEntity> descriptorMap = copyDomainService.copyPropertyDescriptors(
+				origin.getPropertyDescriptors(), target.getPropertyDescriptors(), target, copyUnit);
+		ContextDependency<?> copy = copyDomainService.copyContextDependency(origin, target, copyUnit, descriptorMap);
+
+		// then
+		assertNotNull(copy);
+		assertTrue(copyUnit.getResult().isSuccess());
+		assertEquals(1, copy.getPropertyDescriptors().size());
+		PropertyDescriptorEntity desc = copy.getPropertyDescriptors().iterator().next();
+		assertNotNull(desc);
+		assertEquals(1, copy.getProperties().size());
+		PropertyEntity prop = copy.getProperties().iterator().next();
+		assertNotNull(prop);
+		assertEquals(origPropValue, prop.getValue());
+		assertEquals(targetPropDesc, prop.getDescriptor());
+	}
+
 	/**
 	 * If a propertyDescriptor from origin does not yet exist on targetResource the descriptor and the
 	 * propertyValue should be copied from origin. EXCEPT for {@link CopyMode#MAIA_PREDECESSOR}; if a
 	 * propertyDescriptor AMW does not exist in target then it should not be copied!
-	 * 
+	 *
 	 * @param copyUnit
 	 * @param propDescOwner
 	 * @throws ForeignableOwnerViolationException

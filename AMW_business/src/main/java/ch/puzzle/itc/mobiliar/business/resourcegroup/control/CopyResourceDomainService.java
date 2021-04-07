@@ -221,7 +221,7 @@ public class CopyResourceDomainService {
     protected void copyConsumedMasterRelations(CopyUnit copyUnit) throws ForeignableOwnerViolationException {
         Set<ConsumedResourceRelationEntity> targetConsumedMasterRel = copyUnit.getTargetResource()
                 .getConsumedMasterRelations() != null ? copyUnit.getTargetResource()
-                .getConsumedMasterRelations() : new HashSet<ConsumedResourceRelationEntity>();
+                .getConsumedMasterRelations() : new HashSet<>();
         Set<ConsumedResourceRelationEntity> originConsumedMasterRel = copyUnit.getOriginResource()
                 .getConsumedMasterRelations();
         copyConsumedResourceRelationEntities(originConsumedMasterRel, targetConsumedMasterRel, copyUnit);
@@ -231,7 +231,7 @@ public class CopyResourceDomainService {
     protected void copyConsumedSlaveRelations(CopyUnit copyUnit) throws ForeignableOwnerViolationException {
         Set<ConsumedResourceRelationEntity> targetConsumedSlaveRel = copyUnit.getTargetResource()
                 .getConsumedSlaveRelations() != null ? copyUnit.getTargetResource()
-                .getConsumedSlaveRelations() : new HashSet<ConsumedResourceRelationEntity>();
+                .getConsumedSlaveRelations() : new HashSet<>();
         Set<ConsumedResourceRelationEntity> originConsumedSlaveRel = copyUnit.getOriginResource()
                 .getConsumedSlaveRelations();
         if (copyUnit.getMode() == CopyMode.RELEASE) {
@@ -306,7 +306,7 @@ public class CopyResourceDomainService {
     protected void copyProvidedMasterRelations(CopyUnit copyUnit) throws ForeignableOwnerViolationException {
         Set<ProvidedResourceRelationEntity> targetProvidedResRels = copyUnit.getTargetResource()
                 .getProvidedMasterRelations() != null ? copyUnit.getTargetResource()
-                .getProvidedMasterRelations() : new HashSet<ProvidedResourceRelationEntity>();
+                .getProvidedMasterRelations() : new HashSet<>();
         Set<ProvidedResourceRelationEntity> originProvidedResRels = copyUnit.getOriginResource()
                 .getProvidedMasterRelations();
         if (copyUnit.getMode() == CopyMode.RELEASE || copyUnit.getMode() == CopyMode.MAIA_PREDECESSOR) {
@@ -325,7 +325,7 @@ public class CopyResourceDomainService {
     protected void copyProvidedSlaveRelations(CopyUnit copyUnit) throws ForeignableOwnerViolationException {
         Set<ProvidedResourceRelationEntity> targetProvidedSlaveRels = copyUnit.getTargetResource()
                 .getProvidedSlaveRelations() != null ? copyUnit.getTargetResource()
-                .getProvidedSlaveRelations() : new HashSet<ProvidedResourceRelationEntity>();
+                .getProvidedSlaveRelations() : new HashSet<>();
         Set<ProvidedResourceRelationEntity> originProvidedSlaveRels = copyUnit.getOriginResource()
                 .getProvidedSlaveRelations();
         if (copyUnit.getMode() == CopyMode.RELEASE) {
@@ -541,7 +541,7 @@ public class CopyResourceDomainService {
     }
 
     protected String createDescriptorKey(PropertyDescriptorEntity desc) {
-        return desc.getPropertyName() + "_" + String.valueOf(desc.isTesting());
+        return desc.getPropertyName() + "_" + desc.isTesting();
     }
 
     protected void copyTags(PropertyDescriptorEntity origin, PropertyDescriptorEntity target) {
@@ -588,7 +588,7 @@ public class CopyResourceDomainService {
     /**
      * <ul>
      * <li>The identifier between target propertyDescriptor and origin TargetDescriptor is the propertyName (= technicalKey)</li>
-     * <li>If a propertyDescript of the targetResources has already a properyValue, this value will not be overwritten.
+     * <li>If a propertyDescriptor of the targetResources has already a propertyValue, this value will not be overwritten.
      * </ul>
      *
      * @param origins,                 all properties of the origin resource for one context
@@ -599,6 +599,92 @@ public class CopyResourceDomainService {
                                                  Map<String, PropertyDescriptorEntity> targetPropDescriptorMap,
                                                  Set<PropertyEntity> targetProperties,
                                                  CopyUnit copyUnit) {
+
+        Map<Integer, PropertyEntity> existingPropertiesByDescriptorId = groupPropertiesByDescriptorId(targetProperties);
+
+        Set<PropertyEntity> targets = new HashSet<>();
+        if (origins != null) {
+            for (PropertyEntity origin : origins) {
+                String key = createDescriptorKey(origin.getDescriptor());
+                PropertyDescriptorEntity targetDescriptor = targetPropDescriptorMap.get(key);
+
+                // do not add property for null descriptor when Predecessor mode
+                if (CopyMode.MAIA_PREDECESSOR != copyUnit.getMode() || targetDescriptor != null) {
+                    targets.add(getTargetProperty(copyUnit, origin, targetDescriptor, existingPropertiesByDescriptorId));
+                }
+            }
+        }
+        return targets;
+    }
+
+    /**
+     * Creates a new {@link PropertyEntity} if the targetProperty is null or merges the new value with the {@link PropertyEntity} from origin
+     *
+     * @param copyUnit
+     * @param origin
+     * @param targetDescriptor
+     * @param existingPropertiesByDescriptorId
+     * @return
+     */
+    private PropertyEntity getTargetProperty(CopyUnit copyUnit, PropertyEntity origin, PropertyDescriptorEntity targetDescriptor, Map<Integer, PropertyEntity> existingPropertiesByDescriptorId) {
+
+        PropertyEntity targetProperty = getTargetPropertyFromExistingProperties(existingPropertiesByDescriptorId, origin, targetDescriptor);
+        return targetProperty == null ?
+                createNewPropertyEntityFromOrigin(copyUnit, origin, targetDescriptor) :
+                mergePropertyEntity(origin, targetProperty);
+    }
+
+    /**
+     * Try to get the new target property from the existing properties. If it does not exist but there is a propertydescriptor
+     * - reuse this property
+     *
+     * @param existingPropertiesByDescriptorId
+     * @param origin
+     * @param targetDescriptor
+     * @return
+     */
+    private PropertyEntity getTargetPropertyFromExistingProperties(Map<Integer, PropertyEntity> existingPropertiesByDescriptorId, PropertyEntity origin, PropertyDescriptorEntity targetDescriptor) {
+        PropertyEntity targetProperty = existingPropertiesByDescriptorId.get(origin.getDescriptor().getId());
+        if (targetProperty == null && targetDescriptor != null) {
+            targetProperty = existingPropertiesByDescriptorId.get(targetDescriptor.getId());
+        }
+        return targetProperty;
+    }
+
+    /**
+     * Create a copy of the given origin propertyEntity - and set the property descriptor. If there is one available (targetDescriptor) use
+     * this one, otherwise create and persist a new property descriptor.
+     * The target descriptor is set if it comes from the resource type
+     *
+     * @param copyUnit
+     * @param origin
+     * @param targetDescriptor
+     * @return
+     */
+    private PropertyEntity createNewPropertyEntityFromOrigin(CopyUnit copyUnit, PropertyEntity origin, PropertyDescriptorEntity targetDescriptor) {
+        PropertyEntity propertyEntity = origin.getCopy(null, copyUnit);
+        if (targetDescriptor != null) {
+            propertyEntity.setDescriptor(targetDescriptor);
+        } else {
+            copyAndPersistPropertyDescriptor(copyUnit, propertyEntity);
+        }
+        return propertyEntity;
+    }
+
+    /**
+     * creates and persist a copy of the existing propertyDescriptor on the given propertyEntity
+     * fixes issue https://github.com/liimaorg/liima/issues/487
+     *
+     * @param copyUnit
+     * @param propertyEntity
+     */
+    private void copyAndPersistPropertyDescriptor(CopyUnit copyUnit, PropertyEntity propertyEntity) {
+        PropertyDescriptorEntity propertyDescriptorEntity = propertyEntity.getDescriptor().getCopy(new PropertyDescriptorEntity(), copyUnit);
+        propertyEntity.setDescriptor(propertyDescriptorEntity);
+        entityManager.persist(propertyEntity.getDescriptor());
+    }
+
+    private Map<Integer, PropertyEntity> groupPropertiesByDescriptorId(Set<PropertyEntity> targetProperties) {
         Map<Integer, PropertyEntity> existingPropertiesByDescriptorId = new HashMap<>();
         if (targetProperties != null) {
             for (PropertyEntity existingProperty : targetProperties) {
@@ -607,45 +693,7 @@ public class CopyResourceDomainService {
                 }
             }
         }
-
-        Set<PropertyEntity> targets = new HashSet<>();
-        if (origins != null) {
-            for (PropertyEntity origin : origins) {
-                // If a property exists on this context for the same descriptor, we define it as the
-                // target property...
-                PropertyEntity targetProperty = existingPropertiesByDescriptorId.get(origin.getDescriptor().getId());
-                PropertyDescriptorEntity targetDescriptor = null;
-                if (targetProperty == null) {
-                    // If it can't be found, it's possible that we have copied the target descriptor.
-                    // Let's look for it.
-                    String key = createDescriptorKey(origin.getDescriptor());
-                    targetDescriptor = targetPropDescriptorMap.get(key);
-                    if (targetDescriptor != null) {
-                        // If a property is already defined for the existing descriptor, we update this
-                        // value...
-                        targetProperty = existingPropertiesByDescriptorId.get(targetDescriptor.getId());
-                    }
-                }
-
-                if (CopyMode.MAIA_PREDECESSOR == copyUnit.getMode() && targetDescriptor == null) {
-                    // do not add property for null descriptor when Predecessor mode
-                } else {
-                    if (targetProperty == null) {
-                        // If no property for the found property descriptor exists, we create a new one...
-                        PropertyEntity target = origin.getCopy(null, copyUnit);
-                        // targetDescriptor null come for properties on ResourceTypes or relations
-                        if (targetDescriptor != null) {
-                            target.setDescriptor(targetDescriptor);
-                        }
-                        targets.add(target);
-                    } else {
-                        // otherwise, we merge the new value with the old property entity
-                        targets.add(mergePropertyEntity(origin, targetProperty));
-                    }
-                }
-            }
-        }
-        return targets;
+        return existingPropertiesByDescriptorId;
     }
 
     /**
@@ -666,14 +714,14 @@ public class CopyResourceDomainService {
         Map<String, TemplateDescriptorEntity> targetTemplatesMap = new HashMap<>();
         if (targets != null) {
             for (TemplateDescriptorEntity t : targets) {
-                String key = t.getName() + String.valueOf(t.isTesting());
+                String key = t.getName() + t.isTesting();
                 targetTemplatesMap.put(key, t);
             }
         }
 
         if (origins != null) {
             for (TemplateDescriptorEntity origin : origins) {
-                String key = origin.getName() + String.valueOf(origin.isTesting());
+                String key = origin.getName() + origin.isTesting();
                 targetTemplatesMap.put(key, origin.getCopy(targetTemplatesMap.get(key), copyUnit));
             }
         }
