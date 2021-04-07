@@ -145,12 +145,7 @@
 
                 <ui:fragment rendered="#{securityDataProvider.hasPermissionOnAllContext('DEPLOYMENT', 'READ')}">
                 <li class="#{screen eq 'newDeploy' ? 'current' : ''}">
-                        <h:link outcome="deploy"
-                                value="Deploy"
-                                rendered="#{not deployScreenDataProvider.angularDeploymentEnabled}"
-                                onclick="showLoader();"/>
                         <h:outputLink value="/AMW_angular/#/deployments"
-                                      rendered="#{deployScreenDataProvider.angularDeploymentEnabled}"
                                       onclick="showLoader();confirmLeave(event);">
                             <h:outputText value="Deploy" />
                         </h:outputLink>
