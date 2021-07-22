@@ -20,12 +20,10 @@
 
 package ch.puzzle.itc.mobiliar.common.exception;
 
-public class ResourceNotFoundException extends AMWException {
-	// Wird geworfen, falls ein Löschen einer Resource auf der DB nicht möglich ist (f.ex. zu löschendes Item nicht existiert etc)
-
-	/**
-	 * 
-	 */
+/**
+ * Exception that is thrown if a resource isn't found. For other types use the general NotFoundException
+ */
+public class ResourceNotFoundException extends NotFoundException {
 	private static final long serialVersionUID = 1L;
 
 	public ResourceNotFoundException(String message){

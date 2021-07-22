@@ -33,11 +33,11 @@ public class ApplicationVersionServiceTest {
         // then
         for (ConfigurationKeyValuePair keyValuePair : obfuscatedKeyValuePairs) {
             if (keyValuePair.getKey().isSecretValue()) {
-                assertThat(keyValuePair.getValue(), is(applicationVersionService.OBFUSCATED));
-                assertThat(keyValuePair.getDefaultValue(), is(applicationVersionService.OBFUSCATED));
+                assertThat(keyValuePair.getValue(), is(ApplicationVersionService.OBFUSCATED));
+                assertThat(keyValuePair.getDefaultValue(), is(ApplicationVersionService.OBFUSCATED));
             } else {
-                assertThat(keyValuePair.getValue(), not(applicationVersionService.OBFUSCATED));
-                assertThat(keyValuePair.getDefaultValue(), not(applicationVersionService.OBFUSCATED));
+                assertThat(keyValuePair.getValue(), not(ApplicationVersionService.OBFUSCATED));
+                assertThat(keyValuePair.getDefaultValue(), not(ApplicationVersionService.OBFUSCATED));
             }
         }
 

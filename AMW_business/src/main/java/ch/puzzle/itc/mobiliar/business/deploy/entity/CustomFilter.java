@@ -25,6 +25,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Builder.Default;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 
@@ -65,15 +66,18 @@ public class CustomFilter {
 
     @Setter
     @Getter
+    @Default
     private List<String> dropDownItems = new ArrayList<>();
 
     @Setter
     @Getter
+    @Default
     private Map<String, String> dropDownItemsMap = new HashMap<>();
 
     @Setter
     private Class<? extends Enum> enumType;
 
+    @Default
     private Object value = null;
 
     private Long filterIdentifikationNumber;

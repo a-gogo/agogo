@@ -20,6 +20,8 @@
 
 package ch.puzzle.itc.mobiliar.business.utils;
 
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
+
 public class ValidationHelper {
 
 	/**

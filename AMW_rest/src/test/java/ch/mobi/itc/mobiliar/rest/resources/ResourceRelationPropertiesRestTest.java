@@ -26,7 +26,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import javax.ws.rs.core.Response;
 
 import ch.puzzle.itc.mobiliar.business.resourcerelation.boundary.ResourceRelationLocator;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

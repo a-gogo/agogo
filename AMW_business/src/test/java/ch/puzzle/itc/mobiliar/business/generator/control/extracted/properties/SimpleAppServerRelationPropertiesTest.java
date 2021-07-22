@@ -22,7 +22,7 @@ package ch.puzzle.itc.mobiliar.business.generator.control.extracted.properties;
 
 import static ch.puzzle.itc.mobiliar.test.EntityBuilderType.APP;
 import static ch.puzzle.itc.mobiliar.test.EntityBuilderType.WS;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

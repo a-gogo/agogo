@@ -46,10 +46,10 @@ import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ProvidedResourceR
 import ch.puzzle.itc.mobiliar.business.security.boundary.PermissionBoundary;
 import ch.puzzle.itc.mobiliar.business.server.boundary.ServerView;
 import ch.puzzle.itc.mobiliar.business.server.entity.ServerTuple;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
 import ch.puzzle.itc.mobiliar.common.exception.AMWException;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -188,11 +188,11 @@ public class ResourcesRest {
     public ResourceDTO getResource(@PathParam("resourceGroupName") String resourceGroupName,
                                    @PathParam("releaseName") String releaseName,
                                    @QueryParam("env") @DefaultValue("Global") String environment,
-                                   @QueryParam("type") String resourceType) throws ValidationException {
+                                   @QueryParam("type") String resourceType) throws ValidationException, ResourceNotFoundException {
         ResourceEntity resourceByRelease = resourceLocator.getResourceByGroupNameAndRelease(resourceGroupName, releaseName);
         return new ResourceDTO(resourceByRelease, resourceRelations.getResourceRelations(resourceGroupName,
                 releaseName, resourceType), resourceProperties.getResourceProperties(resourceGroupName, releaseName,
-                environment), resourceTemplatesRest.getResourceTemplates(resourceGroupName, releaseName, ""));
+                environment), resourceTemplatesRest.getResourceTemplates(resourceGroupName, releaseName));
     }
 
     @Path("/{resourceGroupName}/lte/{releaseName}")
@@ -201,11 +201,11 @@ public class ResourcesRest {
     public ResourceDTO getExactOrClosestPastRelease(@PathParam("resourceGroupName") String resourceGroupName,
                                                     @PathParam("releaseName") String releaseName,
                                                     @QueryParam("env") @DefaultValue("Global") String environment,
-                                                    @QueryParam("type") String resourceType) throws ValidationException {
+                                                    @QueryParam("type") String resourceType) throws ValidationException, ResourceNotFoundException {
         ReleaseEntity release = resourceLocator.getExactOrClosestPastReleaseByGroupNameAndRelease(resourceGroupName, releaseName);
         return new ResourceDTO(release, resourceRelations.getResourceRelations(resourceGroupName,
                 release.getName(), resourceType), resourceProperties.getResourceProperties(resourceGroupName, release.getName(),
-                environment), resourceTemplatesRest.getResourceTemplates(resourceGroupName, release.getName(), ""));
+                environment), resourceTemplatesRest.getResourceTemplates(resourceGroupName, release.getName()));
     }
 
     @Path("/resourceGroups")

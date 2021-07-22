@@ -19,15 +19,23 @@
  */
 
 package ch.mobi.itc.mobiliar.rest.exceptions;
- 
+
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
- 
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Provider
-public class UncaughtExceptionMapper implements ExceptionMapper<Throwable> {  
+public class UncaughtExceptionMapper implements ExceptionMapper<Throwable> {
+    @Inject
+	private Logger log;
+
     @Override
     public Response toResponse(Throwable exception) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ExceptionDto(exception)).build();
+        log.log(Level.SEVERE, "Uncaught exception in rest call", exception);
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new ExceptionDto("Internal Server Error", "See log file for details")).build();
     }
 }

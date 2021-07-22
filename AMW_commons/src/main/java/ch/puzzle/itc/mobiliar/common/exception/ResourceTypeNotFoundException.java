@@ -20,11 +20,8 @@
 
 package ch.puzzle.itc.mobiliar.common.exception;
 
-public class ResourceTypeNotFoundException extends AMWException {
+public class ResourceTypeNotFoundException extends NotFoundException {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public ResourceTypeNotFoundException(String message) {

@@ -35,8 +35,6 @@ import ch.puzzle.itc.mobiliar.business.template.entity.TemplateDescriptorEntity;
 import ch.puzzle.itc.mobiliar.common.exception.TemplatePropertyException;
 import ch.puzzle.itc.mobiliar.common.exception.TemplatePropertyException.CAUSE;
 
-import com.google.gson.GsonBuilder;
-
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
@@ -294,12 +292,6 @@ public class BaseTemplateProcessor {
 
     private void logStartTemplateGeneration(TemplateDescriptorEntity template) {
         log.finest("started: " + template.toString());
-    }
-
-    private void logBeforeException(TemplateException te, Map<String, Object> contextualizedMap) {
-        log.info("Template Fehler: ");
-        log.severe(te.getLocalizedMessage());
-        log.severe(new GsonBuilder().setPrettyPrinting().create().toJson(contextualizedMap));
     }
 
     private void logBeforeException(ParseException pe) {

@@ -39,9 +39,9 @@ import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ConsumedResourceR
 import ch.puzzle.itc.mobiliar.business.template.boundary.TemplateEditor;
 import ch.puzzle.itc.mobiliar.business.template.control.TemplatesScreenDomainService;
 import ch.puzzle.itc.mobiliar.business.template.entity.TemplateDescriptorEntity;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
+import ch.puzzle.itc.mobiliar.common.exception.NotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 
 /**
  * Rest boundary for Resource-Relation-Templates
@@ -68,42 +68,55 @@ public class ResourceRelationTemplatesRest {
 
     @GET
     @ApiOperation(value = "Get one or all templates for a resource in a specific release")
-    public List<TemplateDTO> getResourceRelationTemplates( //
-                                                           @PathParam("resourceGroupName") String resourceGroupName,
-                                                           @PathParam("releaseName") String releaseName,
-                                                           @PathParam("relatedResourceGroupName") String relatedResourceGroupName,
-                                                           @PathParam("relatedReleaseName") String relatedReleaseName) throws ValidationException {
+    public List<TemplateDTO> getResourceRelationTemplates(@PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("releaseName") String releaseName,
+            @PathParam("relatedResourceGroupName") String relatedResourceGroupName,
+            @PathParam("relatedReleaseName") String relatedReleaseName) throws ValidationException, ResourceNotFoundException {
 
-        return getResourceRelationTemplates(resourceGroupName, releaseName, relatedResourceGroupName, relatedReleaseName, "");
+        List<TemplateDescriptorEntity> templates = getRelTemplates(resourceGroupName, releaseName,
+                relatedResourceGroupName, relatedReleaseName);
+        List<TemplateDTO> templateDTOs = new ArrayList<>();
+        for (TemplateDescriptorEntity template : templates) {
+            TemplateDTO temp = new TemplateDTO(template);
+            templateDTOs.add(temp);
+        }
+        return templateDTOs;
     }
 
     @GET
     @Path("/{templateName}")
     @ApiOperation(value = "Get one or all templates for a resource in a specific release")
-    public List<TemplateDTO> getResourceRelationTemplates( //
-                                                           @PathParam("resourceGroupName") String resourceGroupName,
-                                                           @PathParam("releaseName") String releaseName,
-                                                           @PathParam("relatedResourceGroupName") String relatedResourceGroupName,
-                                                           @PathParam("relatedReleaseName") String relatedReleaseName,
-                                                           @PathParam("templateName") String templateName) throws ValidationException {
+    public TemplateDTO getResourceRelationTemplate(@PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("releaseName") String releaseName,
+            @PathParam("relatedResourceGroupName") String relatedResourceGroupName,
+            @PathParam("relatedReleaseName") String relatedReleaseName, @PathParam("templateName") String templateName)
+            throws ValidationException, NotFoundException {
 
+        List<TemplateDescriptorEntity> templates = getRelTemplates(resourceGroupName, releaseName,
+                relatedResourceGroupName, relatedReleaseName);
+
+        for (TemplateDescriptorEntity template : templates) {
+            if (templateName.equals(template.getName())) {
+                return new TemplateDTO(template);
+            }
+        }
+
+        throw new NotFoundException("Template not found");
+    }
+
+    private List<TemplateDescriptorEntity> getRelTemplates(String resourceGroupName, String releaseName,
+            String relatedResourceGroupName, String relatedReleaseName) throws ValidationException, ResourceNotFoundException {
         List<ConsumedResourceRelationEntity> resRelList = resourceRelationLocator
                 .getResourceRelationList(resourceGroupName, releaseName, relatedResourceGroupName, relatedReleaseName);
 
         List<TemplateDescriptorEntity> templates = new ArrayList<>();
         for (ConsumedResourceRelationEntity resRel : resRelList) {
-            try {
-                List<TemplateDescriptorEntity> temp = templateService.getTemplatesForResourceRelation(resRel, false);
-                for (TemplateDescriptorEntity t : temp) {
-                    t.setRelatedResourceIdentifier(resRel.getIdentifier());
-                }
-                templates.addAll(temp);
-            } catch (ResourceNotFoundException | GeneralDBException e) {
-                // ignore
+            List<TemplateDescriptorEntity> temp = templateService.getTemplatesForResourceRelation(resRel, false);
+            for (TemplateDescriptorEntity t : temp) {
+                t.setRelatedResourceIdentifier(resRel.getIdentifier());
             }
+            templates.addAll(temp);
         }
-
-        return resourceTemplatesRest.getTemplateDTOs(templateName, templates);
+        return templates;
     }
-
 }

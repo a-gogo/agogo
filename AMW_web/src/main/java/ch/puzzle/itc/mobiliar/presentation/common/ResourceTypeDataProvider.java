@@ -41,7 +41,6 @@ import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceTypeNotFoundException;
 import ch.puzzle.itc.mobiliar.common.util.NameChecker;
 import ch.puzzle.itc.mobiliar.presentation.util.GlobalMessageAppender;
-import ch.puzzle.itc.mobiliar.presentation.util.UserSettings;
 
 @SessionScoped
 @Named
@@ -52,9 +51,6 @@ public class ResourceTypeDataProvider implements Serializable {
 	@Inject
 	private ResourceTypeDomainService domainService;
 
-	@Inject
-	private UserSettings userSettings;
-	
 	@Inject
 	protected Logger log;
 

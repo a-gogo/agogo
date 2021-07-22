@@ -42,7 +42,6 @@ import ch.puzzle.itc.mobiliar.business.template.control.TemplatesScreenDomainSer
 import ch.puzzle.itc.mobiliar.business.shakedown.entity.ShakedownStpEntity;
 import ch.puzzle.itc.mobiliar.business.security.entity.Permission;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.StpNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.TemplateNotDeletableException;
 
@@ -91,7 +90,7 @@ public class ShakedownStpService {
 	}
 
 	@HasPermission(permission = Permission.SHAKEDOWNTEST, action = DELETE)
-	public void deleteSTPEntity(final Integer stpId) throws GeneralDBException, StpNotFoundException {
+	public void deleteSTPEntity(final Integer stpId) throws StpNotFoundException, TemplateNotDeletableException {
 		ShakedownStpEntity shakedownStpEntity = getSTPById(stpId);
 		if (shakedownStpEntity == null) {
 			String message = "Die zu löschende STP Entität ist nicht vorhanden ";
@@ -101,15 +100,7 @@ public class ShakedownStpService {
 
 		// If delete SPT, delete all defined testing-template with
 		// this STP
-		try {
-			templatesScreenDomainService.deleteSTPTemplate(shakedownStpEntity.getStpName());
-		}
-		catch (TemplateNotDeletableException e) {
-			String message = "Bei der Suche einer STP Entität mit der Id : " + stpId
-					+ " ist ein Fehler aufgetreten.";
-			log.log(Level.SEVERE, message, e);
-			throw new GeneralDBException(message, e);
-		}
+		templatesScreenDomainService.deleteSTPTemplate(shakedownStpEntity.getStpName());
 		em.remove(shakedownStpEntity);
 		log.info("STP mit der Id: " + stpId + " wurde aus der DB gelöscht");
 
@@ -175,7 +166,6 @@ public class ShakedownStpService {
 	 * @param stpEntity
 	 * @param args
 	 * @return list with not added args or null if some error occurs
-	 * @throws GeneralDBException
 	 */
 	@HasPermission(permission = Permission.SHAKEDOWNTEST, action = UPDATE)
 	public List<String> editSTPEntity(final ShakedownStpEntity stpEntity, final List<String> args) {

@@ -68,21 +68,4 @@ public class PropertiesValueResolverTest {
 		assertTrue(m.matches());
 		assertEquals("name", m.group(1));
 	}
-
-	@SuppressWarnings("unchecked")
-	private Object get(Map<String, Object> map, String... keys) {
-		Object result = null;
-
-		for (String key : keys) {
-			Object nested = map.get(key);
-			if (nested instanceof Map) {
-				map = (Map<String, Object>) nested;
-			}
-			else {
-				result = nested;
-			}
-		}
-		return result;
-
-	}
 }

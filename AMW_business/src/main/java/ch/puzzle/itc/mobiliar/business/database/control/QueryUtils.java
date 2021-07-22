@@ -31,8 +31,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.Table;
 
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
-
 public class QueryUtils {
 
 
@@ -51,7 +49,6 @@ public class QueryUtils {
 	 * @param length
 	 *             - the length of the result set, no restriction if -1
 	 * @return
-	 * @throws GeneralDBException
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> fetch(Class<T> clazz, Query query, int start, int length) {

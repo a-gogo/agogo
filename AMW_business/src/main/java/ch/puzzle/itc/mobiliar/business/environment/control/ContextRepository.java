@@ -24,7 +24,6 @@ import ch.puzzle.itc.mobiliar.business.database.control.QueryUtils;
 import ch.puzzle.itc.mobiliar.business.deploy.entity.DeploymentEntity;
 import ch.puzzle.itc.mobiliar.business.environment.entity.ContextEntity;
 import ch.puzzle.itc.mobiliar.business.utils.BaseRepository;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -45,7 +44,6 @@ public class ContextRepository extends BaseRepository<ContextEntity> {
      * Returns all Environments
      *
      * @return
-     * @throws GeneralDBException
      */
     public List<ContextEntity> getEnvironments() {
         return QueryUtils.fetch(ContextEntity.class, fetchAllContexts(), 0, -1);

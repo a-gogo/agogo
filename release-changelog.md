@@ -1,3 +1,12 @@
+# v1.17.25
+* Implement update (put) and delete for Resource templates via Rest [#597](https://github.com/liimaorg/liima/issues/597)
+  * Breaking change: `/resources/{resourceGroupName}/{releaseName}/templates/{templateName}` no longer returns an array
+  * Code cleanup and refactoring
+  * Fix REST exception mapping
+* Rest copy cleanup, Dockerfile cleanup, remove REQUIRES_NEW transaction for boundaries [#617](https://github.com/liimaorg/liima/pull/617)
+  * Don't log freemarker template exceptions in application server log
+* Java Script updates
+
 # v1.17.24
 * Fix Rest DELETE of resource, update JS deps, update Wildfly Docker Image: [#613](https://github.com/liimaorg/liima/pull/613)
 * Fix NullPointer when resource to delete doesn't exit: [#612](https://github.com/liimaorg/liima/pull/612)

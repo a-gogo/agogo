@@ -25,9 +25,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.softlinkRelation.entity.SoftlinkRelationEntity;
 import org.mockito.Mockito;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.mockito.Mockito.when;
 
 /**

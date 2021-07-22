@@ -27,8 +27,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.puzzle.itc.mobiliar.business.generator.control.GeneratedTemplate;
-import ch.puzzle.itc.mobiliar.business.generator.control.GenerationUnitGenerationResult;
 import org.junit.Test;
 import org.mockito.Mockito;
 

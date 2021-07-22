@@ -28,7 +28,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceGroupEntity;
 import ch.puzzle.itc.mobiliar.business.security.entity.Permission;
 import ch.puzzle.itc.mobiliar.business.security.interceptor.HasPermission;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 
 import javax.ejb.Stateless;
@@ -102,7 +101,7 @@ public class ReleaseMgmtService {
      * Persists the given new release.
      */
     @HasPermission(permission = Permission.RELEASE, action = CREATE)
-    public boolean create(ReleaseEntity release) throws GeneralDBException {
+    public boolean create(ReleaseEntity release) {
         return persistenceService.saveReleaseEntity(release);
     }
 
@@ -110,7 +109,7 @@ public class ReleaseMgmtService {
      * Persists the given release - the already existing instance will be updated.
      */
     @HasPermission(permission = Permission.RELEASE, action = UPDATE)
-    public boolean update(ReleaseEntity release) throws GeneralDBException {
+    public boolean update(ReleaseEntity release) {
         return persistenceService.saveReleaseEntity(release);
     }
 

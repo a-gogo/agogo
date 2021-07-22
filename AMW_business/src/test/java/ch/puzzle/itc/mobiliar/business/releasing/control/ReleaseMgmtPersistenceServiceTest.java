@@ -21,7 +21,6 @@
 package ch.puzzle.itc.mobiliar.business.releasing.control;
 
 import ch.puzzle.itc.mobiliar.business.releasing.entity.ReleaseEntity;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.test.testrunner.PersistenceTestRunner;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -64,7 +63,7 @@ public class ReleaseMgmtPersistenceServiceTest {
 	}
 
 	@Test
-	public void test_getById() throws GeneralDBException {
+	public void test_getById() {
 		// given
 		releaseEntity.setId(1);
 		service.saveReleaseEntity(releaseEntity);
@@ -77,7 +76,7 @@ public class ReleaseMgmtPersistenceServiceTest {
 	}
 
 	@Test
-	public void test_findByName() throws GeneralDBException {
+	public void test_findByName() {
 		// given
 		releaseEntity.setName("RL-13.04");
 		service.saveReleaseEntity(releaseEntity);
@@ -91,7 +90,7 @@ public class ReleaseMgmtPersistenceServiceTest {
 	}
 
 	@Test
-	public void test_findByEmptyName() throws GeneralDBException {
+	public void test_findByEmptyName() {
 		// given
 		releaseEntity.setName("RL-13.04");
 		service.saveReleaseEntity(releaseEntity);
@@ -106,7 +105,7 @@ public class ReleaseMgmtPersistenceServiceTest {
 	}
 
 	@Test
-	public void test_loadAllReleaseEntities() throws GeneralDBException {
+	public void test_loadAllReleaseEntities() {
 		// given
 		service.saveReleaseEntity(releaseEntity);
 		service.saveReleaseEntity(new ReleaseEntity());
@@ -122,7 +121,7 @@ public class ReleaseMgmtPersistenceServiceTest {
 	}
 
 	@Test
-	public void test_deleteReleaseEntity() throws GeneralDBException {
+	public void test_deleteReleaseEntity() {
 		// given
 		service.saveReleaseEntity(releaseEntity);
 		service.saveReleaseEntity(new ReleaseEntity());
@@ -140,7 +139,7 @@ public class ReleaseMgmtPersistenceServiceTest {
 	}
 
 	@Test
-	public void test_count() throws GeneralDBException {
+	public void test_count() {
 		// given
 		assertEquals(0, service.count());
 		service.saveReleaseEntity(releaseEntity);
@@ -157,7 +156,7 @@ public class ReleaseMgmtPersistenceServiceTest {
 	}
 	
 	@Test
-	public void test_getDefaultRelease() throws GeneralDBException {
+	public void test_getDefaultRelease() {
 		releaseEntity.setInstallationInProductionAt(DateUtils.addDays(new Date(), -2));
 		ReleaseEntity secondEntity = new ReleaseEntity();
 		secondEntity.setInstallationInProductionAt(DateUtils.addDays(new Date(), 2));

@@ -27,7 +27,6 @@ import ch.puzzle.itc.mobiliar.common.exception.TemplatePropertyException;
 import ch.puzzle.itc.mobiliar.common.exception.TemplatePropertyException.CAUSE;
 import freemarker.core.Environment;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
 
 /**
  * Custom exception handler for freemarker that does not throw the exception and therefore template processing

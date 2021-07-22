@@ -22,11 +22,9 @@ package ch.puzzle.itc.mobiliar.business.generator.control;
 
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.common.exception.TemplatePropertyException;
-import ch.puzzle.itc.mobiliar.common.util.ConfigurationService;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -24,7 +24,7 @@ import ch.puzzle.itc.mobiliar.business.deploymentparameter.boundary.DeploymentPa
 import ch.puzzle.itc.mobiliar.business.deploymentparameter.entity.Key;
 import ch.puzzle.itc.mobiliar.business.security.boundary.PermissionBoundary;
 import ch.puzzle.itc.mobiliar.business.security.entity.Permission;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 import ch.puzzle.itc.mobiliar.presentation.util.GlobalMessageAppender;
 import lombok.Getter;
 import lombok.Setter;

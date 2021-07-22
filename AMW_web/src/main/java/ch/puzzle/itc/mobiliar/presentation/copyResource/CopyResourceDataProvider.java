@@ -34,10 +34,8 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceGroup;
 import ch.puzzle.itc.mobiliar.business.security.boundary.PermissionBoundary;
 import ch.puzzle.itc.mobiliar.business.utils.Identifiable;
 import ch.puzzle.itc.mobiliar.common.exception.AMWException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.presentation.common.ResourceTypeDataProvider;
-import ch.puzzle.itc.mobiliar.presentation.propertyEdit.PropertyEditDataProvider;
 import ch.puzzle.itc.mobiliar.presentation.resourcesedit.EditResourceView;
 import ch.puzzle.itc.mobiliar.presentation.util.GlobalMessageAppender;
 import lombok.Getter;
@@ -66,9 +64,6 @@ public class CopyResourceDataProvider implements Serializable {
 	private CopyResource copyResource;
 
 	@Inject
-	private PropertyEditDataProvider propertyEditDataProvider;
-
-	@Inject
 	private MaiaAmwFederationServicePredecessorHandler maiaAmwFederationServicePredecessorHandler;
 
 	@Inject
@@ -89,7 +84,7 @@ public class CopyResourceDataProvider implements Serializable {
 	@Getter
 	boolean loadList;
 
-	public void enableLoadList() throws GeneralDBException {
+	public void enableLoadList() {
 	    if(!loadList) {
 		   loadList = true;
 		   refreshResourceList();
@@ -111,8 +106,6 @@ public class CopyResourceDataProvider implements Serializable {
 
 	/**
 	 * load resources for the selected type
-	 * 
-	 * @throws GeneralDBException
 	 */
 	private void refreshResourceList() {
 		resourceGroupMap = new HashMap<>();
@@ -163,8 +156,8 @@ public class CopyResourceDataProvider implements Serializable {
 	 * @param resourceToOverwrite
 	 * @param copyFromResourceId
 	 * @return true if copy was successful, false otherwise
-	 * @throws GeneralDBException
 	 * @throws ResourceNotFoundException
+	 * @throws AMWException
 	 */
 	private boolean copyFromResourceAction(ResourceEntity resourceToOverwrite, Integer copyFromResourceId)
 			throws AMWException, ForeignableOwnerViolationException {
@@ -195,8 +188,6 @@ public class CopyResourceDataProvider implements Serializable {
 	 * @param resourceToOverwrite
 	 * @param predecessor
 	 * @return true if copy was successful, false otherwise
-	 * @throws GeneralDBException
-	 * @throws ResourceNotFoundException
 	 */
 	private boolean copyFromPredecessorResourceAction(ResourceEntity resourceToOverwrite, ResourceGroup predecessor) {
 		if (resourceToOverwrite == null) {
@@ -229,7 +220,6 @@ public class CopyResourceDataProvider implements Serializable {
 	 * @param resourceTypeId
 	 * @param excludedList
 	 * @return
-	 * @throws GeneralDBException
 	 */
 	public List<ResourceGroup> loadResourcesForSelectedType(Integer resourceTypeId,
 			List<Integer> excludedList) {

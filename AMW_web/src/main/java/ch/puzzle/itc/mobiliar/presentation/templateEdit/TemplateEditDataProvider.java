@@ -31,7 +31,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.security.entity.Permission;
 import ch.puzzle.itc.mobiliar.business.template.entity.TemplateDescriptorEntity;
 import ch.puzzle.itc.mobiliar.business.utils.Identifiable;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceTypeNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.TemplateNotDeletableException;
@@ -152,7 +151,7 @@ public class TemplateEditDataProvider implements Serializable {
 	}
 
 	public void onChangedResource(@Observes ResourceEntity resourceEntity) throws ResourceNotFoundException,
-			GeneralDBException, ResourceTypeNotFoundException {
+			ResourceTypeNotFoundException {
 		resourceOrType = resourceEntity;
 		refreshPermissions();
 
@@ -162,7 +161,7 @@ public class TemplateEditDataProvider implements Serializable {
 
 
 	public void onChangedResourceType(@Observes ResourceTypeEntity resourceTypeEntity)
-			throws GeneralDBException, ResourceTypeNotFoundException, ResourceNotFoundException {
+			throws ResourceTypeNotFoundException, ResourceNotFoundException {
 		resourceOrType = resourceTypeEntity;
 		refreshPermissions();
 		canListInstanceTemplates = false;
@@ -171,12 +170,12 @@ public class TemplateEditDataProvider implements Serializable {
 	}
 
 	public void onLoadResourceRelation(@Observes ChangeSelectedRelationEvent relation)
-			throws GeneralDBException, ResourceTypeNotFoundException, ResourceNotFoundException {
+			throws ResourceTypeNotFoundException, ResourceNotFoundException {
 		loadResourceRelation(relation.getRelation());
 	}
 
 	public void loadResourceRelation(ResourceEditRelation relation) throws ResourceNotFoundException,
-			GeneralDBException, ResourceTypeNotFoundException {
+			ResourceTypeNotFoundException {
 		this.relation = relation;
 		if (this.relation != null) {
 			if (canListInstanceTemplates && !this.relation.isResourceTypeRelation()) {
@@ -195,7 +194,7 @@ public class TemplateEditDataProvider implements Serializable {
 	private Integer removeTemplateId;
 
 	public void remove() throws ResourceTypeNotFoundException, TemplateNotDeletableException,
-			GeneralDBException, ResourceNotFoundException {
+			ResourceNotFoundException {
 		editor.removeTemplate(removeTemplateId);
 		if (editOrCreateRelationTemplate) {
 			loadResourceRelation(this.relation);
@@ -205,8 +204,7 @@ public class TemplateEditDataProvider implements Serializable {
 		}
 	}
 
-	private void loadTemplates() throws ResourceNotFoundException, GeneralDBException,
-			ResourceTypeNotFoundException {
+	private void loadTemplates() throws ResourceNotFoundException, ResourceTypeNotFoundException {
 		if (resourceOrType != null) {
 			if (isEditResource() && canListInstanceTemplates) {
 				instanceTemplates = templatesService.getGlobalTemplateDescriptorsForResource(

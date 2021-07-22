@@ -22,14 +22,12 @@ package ch.puzzle.itc.mobiliar.business.releasing.control;
 
 import ch.puzzle.itc.mobiliar.business.releasing.entity.ReleaseEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import javax.persistence.TransactionRequiredException;
 import javax.persistence.criteria.*;
 import java.util.List;
@@ -116,18 +114,14 @@ public class ReleaseMgmtPersistenceService {
 	 * 
 	 * @param entity
 	 */
-	public boolean saveReleaseEntity(ReleaseEntity entity) throws GeneralDBException {
-		try {
-			if(entity.getId()==null){
-				entityManager.persist(entity);
-				log.info("Release " + entity.getName() + " saved");
-			}
-			else{
-				entityManager.merge(entity);
-				log.info("Release " + entity.getName() + " updated");
-			}
-		} catch (PersistenceException e) {
-			throw new GeneralDBException(e.getMessage(), e);
+	public boolean saveReleaseEntity(ReleaseEntity entity) {
+		if(entity.getId()==null){
+			entityManager.persist(entity);
+			log.info("Release " + entity.getName() + " saved");
+		}
+		else{
+			entityManager.merge(entity);
+			log.info("Release " + entity.getName() + " updated");
 		}
 		return true;
 	}

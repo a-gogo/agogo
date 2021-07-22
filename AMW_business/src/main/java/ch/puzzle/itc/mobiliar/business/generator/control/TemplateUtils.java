@@ -548,25 +548,6 @@ public class TemplateUtils {
 		return getPropertyValues(templates, context);
 	}
 
-	/**
-	 * Loads all templates in a specific context
-	 * 
-	 * @param context
-	 * @param result
-	 *            (used for recursion, can initially be defined as null)
-	 * @return
-	 */
-	private static Set<TemplateDescriptorEntity> getTemplates(ContextEntity context, Set<TemplateDescriptorEntity> result) {
-		if (result == null) {
-			result = new HashSet<>();
-		}
-		getTemplatesForContext(context, result);
-		if (context.getParent() != null) {
-			result = getTemplates(context.getParent(), result);
-		}
-		return result;
-	}
-
 	private static Set<PropertyDescriptorEntity> getPropertyDescriptors(ContextEntity context, Set<PropertyDescriptorEntity> result) {
 		if (result == null) {
 			result = new HashSet<>();
@@ -576,10 +557,6 @@ public class TemplateUtils {
 			result = getPropertyDescriptors(context.getParent(), result);
 		}
 		return result;
-	}
-
-	private static void getTemplatesForContext(ContextEntity context, Set<TemplateDescriptorEntity> result) {
-		collectTemplateDescriptors(context, result);
 	}
 
 	private static void getPropertyDescriptorsForContext(ContextEntity context, Set<PropertyDescriptorEntity> result) {

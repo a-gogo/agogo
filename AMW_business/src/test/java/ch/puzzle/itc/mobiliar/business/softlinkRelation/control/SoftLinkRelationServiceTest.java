@@ -46,9 +46,9 @@ public class SoftLinkRelationServiceTest {
     public void shouldSetResourceIdInThreadLocal() {
         // given
         ResourceEntity resourceEntity = ResourceEntityBuilder.createResourceEntity("MyResource", 500);
-        TypedQuery query = mock(TypedQuery.class);
+        TypedQuery<SoftlinkRelationEntity> query = mock(TypedQuery.class);
         when(query.getResultList()).thenReturn(Collections.emptyList());
-        when(query.setParameter(anyString(), anyObject())).thenReturn(query);
+        when(query.setParameter(anyString(), any())).thenReturn(query);
         when(entityManager.createQuery(any(String.class), eq(SoftlinkRelationEntity.class))).thenReturn(query);
 
         // when

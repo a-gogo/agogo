@@ -25,7 +25,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceFactory;
 import ch.puzzle.itc.mobiliar.business.security.control.PermissionService;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.test.testrunner.PersistenceTestRunner;
 import org.junit.Assert;
@@ -69,7 +68,7 @@ public class TagConfigurationServicePersistenceTest {
 	}
 
 	@Test
-	public void test_tagConfiguration() throws ResourceNotFoundException, ElementAlreadyExistsException, GeneralDBException {
+	public void test_tagConfiguration() throws ResourceNotFoundException, ElementAlreadyExistsException {
 		// given
 		ResourceEntity as1 = ResourceFactory.createNewResource("appServer1");
 		entityManager.persist(as1);

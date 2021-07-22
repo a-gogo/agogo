@@ -37,9 +37,10 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.control.ResourceRepository;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcerelation.control.RelationImportService;
 import ch.puzzle.itc.mobiliar.business.resourcerelation.control.ResourceRelationService;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
 import ch.puzzle.itc.mobiliar.common.exception.AMWException;
 import ch.puzzle.itc.mobiliar.common.exception.AMWRuntimeException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

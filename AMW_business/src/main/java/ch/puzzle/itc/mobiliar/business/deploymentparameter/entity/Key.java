@@ -26,7 +26,7 @@ import ch.puzzle.itc.mobiliar.business.database.control.Constants;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.NamedIdentifiable;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "TAMW_deployParamKey")

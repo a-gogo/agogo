@@ -22,9 +22,7 @@ package ch.puzzle.itc.mobiliar.presentation.resourceDependencies;
 
 import java.io.Serializable;
 
-import lombok.Setter;
 import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.AbstractResourceRelationEntity;
-import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 
 /**
  * UI model for displaying resource dependencies

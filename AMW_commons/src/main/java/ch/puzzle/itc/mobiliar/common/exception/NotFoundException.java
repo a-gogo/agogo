@@ -20,6 +20,9 @@
 
 package ch.puzzle.itc.mobiliar.common.exception;
 
+/**
+ * General exception if an object isn't found in DB
+ */
 public class NotFoundException extends AMWException {
 
 	private static final long serialVersionUID = 1L;

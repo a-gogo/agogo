@@ -20,7 +20,7 @@
 
 package ch.puzzle.itc.mobiliar.common.exception;
 
-public class PropertyTypeNotFoundException extends AMWException{
+public class PropertyTypeNotFoundException extends NotFoundException{
 
 	private static final long serialVersionUID = 1L;
 

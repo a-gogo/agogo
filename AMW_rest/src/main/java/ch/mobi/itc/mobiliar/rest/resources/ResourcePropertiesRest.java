@@ -46,7 +46,7 @@ import ch.puzzle.itc.mobiliar.business.property.boundary.PropertyEditor;
 import ch.puzzle.itc.mobiliar.business.property.entity.ResourceEditProperty;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.boundary.ResourceLocator;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 
 @RequestScoped
 @Path("/resources/{resourceGroupName}/{releaseName}/properties")

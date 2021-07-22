@@ -109,16 +109,6 @@ public class ResourceRepository {
                 .setParameter("name", name.toLowerCase()).getResultList();
     }
 
-    public ResourceEntity getResourceByNameAndReleaseWithTemplates(String name, ReleaseEntity release) {
-        return entityManager
-                .createQuery(
-                        "select r from ResourceEntity r " +
-                                "left join fetch r.consumedMasterRelations rel " +
-                                "left join fetch rel.slaveResource where LOWER(r.name)=:name and r.release=:release",
-                        ResourceEntity.class)
-                .setParameter("name", name.toLowerCase()).setParameter("release", release).getSingleResult();
-    }
-
     public List<ResourceEntity> getResourcesByGroupNameWithAllRelationsOrderedByRelease(String name) {
         return entityManager.createQuery(
                 "select r from ResourceEntity r " + "left join fetch r.resourceGroup rg "

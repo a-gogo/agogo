@@ -35,11 +35,9 @@ import javax.inject.Named;
 import ch.puzzle.itc.mobiliar.business.deploy.boundary.DeploymentBoundary;
 import ch.puzzle.itc.mobiliar.business.releasing.boundary.ReleaseLocator;
 import ch.puzzle.itc.mobiliar.business.releasing.control.ReleaseMgmtService;
-import ch.puzzle.itc.mobiliar.business.deploy.entity.DeploymentEntity;
 import ch.puzzle.itc.mobiliar.business.releasing.entity.ReleaseEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceTypeEntity;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.presentation.components.impl.PaginationComp;
 import ch.puzzle.itc.mobiliar.presentation.util.GlobalMessageAppender;
 
@@ -118,7 +116,6 @@ public class ReleaseMgmtScreenService extends PaginationComp implements Serializ
 
 	private ReleaseEntity currentRelease;
 	private SortedMap<ResourceTypeEntity, SortedSet<ResourceEntity>> resourcesForCurrentRelease;
-	private List<DeploymentEntity> deploymentsForCurrentRelease;
 
 	public void remove(){
 		releaseLocator.delete(currentRelease);
@@ -159,8 +156,6 @@ public class ReleaseMgmtScreenService extends PaginationComp implements Serializ
 			}
 			resourcesForCurrentRelease.get(r.getResourceType()).add(r);
 		}
-		deploymentsForCurrentRelease = deploymentBoundary
-				.getDeploymentsForRelease(releaseId);
 	}
 
 	public boolean hasResourcesForCurrentRelease() {
@@ -190,21 +185,15 @@ public class ReleaseMgmtScreenService extends PaginationComp implements Serializ
 	 * Stores the release with the corresponding service method. Please call during edit- or create-form submission.
 	 */
 	public boolean save() {
-		try {
-			if (currentRelease.getId() == null) {
-				releaseMgmtService.create(currentRelease);
-			} else {
-				releaseMgmtService.update(currentRelease);
-			}
-			GlobalMessageAppender.addSuccessMessage("Release " + currentRelease.getName()
-					+ " successfully saved.");
-			reload();
-			return true;
-		} catch (GeneralDBException e) {
-			String message = "The selected resource can not be found.";
-			GlobalMessageAppender.addErrorMessage(message);
-			return false;
+		if (currentRelease.getId() == null) {
+			releaseMgmtService.create(currentRelease);
+		} else {
+			releaseMgmtService.update(currentRelease);
 		}
+		GlobalMessageAppender.addSuccessMessage("Release " + currentRelease.getName()
+				+ " successfully saved.");
+		reload();
+		return true;
 	}
 
 	@Override

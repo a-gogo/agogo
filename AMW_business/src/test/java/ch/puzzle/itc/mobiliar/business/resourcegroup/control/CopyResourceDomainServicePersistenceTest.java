@@ -51,7 +51,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceContextEntit
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceFactory;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceTypeEntity;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.util.DefaultResourceTypeDefinition;
 import ch.puzzle.itc.mobiliar.test.testrunner.PersistenceTestRunner;
@@ -95,7 +94,6 @@ public class CopyResourceDomainServicePersistenceTest {
 	 * The propertyDescriptor for 'port' for resource Copy should not be the same as for Origin!
 	 * 
 	 * @throws ResourceNotFoundException
-	 * @throws GeneralDBException
 	 */
 	@Test
 	public void test_propertyOverwrittenInContext() throws ForeignableOwnerViolationException, AMWException {

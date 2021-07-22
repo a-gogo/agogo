@@ -22,8 +22,6 @@ package ch.puzzle.itc.mobiliar.business.resourcegroup.control;
 
 import ch.puzzle.itc.mobiliar.business.environment.entity.ContextEntity;
 import ch.puzzle.itc.mobiliar.business.environment.entity.GlobalContext;
-import ch.puzzle.itc.mobiliar.business.property.control.PropertyDescriptorService;
-import ch.puzzle.itc.mobiliar.business.property.control.PropertyValueService;
 import ch.puzzle.itc.mobiliar.business.releasing.entity.ReleaseEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.common.util.ConfigKey;
@@ -31,7 +29,6 @@ import ch.puzzle.itc.mobiliar.common.util.ConfigurationService;
 
 import javax.inject.Inject;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class ResourceImportService {
 
@@ -41,18 +38,8 @@ public class ResourceImportService {
     ResourceReleaseComparator resourceReleaseComparator;
 
     @Inject
-    private Logger log;
-
-    @Inject
-    private PropertyValueService propertyValueService;
-
-    @Inject
     @GlobalContext
     private ContextEntity globalContext;
-
-    @Inject
-    private PropertyDescriptorService descriptorService;
-
 
     public List<ResourceEntity> getAllMinorReleasesFollowingRelease(Set<ResourceEntity> allReleaseResources, ReleaseEntity release) {
         List<ResourceEntity> followingMinorRelease = new ArrayList<>();

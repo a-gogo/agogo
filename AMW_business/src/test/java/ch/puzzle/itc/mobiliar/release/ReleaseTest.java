@@ -30,7 +30,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceContextEntit
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.security.control.PermissionService;
 import ch.puzzle.itc.mobiliar.business.utils.Identifiable;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.TemplatePropertyException;
 import ch.puzzle.itc.mobiliar.test.PersistingEntityBuilder;
@@ -92,7 +91,7 @@ public class ReleaseTest {
 	}
 
 	@Test
-	public void testPropertiesAndRevisions() throws TemplatePropertyException, ResourceNotFoundException, GeneralDBException {
+	public void testPropertiesAndRevisions() throws TemplatePropertyException, ResourceNotFoundException {
 		AMWTemplateExceptionHandler templateExceptionHandler = new AMWTemplateExceptionHandler();
 		List<PropertyEntity> list = readProperties(templateExceptionHandler);
 	    PropertyEntity property = list.get(0);

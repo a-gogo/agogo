@@ -21,7 +21,6 @@
 package ch.puzzle.itc.mobiliar.business.predecessor.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  *

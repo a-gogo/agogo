@@ -30,8 +30,8 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.boundary.ResourceLocator;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcerelation.control.ResourceRelationRepository;
 import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ConsumedResourceRelationEntity;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
 import ch.puzzle.itc.mobiliar.business.utils.ValidationHelper;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 
 @Stateless
 public class ResourceRelationLocator {

@@ -22,6 +22,8 @@ package ch.puzzle.itc.mobiliar.business.utils;
 
 import org.junit.Test;
 
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
+
 import static org.junit.Assert.*;
 
 public class ValidationHelperTest {

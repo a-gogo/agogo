@@ -20,18 +20,15 @@
 
 package ch.puzzle.itc.mobiliar.business.globalfunction.control;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.OrderBy;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.persistence.criteria.CriteriaQuery;
 
 import ch.puzzle.itc.mobiliar.business.globalfunction.entity.GlobalFunctionEntity;
-import org.hibernate.criterion.*;
 
 public class GlobalFunctionRepository {
 

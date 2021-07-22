@@ -37,7 +37,7 @@ import ch.puzzle.itc.mobiliar.business.deploymentparameter.entity.DeploymentPara
 import ch.puzzle.itc.mobiliar.business.deploymentparameter.entity.Key;
 import ch.puzzle.itc.mobiliar.business.security.entity.Permission;
 import ch.puzzle.itc.mobiliar.business.security.interceptor.HasPermission;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 
 @Stateless
 public class DeploymentParameterBoundary {

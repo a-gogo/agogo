@@ -41,9 +41,10 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.Resource;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.common.exception.AMWException;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
+import ch.puzzle.itc.mobiliar.common.exception.NotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceTypeNotFoundException;
-import ch.puzzle.itc.mobiliar.common.util.DefaultResourceTypeDefinition;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -59,7 +60,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceGroupEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceTypeEntity;
 import ch.puzzle.itc.mobiliar.business.server.boundary.ServerView;
 import ch.puzzle.itc.mobiliar.business.server.entity.ServerTuple;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
 
 import javax.ws.rs.core.Response;
 
@@ -340,7 +340,7 @@ public class ResourcesRestTest {
     }
 
     @Test
-    public void shouldInvokeResourcesWithRightArgumentsOnGetClosestPastRelease() throws ValidationException {
+    public void shouldInvokeResourcesWithRightArgumentsOnGetClosestPastRelease() throws ValidationException, NotFoundException {
         // given
         String resourceGroupName = "TEST";
         String releaseName = "RL-17.10";
@@ -356,7 +356,7 @@ public class ResourcesRestTest {
         // then
         verify(resourceRelationsMock).getResourceRelations(resourceGroupName, closestRelease.getName(), resourceTypeName);
         verify(resourcePropertiesMock).getResourceProperties(resourceGroupName, closestRelease.getName(), env);
-        verify(resourceTemplatesRestMock).getResourceTemplates(resourceGroupName, closestRelease.getName(), "");
+        verify(resourceTemplatesRestMock).getResourceTemplates(resourceGroupName, closestRelease.getName());
     }
 
     @Test

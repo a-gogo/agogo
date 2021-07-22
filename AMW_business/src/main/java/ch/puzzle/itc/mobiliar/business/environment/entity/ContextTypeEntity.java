@@ -20,14 +20,12 @@
 
 package ch.puzzle.itc.mobiliar.business.environment.entity;
 
-import ch.puzzle.itc.mobiliar.business.utils.Identifiable;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -46,7 +44,7 @@ import static javax.persistence.CascadeType.ALL;
 	@AssociationOverride(name="propertyDescriptors", joinTable=@JoinTable(name="TAMW_contextType_propDesc", joinColumns = @JoinColumn(name="TAMW_CONTEXTTYPE_ID", referencedColumnName="ID"))),
 	@AssociationOverride(name="templates", joinTable=@JoinTable(name="TAMW_contextType_tmplDesc", joinColumns = @JoinColumn(name="TAMW_CONTEXTTYPE_ID", referencedColumnName="ID")))
 })
-public class ContextTypeEntity extends AbstractContext implements Identifiable, Serializable {
+public class ContextTypeEntity extends AbstractContext {
     public static final String LOAD_CONTEXT_TYPE_BY_NAME_QUERY_NAME = "loadContextTypeByName";
 
     	@Getter

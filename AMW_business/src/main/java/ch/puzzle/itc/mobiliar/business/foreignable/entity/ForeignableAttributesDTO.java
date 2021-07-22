@@ -21,7 +21,6 @@
 package ch.puzzle.itc.mobiliar.business.foreignable.entity;
 
 
-import ch.puzzle.itc.mobiliar.business.foreignable.entity.ForeignableOwner;
 import lombok.Getter;
 
 public class ForeignableAttributesDTO {

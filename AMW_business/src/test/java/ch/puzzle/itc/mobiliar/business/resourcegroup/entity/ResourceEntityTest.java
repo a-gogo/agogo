@@ -34,7 +34,7 @@ import ch.puzzle.itc.mobiliar.common.exception.AMWException;
 import ch.puzzle.itc.mobiliar.common.util.ApplicationServerContainer;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -74,7 +74,7 @@ public class ResourceEntityTest {
 	@Test
 	public void testGetRelationById() {
 		// given
-		Mockito.when(resourceEntity.getRelationById(Matchers.anyInt(), Matchers.anySet())).thenCallRealMethod();
+		Mockito.when(resourceEntity.getRelationById(ArgumentMatchers.anyInt(), ArgumentMatchers.anySet())).thenCallRealMethod();
 
 		final int slaveResourceId = 21;
 
@@ -96,7 +96,7 @@ public class ResourceEntityTest {
 	@Test
 	public void testGetMasterRelation() {
 		// given
-		Mockito.when(resourceEntity.getMasterRelation(Matchers.any(ResourceEntity.class), Matchers.anySet())).thenCallRealMethod();
+		Mockito.when(resourceEntity.getMasterRelation(ArgumentMatchers.any(ResourceEntity.class), ArgumentMatchers.anySet())).thenCallRealMethod();
 
 		final int slaveResourceId = 21;
 		final Set<ConsumedResourceRelationEntity> relations = new HashSet<ConsumedResourceRelationEntity>();
@@ -131,7 +131,7 @@ public class ResourceEntityTest {
 	}
 
 	private ConsumedResourceRelationEntity prepareConsumedSlaveRelationTest() {
-		Mockito.when(resourceEntity.getConsumedSlaveRelation(Matchers.any(ResourceEntity.class))).thenCallRealMethod();
+		Mockito.when(resourceEntity.getConsumedSlaveRelation(ArgumentMatchers.any(ResourceEntity.class))).thenCallRealMethod();
 
 		final ConsumedResourceRelationEntity consumedResourceRelationEntity = createConsumedResourceRelation(11, 12);
 

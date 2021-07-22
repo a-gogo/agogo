@@ -155,7 +155,7 @@ public class PropertyDescriptorEntityTest {
         String validationLogic = propertyDescriptorEntity.getValidationLogic();
 
         // then
-        assertEquals(propertyDescriptorEntity.DEFAULTVALIDATIONEXPRESSION, validationLogic);
+        assertEquals(PropertyDescriptorEntity.DEFAULTVALIDATIONEXPRESSION, validationLogic);
     }
 
     private PropertyTagEntity createTagWithName(String name){

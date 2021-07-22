@@ -27,7 +27,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceTypeEntity;
 import ch.puzzle.itc.mobiliar.business.usersettings.entity.FavoriteResourceEntity;
 import ch.puzzle.itc.mobiliar.business.usersettings.entity.UserSettingsEntity;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceTypeNotFoundException;
 import ch.puzzle.itc.mobiliar.common.util.ApplicationServerContainer;
@@ -114,7 +113,7 @@ public class ResourceGroupRepositoryTest {
     }
 
     @Test
-    public void test_loadGroupsForType() throws GeneralDBException, ElementAlreadyExistsException,
+    public void test_loadGroupsForType() throws ElementAlreadyExistsException,
             ResourceNotFoundException, ResourceTypeNotFoundException {
         // given
         init();
@@ -146,7 +145,7 @@ public class ResourceGroupRepositoryTest {
     }
 
     @Test
-    public void test_loadGroupsForType_myAmw() throws GeneralDBException, ElementAlreadyExistsException, ResourceNotFoundException,
+    public void test_loadGroupsForType_myAmw() throws ElementAlreadyExistsException, ResourceNotFoundException,
             ResourceTypeNotFoundException {
         // given
         init();

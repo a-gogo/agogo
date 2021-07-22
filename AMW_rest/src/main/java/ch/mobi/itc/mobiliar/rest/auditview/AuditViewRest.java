@@ -3,7 +3,6 @@ package ch.mobi.itc.mobiliar.rest.auditview;
 import ch.mobi.itc.mobiliar.rest.dtos.AuditViewEntryDTO;
 import ch.puzzle.itc.mobiliar.business.auditview.boundary.AuditViewBoundary;
 import ch.puzzle.itc.mobiliar.business.property.boundary.PropertyEditor;
-import ch.puzzle.itc.mobiliar.business.property.entity.ResourceEditProperty;
 import ch.puzzle.itc.mobiliar.business.auditview.entity.AuditViewEntry;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,12 +57,6 @@ public class AuditViewRest {
                 return o1.getTimestamp().compareTo(o2.getTimestamp());
             }
         });
-    }
-
-    private List<ResourceEditProperty> removePropertyDescriptors(List<ResourceEditProperty> propertiesForResourceIncludingDescriptors, List<ResourceEditProperty> propertyDescriptors) {
-        ArrayList<ResourceEditProperty> properties = new ArrayList<>(propertiesForResourceIncludingDescriptors);
-        properties.removeAll(propertyDescriptors);
-        return properties;
     }
 
     private List<AuditViewEntryDTO> createDtosAndSortByTimestamp(List<AuditViewEntry> auditlogForResource) {

@@ -31,7 +31,6 @@ import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ConsumedResourceR
 import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ProvidedResourceRelationEntity;
 import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ResourceRelationTypeEntity;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.test.testrunner.PersistenceTestRunner;
 import org.junit.Before;
@@ -190,7 +189,7 @@ public class ResourceRelationServicePersistenceTest {
 	}
 
 	@Test
-	public void test_doAddResourceRelationForAllReleases() throws GeneralDBException, ResourceNotFoundException, ElementAlreadyExistsException {
+	public void test_doAddResourceRelationForAllReleases() throws ResourceNotFoundException, ElementAlreadyExistsException {
 		// given
 		ResourceEntityBuilder resourceEntityBuilder = new ResourceEntityBuilder();
 		ResourceEntity master = resourceEntityBuilder.buildApplicationEntity("master", null, null, false);

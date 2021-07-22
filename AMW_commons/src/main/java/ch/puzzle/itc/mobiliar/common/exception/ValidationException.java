@@ -18,12 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.puzzle.itc.mobiliar.business.utils;
+package ch.puzzle.itc.mobiliar.common.exception;
 
 
 import lombok.Getter;
 
-public class ValidationException extends Exception {
+/**
+ * Thrown it validation of an object/resource fails (string validation, business logic validation, etc.).
+ */
+public class ValidationException extends AMWException {
 
     /**
      * Use the causing object to pass information of failure

@@ -29,7 +29,7 @@ public class ExceptionDto {
 	private String detail;
 	
 	public ExceptionDto(String message) {
-		this(message, "");
+		this(message, null);
 	}
 	
 	public ExceptionDto(String message, String detail) {

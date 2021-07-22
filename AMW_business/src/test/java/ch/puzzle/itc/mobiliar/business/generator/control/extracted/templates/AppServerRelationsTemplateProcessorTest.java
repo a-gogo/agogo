@@ -33,6 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,7 +116,7 @@ public class AppServerRelationsTemplateProcessorTest extends AmwTemplateProcesso
 
 		File generatedFile = files.get(0);
 		assertEquals("aPath", generatedFile.getName());
-		assertEquals("content", FileUtils.readFileToString(generatedFile));
+		assertEquals("content", FileUtils.readFileToString(generatedFile, StandardCharsets.UTF_8));
 		assertTrue(templateExceptionHandler.isSuccess());
 	}
 
@@ -134,7 +135,7 @@ public class AppServerRelationsTemplateProcessorTest extends AmwTemplateProcesso
 		generate(templateExceptionHandler);
 
 		assertEquals(1, files.size());
-		assertEquals(lb.getName(), FileUtils.readFileToString(files.get(0)));
+		assertEquals(lb.getName(), FileUtils.readFileToString(files.get(0), StandardCharsets.UTF_8));
 		assertTrue(templateExceptionHandler.isSuccess());
 	}
 

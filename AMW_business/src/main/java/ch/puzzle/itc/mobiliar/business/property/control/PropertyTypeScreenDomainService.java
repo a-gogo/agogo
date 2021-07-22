@@ -69,12 +69,11 @@ public class PropertyTypeScreenDomainService {
 	 * @throws PropertyTypeNotFoundException
 	 * @throws ElementAlreadyExistsException
 	 * @throws RenameException
-	 * @throws GeneralDBException 
 	 */
 	@HasPermission(permission = Permission.SAVE_SETTINGS_PROPTYPE)
 	public void updatePropertyType(int id, String name, String validation, boolean encrypted, String propertyTypeTagsString)
 			throws PropertyTypeNotFoundException,
-			ElementAlreadyExistsException, RenameException, GeneralDBException {
+			ElementAlreadyExistsException, RenameException {
 		
 		PropertyTypeEntity propertyTypeEntity = getPropertyTypeById(id);		
 		PropertyTypeEntity propertyByName = getPropertyTypeByName(name);
@@ -98,12 +97,10 @@ public class PropertyTypeScreenDomainService {
 	 * @param prtName
 	 * @param prtValidation
 	 * @throws ElementAlreadyExistsException
-	 * @throws GeneralDBException
 	 */
 	@HasPermission(permission = Permission.ADD_PROPTYPE)
 	public PropertyTypeEntity createPropertyTypeByNameAndVal(String prtName,
-			String prtValidation, boolean encrypted, String propertyTypeTagsString) throws ElementAlreadyExistsException,
-			GeneralDBException {
+			String prtValidation, boolean encrypted, String propertyTypeTagsString) throws ElementAlreadyExistsException {
 		
 		PropertyTypeEntity newPropertyTypeEntity = commonService.getUniquePropertyTypeByName(prtName);
         PropertyTypeEntity result;

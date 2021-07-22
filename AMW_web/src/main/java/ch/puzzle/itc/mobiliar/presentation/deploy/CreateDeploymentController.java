@@ -182,7 +182,7 @@ public class CreateDeploymentController {
 
     public List<DeploymentEntity> loadNewestDeploymentsPerAppserver(String... ids) {
         List<DeploymentEntity> deployments = new ArrayList<>();
-        List<String> idsAsString = (ids != null || ids.length > 0) ? Arrays.asList(ids) : new ArrayList<String>();
+        List<String> idsAsString = ids != null ? Arrays.asList(ids) : new ArrayList<String>();
         for (String idString : idsAsString) {
             deployments.add(deploymentBoundary.getDeploymentById(Integer.valueOf(idString)));
         }

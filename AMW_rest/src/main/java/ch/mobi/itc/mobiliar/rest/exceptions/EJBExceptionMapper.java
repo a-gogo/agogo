@@ -40,6 +40,6 @@ public class EJBExceptionMapper implements ExceptionMapper<EJBException> {
         if (exceptionMapper != null) {
             return exceptionMapper.toResponse(causedByException);
         }
-        return Response.serverError().entity(causedByException).build();
+        return Response.serverError().entity(exception).build();
     }
 }

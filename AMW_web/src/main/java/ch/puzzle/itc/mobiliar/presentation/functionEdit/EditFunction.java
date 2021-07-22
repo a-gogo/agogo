@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import ch.puzzle.itc.mobiliar.business.security.entity.Action;
 import ch.puzzle.itc.mobiliar.common.exception.NotFoundException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 import lombok.Getter;
 import lombok.Setter;
 import ch.puzzle.itc.mobiliar.business.environment.entity.ContextEntity;
@@ -42,7 +43,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceTypeEntity;
 import ch.puzzle.itc.mobiliar.business.security.boundary.PermissionBoundary;
 import ch.puzzle.itc.mobiliar.business.security.entity.Permission;
 import ch.puzzle.itc.mobiliar.business.utils.Identifiable;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
 import ch.puzzle.itc.mobiliar.presentation.CompositeBackingBean;
 import ch.puzzle.itc.mobiliar.presentation.common.context.SessionContext;
 import ch.puzzle.itc.mobiliar.presentation.resourceRelation.events.ChangeSelectedRelationEvent;

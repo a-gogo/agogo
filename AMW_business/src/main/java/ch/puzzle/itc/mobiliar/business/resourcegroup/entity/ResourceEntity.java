@@ -41,7 +41,6 @@ import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ResourceRelationT
 import ch.puzzle.itc.mobiliar.business.shakedown.entity.ShakedownTestEntity;
 import ch.puzzle.itc.mobiliar.business.softlinkRelation.entity.SoftlinkRelationEntity;
 import ch.puzzle.itc.mobiliar.business.utils.CopyHelper;
-import ch.puzzle.itc.mobiliar.business.utils.Copyable;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.util.ApplicationServerContainer;
@@ -72,7 +71,7 @@ import static javax.persistence.CascadeType.PERSIST;
 @Table(name = "TAMW_resource")
 @EqualsAndHashCode(callSuper = false, of = { "id", "name", "release" })
 public class ResourceEntity extends HasContexts<ResourceContextEntity> implements Serializable,
-		NamedIdentifiable, Comparable<ResourceEntity>, HasTypeContext<ResourceTypeEntity>, Foreignable<ResourceEntity>, Copyable<ResourceEntity> {
+		NamedIdentifiable, Comparable<ResourceEntity>, HasTypeContext<ResourceTypeEntity>, Foreignable<ResourceEntity> {
 
     // IMPORTANT! Whenever a new field (not relation to other entity) is added then this field must be added to foreignableFieldEquals method!!!
 
@@ -476,9 +475,10 @@ public class ResourceEntity extends HasContexts<ResourceContextEntity> implement
 	 *     Workaround because so far softlinkrelation is a one-to-one relation
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private Set<SoftlinkRelationEntity> getSoftlinkRelations() {
 		return softlinkRelations;
-				}
+	}
 
 	public void clearSoftlinkRelations() {
 		if (softlinkRelations != null) {
@@ -491,9 +491,10 @@ public class ResourceEntity extends HasContexts<ResourceContextEntity> implement
 	 *     Workaround because so far softlinkrelation is a one-to-one relation
 	 * @param softlinkRelations
 	 */
+	@SuppressWarnings("unused")
 	private void setSoftlinkRelations(Set<SoftlinkRelationEntity> softlinkRelations) {
 		this.softlinkRelations = softlinkRelations;
-			}
+	}
 
 	public SoftlinkRelationEntity getSoftlinkRelation(){
 		// workaround because so far softlinkrelation is a one-to-one relation

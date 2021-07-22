@@ -191,7 +191,6 @@ public class ResourceActivationTest {
         ResourceActivation spiedResourceActivation = Mockito.spy(resourceActivation);
         ConsumedResourceRelationEntity resourceRelationEntity = Mockito.mock(
                   ConsumedResourceRelationEntity.class);
-        ContextEntity context = Mockito.mock(ContextEntity.class);
         ResourceGroupEntity resGroup = Mockito.mock(ResourceGroupEntity.class);
         when(resGroup.getId()).thenReturn(123);
 

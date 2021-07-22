@@ -31,8 +31,6 @@ import static org.mockito.Mockito.when;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ch.puzzle.itc.mobiliar.business.shakedown.control.ShakedownTestExecutionResultHandlerService;
-import ch.puzzle.itc.mobiliar.business.shakedown.control.ShakedownTestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

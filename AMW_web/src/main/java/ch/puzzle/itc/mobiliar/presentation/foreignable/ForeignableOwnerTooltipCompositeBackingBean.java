@@ -24,7 +24,6 @@ package ch.puzzle.itc.mobiliar.presentation.foreignable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
-import ch.puzzle.itc.mobiliar.business.foreignable.entity.Foreignable;
 import ch.puzzle.itc.mobiliar.business.foreignable.entity.ForeignableOwner;
 
 @Named

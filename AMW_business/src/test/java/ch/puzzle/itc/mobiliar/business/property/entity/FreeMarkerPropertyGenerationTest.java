@@ -86,7 +86,7 @@ public class FreeMarkerPropertyGenerationTest {
         data.put("property", p);
 
         // when
-        String result = generate(testTemplateContent, data);
+        generate(testTemplateContent, data);
         // then
         fail();
     }

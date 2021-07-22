@@ -177,6 +177,7 @@ public class TemplateDescriptorEntity implements Identifiable, Serializable, Cop
 		return relatedResourceIdentifier;
 	}
 
+	//TODO: unused?
 	public void setRelatedResourceIdentifier(String relatedResourceIdentifier) {
 		this.relatedResourceIdentifier = relatedResourceIdentifier;
 	}

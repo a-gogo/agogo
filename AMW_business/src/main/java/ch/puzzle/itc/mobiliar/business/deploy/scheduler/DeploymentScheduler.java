@@ -24,6 +24,7 @@ import ch.puzzle.itc.mobiliar.business.deploy.boundary.DeploymentBoundary;
 import ch.puzzle.itc.mobiliar.business.deploy.control.DeploymentExecuterService;
 import ch.puzzle.itc.mobiliar.business.deploy.entity.DeploymentEntity;
 import ch.puzzle.itc.mobiliar.business.deploy.entity.DeploymentFailureReason;
+import ch.puzzle.itc.mobiliar.business.deploy.entity.DeploymentState;
 import ch.puzzle.itc.mobiliar.business.deploy.event.DeploymentEvent;
 import ch.puzzle.itc.mobiliar.business.generator.control.extracted.GenerationModus;
 import ch.puzzle.itc.mobiliar.business.shakedown.control.ShakedownTestExecuterService;
@@ -126,8 +127,7 @@ public class DeploymentScheduler {
 			executePreDeployments();
 			break;
 		case UPDATE:
-			switch(event.getNewState()) {
-			case READY_FOR_DEPLOYMENT:
+			if (event.getNewState() == DeploymentState.READY_FOR_DEPLOYMENT) {
 				if(event.getDeploymentId() != null) {
 					deploymentExecuterService.generateConfigurationAndExecuteDeployment(event.getDeploymentId(),
 							GenerationModus.DEPLOY);

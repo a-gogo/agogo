@@ -465,7 +465,7 @@ public class PermissionBoundaryTest {
     @Test(expected=IllegalArgumentException.class)
     public void shouldThrowAnExceptionIfRequestedPermissionDoesNotExist() {
         // given // when // then
-        boolean result = permissionBoundary.hasPermissionForResourceType("NotAPermission", "CREATE", "APP");
+        permissionBoundary.hasPermissionForResourceType("NotAPermission", "CREATE", "APP");
     }
 
     @Test(expected=IllegalArgumentException.class)

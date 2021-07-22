@@ -26,8 +26,8 @@ import ch.puzzle.itc.mobiliar.business.environment.entity.HasContexts;
 import ch.puzzle.itc.mobiliar.business.property.entity.PropertyDescriptorEntity;
 import ch.puzzle.itc.mobiliar.business.property.entity.PropertyEntity;
 import ch.puzzle.itc.mobiliar.business.property.entity.ResourceEditProperty;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 import ch.puzzle.itc.mobiliar.business.auditview.control.AuditService;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

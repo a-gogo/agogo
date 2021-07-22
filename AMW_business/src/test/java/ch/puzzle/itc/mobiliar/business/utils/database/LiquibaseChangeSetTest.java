@@ -13,10 +13,7 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 
 import static junit.framework.TestCase.fail;
@@ -30,7 +27,7 @@ public class LiquibaseChangeSetTest {
 
 
     @Test
-    public void shouldLoadInitialDataSetInEmptyDatabase() throws LiquibaseException, SQLException, ClassNotFoundException {
+    public void shouldLoadInitialDataSetInEmptyDatabase() throws Exception {
         // given
         Class.forName("org.h2.Driver");
         conn = DriverManager.getConnection("jdbc:h2:mem:testdata", "sa", "");
@@ -41,6 +38,7 @@ public class LiquibaseChangeSetTest {
         //when
         liquibase.update(new Contexts(), new LabelExpression());
 
+        liquibase.close();
         // then must not fail
         if(conn !=null) {
             conn.close();
@@ -48,7 +46,7 @@ public class LiquibaseChangeSetTest {
     }
 
     @Test
-    public void shouldNotHaveAnyOpenChangeSets() throws LiquibaseException, SQLException, ClassNotFoundException, IOException {
+    public void shouldNotHaveAnyOpenChangeSets() throws Exception {
         // given
         File testDB = EntityManagerProducerIntegrationTestImpl.copyIntegrationTestDB("amwFileDbIntegrationOpenChangeSets.mv.db");
         conn = DriverManager.getConnection("jdbc:h2:file:" + testDB.getParent().toString() + "/amwFileDbIntegrationOpenChangeSets", "sa", "");
@@ -72,7 +70,8 @@ public class LiquibaseChangeSetTest {
             fail("There are open Database Changesets on the local H2 Database, that can be applied without error, run AMW_db_scripts/update_h2_test_db.sh to apply them directly");
         }
 
-        if(conn !=null) {
+        liquibase.close();
+        if(conn != null) {
             conn.close();
         }
     }

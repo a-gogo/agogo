@@ -182,7 +182,6 @@ public class DeploymentTest {
                         Mockito.any(DefaultResourceTypeDefinition.class),
                                 Mockito.any(ReleaseEntity.class))).thenAnswer(new Answer<Set<ResourceEntity>>() {
             @Override public Set<ResourceEntity> answer(InvocationOnMock invocation) {
-               ResourceEntity appServer = (ResourceEntity)invocation.getArguments()[0];
                HashSet<ResourceEntity> set = new HashSet<>();
                for(Application a : applicationServer.getAMWApplications()){
                   final String name = a.getName();

@@ -20,7 +20,7 @@
 
 package ch.puzzle.itc.mobiliar.common.exception;
 
-public class PermissionNotFoundException extends AMWException{
+public class PermissionNotFoundException extends NotFoundException{
 
 	private static final long serialVersionUID = 1L;
 	

@@ -30,7 +30,6 @@ import ch.puzzle.itc.mobiliar.business.property.entity.PropertyEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceGroupEntity;
 import ch.puzzle.itc.mobiliar.business.security.control.PermissionService;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.TemplatePropertyException;
 import ch.puzzle.itc.mobiliar.test.testrunner.PersistenceTestRunner;
 import org.junit.Before;
@@ -76,7 +75,7 @@ public class PersistingEntityBuilderTest {
 	}
 
 	@Test
-	public void testAmw() throws GeneralDBException {
+	public void testAmw() {
 		builder = new PersistingEntityBuilder(entityManager).buildAmw();
 		assertEquals(16, builder.getResourceCount(ResourceEntity.class));
 	}

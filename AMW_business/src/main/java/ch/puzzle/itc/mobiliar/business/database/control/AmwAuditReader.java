@@ -20,7 +20,6 @@
 
 package ch.puzzle.itc.mobiliar.business.database.control;
 
-import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.exception.RevisionDoesNotExistException;

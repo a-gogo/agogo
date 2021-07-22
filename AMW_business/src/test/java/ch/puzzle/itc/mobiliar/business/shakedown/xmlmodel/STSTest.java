@@ -23,7 +23,6 @@ package ch.puzzle.itc.mobiliar.business.shakedown.xmlmodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.puzzle.itc.mobiliar.business.shakedown.xmlmodel.STS;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

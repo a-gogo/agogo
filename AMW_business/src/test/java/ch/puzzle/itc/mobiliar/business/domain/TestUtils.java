@@ -21,12 +21,11 @@
 package ch.puzzle.itc.mobiliar.business.domain;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.apache.commons.io.Charsets;
 
 import ch.puzzle.itc.mobiliar.business.generator.control.extracted.properties.AppServerRelationProperties;
 import ch.puzzle.itc.mobiliar.business.generator.control.extracted.templates.GenerationUnit;
@@ -43,7 +42,7 @@ import freemarker.template.TemplateModelException;
 public class TestUtils {
 	public static String readRecursionTemplate() {
 		try {
-			return Resources.toString(Resources.getResource("rekursiv_macro_4.txt"), Charsets.UTF_8);
+			return Resources.toString(Resources.getResource("rekursiv_macro_4.txt"), StandardCharsets.UTF_8);
 		}
 		catch (IOException e) {
 			e.printStackTrace();

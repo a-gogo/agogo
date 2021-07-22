@@ -34,7 +34,6 @@ import ch.puzzle.itc.mobiliar.business.property.control.PropertyTypeScreenDomain
 import ch.puzzle.itc.mobiliar.business.property.control.PropertyTypeService;
 import ch.puzzle.itc.mobiliar.business.property.entity.PropertyTypeEntity;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.NotAuthorizedException;
 import ch.puzzle.itc.mobiliar.common.exception.PropertyTypeNotDeletableException;
 import ch.puzzle.itc.mobiliar.common.exception.PropertyTypeNotFoundException;
@@ -133,9 +132,6 @@ public class PropertyTypeController implements Serializable {
 			GlobalMessageAppender.addErrorMessage("The property type has not been found.");
 		} catch (RenameException e) {
 			GlobalMessageAppender.addErrorMessage("Was not able to rename the property type.");
-		} catch (GeneralDBException e) {
-			String message = "Could not rename property type.";
-			GlobalMessageAppender.addErrorMessage(e.getErrorMessage() + " " + message);
 		} catch (ElementAlreadyExistsException e) {
 			GlobalMessageAppender.addErrorMessage("Was not able to save the property type.");
 		}
@@ -175,8 +171,6 @@ public class PropertyTypeController implements Serializable {
 			}
 		} catch (ElementAlreadyExistsException e) {
 			GlobalMessageAppender.addErrorMessage("Property type already exists.");
-		} catch (GeneralDBException e) {
-			GlobalMessageAppender.addErrorMessage(e.getErrorMessage() + " Could not create the new property type.");
 		}
 
 		return isSuccessful;

@@ -20,13 +20,6 @@
 
 package ch.puzzle.itc.mobiliar.builders;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.sql.Clob;
-import java.sql.SQLException;
-
-import org.mockito.Mockito;
-
 import ch.puzzle.itc.mobiliar.business.foreignable.entity.ForeignableOwner;
 import ch.puzzle.itc.mobiliar.business.property.entity.PropertyDescriptorEntity;
 import ch.puzzle.itc.mobiliar.business.property.entity.ResourceEditProperty;
@@ -324,17 +317,5 @@ public class ResourceEditPropertyBuilder {
 				isNullable, isOptional, isEncrypted, cardinalityProperty, isTesting, validationLogic, mik, propContextId,
 				typeContextId, descriptorId, propContName, typeContName, typeId, propertyValueTypeId, masterTypeId, typeName,
 				validationRegex, propertyId, origin, loadedFor, resourceName, descriptorOrigin, fcOwner, fcExternalKey, fcExternalLink);
-	}
-
-	private Clob convert(String value) {
-		Clob clob = Mockito.mock(Clob.class);
-		Reader reader = new StringReader(value);
-		try {
-			Mockito.when(clob.getCharacterStream()).thenReturn(reader);
-		}
-		catch (SQLException e) {
-			// should not happen in mocking mode
-		}
-		return clob;
 	}
 }

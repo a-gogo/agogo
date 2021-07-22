@@ -90,7 +90,6 @@ public class ResourceGroupLocator {
      * @param myAmw
      * @param fetchResources determines if resources fetched
      * @return a list of Groups
-     * @throws ch.puzzle.itc.mobiliar.common.exception.GeneralDBException
      */    
 	public List<ResourceGroupEntity> getGroupsForType(String resourceTypeName, List<Integer> myAmw, boolean fetchResources, boolean sorted) {
 		return resourceGroupControl.getGroupsForType(resourceTypeName, myAmw, fetchResources, sorted);

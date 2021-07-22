@@ -596,9 +596,6 @@ public class DeploymentsRest {
     @ApiOperation(value = "Update the DeploymentDate of a Deployment - used by Angular")
     public Response changeDeploymentDate(@ApiParam("deployment Id") @PathParam("id") Integer deploymentId, @ApiParam("New date") long date) {
         Date newDate = new Date(date);
-        if (newDate == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ExceptionDto("Invalid deployment date")).build();
-        }
         try {
             deploymentBoundary.changeDeploymentDate(deploymentId, newDate);
         } catch (RuntimeException e) {

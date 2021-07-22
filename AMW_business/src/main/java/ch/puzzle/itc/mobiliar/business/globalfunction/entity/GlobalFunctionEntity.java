@@ -29,14 +29,13 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
-import ch.puzzle.itc.mobiliar.business.utils.ValidationHelper;
 import lombok.Getter;
 import lombok.Setter;
 
 import org.hibernate.envers.Audited;
 
 import ch.puzzle.itc.mobiliar.business.database.control.Constants;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Audited

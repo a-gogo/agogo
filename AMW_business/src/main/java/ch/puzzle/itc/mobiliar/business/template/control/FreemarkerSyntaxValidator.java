@@ -26,6 +26,7 @@ import java.util.Objects;
 import javax.ejb.Stateless;
 
 import ch.puzzle.itc.mobiliar.common.exception.AMWException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
@@ -38,10 +39,11 @@ public class FreemarkerSyntaxValidator {
 	 * 
 	 * @param freemarkerContent
 	 * @throws AMWException
-	 *              if the template can not be successfully validate. The error message distincts between
+	 *              The error message distincts between
 	 *              parsing exceptions and other (unexpected) potential issues.
+	 * @throws ValidationException if the template can not be successfully validate.
 	 */
-	public void validateFreemarkerSyntax(String freemarkerContent) throws AMWException {
+	public void validateFreemarkerSyntax(String freemarkerContent) throws ValidationException, AMWException {
         Objects.requireNonNull(freemarkerContent, "freemarker content must not be null");
 		Configuration c = new Configuration();
 		c.setStrictSyntaxMode(true);
@@ -56,7 +58,7 @@ public class FreemarkerSyntaxValidator {
 		}
 		catch (ParseException e) {
 			// Validation failed! - was not able to parse the template!
-			throw new AMWException("The template is syntactically incorrect: " + e.getMessage(), e);
+			throw new ValidationException("The template is syntactically incorrect: " + e.getMessage(), e);
 		}
 		catch (IOException e) {
 			// Something else went wrong

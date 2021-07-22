@@ -25,8 +25,6 @@ import ch.puzzle.itc.mobiliar.business.property.entity.PropertyTypeEntity;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**

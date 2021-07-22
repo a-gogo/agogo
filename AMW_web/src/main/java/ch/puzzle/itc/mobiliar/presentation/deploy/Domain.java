@@ -21,7 +21,6 @@
 package ch.puzzle.itc.mobiliar.presentation.deploy;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.enterprise.event.Event;
 import java.util.ArrayList;

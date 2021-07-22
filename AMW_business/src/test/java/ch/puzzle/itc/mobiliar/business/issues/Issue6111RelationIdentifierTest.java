@@ -52,7 +52,6 @@ public class Issue6111RelationIdentifierTest extends TemplateProcessorBaseTest<P
 	@PersistenceContext
 	EntityManager entityManager;
 	
-	private ResourceEntity as;
 	private ResourceEntity app;
 
 	private ResourceEntity adIntern;
@@ -69,7 +68,6 @@ public class Issue6111RelationIdentifierTest extends TemplateProcessorBaseTest<P
 		adIntern = builder.buildResource(adType, EntityBuilderType.AD.name);
 		adExtern = builder.buildResource(adType, "adExtern");
 
-		as = builder.as;
 		app = builder.app;
 
 		ConsumedResourceRelationEntity adInternRelation = builder.buildConsumedRelation(app, adIntern, ForeignableOwner.AMW);

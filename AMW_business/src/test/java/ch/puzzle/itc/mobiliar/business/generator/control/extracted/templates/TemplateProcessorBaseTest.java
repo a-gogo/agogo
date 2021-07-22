@@ -22,6 +22,7 @@ package ch.puzzle.itc.mobiliar.business.generator.control.extracted.templates;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -158,7 +159,7 @@ public class TemplateProcessorBaseTest<T extends EntityBuilder> {
 	protected String readFile(String name) throws IOException {
 		for (File file : files) {
 			if (file.getName().equals(name)) {
-				return FileUtils.readFileToString(file);
+				return FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 			}
 		}
 		throw new RuntimeException("file not found: " + name);
@@ -175,8 +176,7 @@ public class TemplateProcessorBaseTest<T extends EntityBuilder> {
 			templates.addAll(results);
 		}
 
-		GenerationUnit generationUnit = GenerationUnit.forResource(work.getNodeGenerationUnits(), options.getContext().getNode());
-
+		GenerationUnit.forResource(work.getNodeGenerationUnits(), options.getContext().getNode());
 
 		for (GenerationUnit unit : work.getNodeGenerationUnits()) {
 			if(!unit.isTemplateGenerationDisabled()) {

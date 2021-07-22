@@ -20,7 +20,6 @@
 
 package ch.puzzle.itc.mobiliar.business.globalfunction.entity;
 
-import ch.puzzle.itc.mobiliar.business.globalfunction.entity.GlobalFunctionEntity;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

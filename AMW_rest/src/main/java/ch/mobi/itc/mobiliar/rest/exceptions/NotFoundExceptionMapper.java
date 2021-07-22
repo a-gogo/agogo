@@ -24,13 +24,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
+import ch.puzzle.itc.mobiliar.common.exception.NotFoundException;
 
 
 @Provider
-public class ResourceNotFoundExceptionMapper implements ExceptionMapper<ResourceNotFoundException> {
+public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
     @Override
-    public Response toResponse(ResourceNotFoundException exception) {
+    public Response toResponse(NotFoundException exception) {
         return Response.status(Response.Status.NOT_FOUND).entity(new ExceptionDto(exception)).build();
     }
 }

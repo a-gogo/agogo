@@ -29,7 +29,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.control.ResourceGroupPersis
 import ch.puzzle.itc.mobiliar.business.resourcegroup.control.ResourceTypeProvider;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.*;
 import ch.puzzle.itc.mobiliar.business.security.control.PermissionService;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceTypeNotFoundException;
 import ch.puzzle.itc.mobiliar.common.util.ApplicationServerContainer;
@@ -114,7 +113,6 @@ public class CommonDomainService {
      * @param resourceId
      * @return the resource entity with the given id
      * @throws ResourceNotFoundException
-     * @throws GeneralDBException
      */
     public ResourceEntity getResourceEntityById(int resourceId) throws ResourceNotFoundException {
         ResourceEntity result = null;

@@ -27,6 +27,7 @@ import ch.puzzle.itc.mobiliar.business.environment.entity.AbstractContext;
 import ch.puzzle.itc.mobiliar.business.environment.entity.ContextDependency;
 import ch.puzzle.itc.mobiliar.business.environment.entity.HasContexts;
 import ch.puzzle.itc.mobiliar.business.environment.entity.HasTypeContext;
+import ch.puzzle.itc.mobiliar.business.resourcegroup.boundary.ResourceLocator;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceContextEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceTypeContextEntity;
@@ -38,12 +39,16 @@ import ch.puzzle.itc.mobiliar.business.security.entity.Action;
 import ch.puzzle.itc.mobiliar.business.security.entity.Permission;
 import ch.puzzle.itc.mobiliar.business.security.interceptor.HasPermission;
 import ch.puzzle.itc.mobiliar.business.template.control.FreemarkerSyntaxValidator;
+import ch.puzzle.itc.mobiliar.business.template.control.TemplatesScreenDomainService;
 import ch.puzzle.itc.mobiliar.business.template.entity.RevisionInformation;
 import ch.puzzle.itc.mobiliar.business.template.entity.TemplateDescriptorEntity;
 import ch.puzzle.itc.mobiliar.common.exception.AMWException;
 import ch.puzzle.itc.mobiliar.common.exception.NotAuthorizedException;
+import ch.puzzle.itc.mobiliar.common.exception.NotFoundException;
+import ch.puzzle.itc.mobiliar.common.exception.ResourceNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.ResourceTypeNotFoundException;
 import ch.puzzle.itc.mobiliar.common.exception.TemplateNotDeletableException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 import ch.puzzle.itc.mobiliar.common.util.SystemCallTemplate;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.envers.AuditReader;
@@ -77,8 +82,14 @@ public class TemplateEditor {
 	@Inject
 	FreemarkerSyntaxValidator freemarkerValidator;
 
-    @Inject
-    AuditService auditService;
+	@Inject
+	AuditService auditService;
+
+	@Inject
+	ResourceLocator resourceLocator;
+
+	@Inject
+	TemplatesScreenDomainService templateService;
 
 	@Inject
 	private Logger log;
@@ -90,9 +101,9 @@ public class TemplateEditor {
 	public TemplateDescriptorEntity getTemplateByIdAndRevision(Integer templateId, Number revisionId) {
 		TemplateDescriptorEntity templateDescriptorEntity = AuditReaderFactory.get(entityManager).find(
 				TemplateDescriptorEntity.class, templateId, revisionId);
-	     //We have to ensure, that the target platforms are loaded. To make sure, that the compiler doesn't optimize the access to the target platforms away, we have to do this ugly hack.
-	    	templateDescriptorEntity.getTargetPlatforms().size();
-	    	return templateDescriptorEntity;
+		//We have to ensure, that the target platforms are loaded. To make sure, that the compiler doesn't optimize the access to the target platforms away, we have to do this ugly hack.
+		templateDescriptorEntity.getTargetPlatforms().size();
+		return templateDescriptorEntity;
 	}
 
 	public List<RevisionInformation> getTemplateRevisions(Integer templateId) {
@@ -107,28 +118,6 @@ public class TemplateEditor {
 		Collections.sort(result);
 		return result;
 	}
-
-	public List<TemplateDescriptorEntity> loadTemplateDescriptors(HasContexts<?> hasContext) {
-		hasContext = entityManager.find(hasContext.getClass(), hasContext.getId());
-		List<? extends ContextDependency<?>> dependencies = hasContext.getContextsByLowestContext(contextService.getGlobalResourceContextEntity());
-		List<TemplateDescriptorEntity> templates = new ArrayList<>();
-		for (ContextDependency<?> dep : dependencies) {
-			templates.addAll(dep.getTemplates());
-		}
-		Collections.sort(templates, new Comparator<TemplateDescriptorEntity>() {
-
-			@Override
-			public int compare(TemplateDescriptorEntity t1, TemplateDescriptorEntity t2) {
-				if (t1 == null || t1.getName() == null) {
-					return t2 == null || t2.getName() == null ? 0 : -1;
-				} else {
-					return t2 == null ? 1 : t1.getName().compareTo(t2.getName());
-				}
-			}
-		});
-		return templates;
-	}
-
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	boolean hasTemplateWithSameName(TemplateDescriptorEntity template, HasContexts<?> hasContext) {
@@ -167,7 +156,7 @@ public class TemplateEditor {
 	}
 
 	@HasPermission(permission = Permission.RESOURCE_TEMPLATE, oneOfAction = {Action.UPDATE, Action.CREATE})
-	public void saveTemplateForResource(TemplateDescriptorEntity template, Integer resourceId,
+	public void saveTemplateForResource(TemplateDescriptorEntity template, ResourceEntity resourceEntity,
 										boolean testingMode) throws AMWException {
 		permissionService.assertHasPermissionShakedownTestMode(testingMode);
 		if (!testingMode) {
@@ -176,8 +165,22 @@ public class TemplateEditor {
 															  action,
 															  "create/ modify resource templates");
 		}
-		ResourceEntity resourceEntity = entityManager.find(ResourceEntity.class, resourceId);
 		saveTemplate(template, resourceEntity);
+	}
+
+	public void saveTemplateForResource(TemplateDescriptorEntity template, Integer resourceId,
+										boolean testingMode) throws AMWException {
+		ResourceEntity resourceEntity = entityManager.find(ResourceEntity.class, resourceId);
+		this.saveTemplateForResource(template, resourceEntity, testingMode);
+	}
+
+	public void saveTemplateForResource(TemplateDescriptorEntity template, String resourceGroupName, String releaseName,
+			boolean testingMode) throws AMWException {
+		ResourceEntity resourceEntity = resourceLocator.getResourceByGroupNameAndRelease(resourceGroupName, releaseName);
+		if (resourceEntity == null) {
+			throw new ResourceNotFoundException("Resource not found");
+		}
+		this.saveTemplateForResource(template, resourceEntity, testingMode);
 	}
 
 	@HasPermission(permission = Permission.RESOURCETYPE_TEMPLATE, oneOfAction = {Action.UPDATE, Action.CREATE})
@@ -194,33 +197,33 @@ public class TemplateEditor {
 		saveTemplate(template, resourceTypeEntity);
 	}
 
-	void validateTemplate(TemplateDescriptorEntity templateDescriptorEntity) throws AMWException {
+	void validateTemplate(TemplateDescriptorEntity templateDescriptorEntity) throws ValidationException {
 		if (StringUtils.isEmpty(templateDescriptorEntity.getName())) {
-			throw new AMWException("The template name must not be empty");
+			throw new ValidationException("The template name must not be empty");
 		}
 
 		if (templateDescriptorEntity.getTargetPath() != null && templateDescriptorEntity.getTargetPath()
 																						.startsWith("/")) {
-			throw new AMWException("Absolute paths are not allowed for file path");
+			throw new ValidationException("Absolute paths are not allowed for file path");
 		}
 
 		if (templateDescriptorEntity.getTargetPath() != null && templateDescriptorEntity.getTargetPath()
 																						.contains("../")) {
-			throw new AMWException("No path traversals like '../' allowed in file path");
+			throw new ValidationException("No path traversals like '../' allowed in file path");
 		}
 	}
 
-	void saveTemplate(TemplateDescriptorEntity template, HasContexts<?> hasContext) throws AMWException {
+	void saveTemplate(TemplateDescriptorEntity template, HasContexts<?> hasContext) throws ValidationException, AMWException {
 		validateTemplate(template);
 		freemarkerValidator.validateFreemarkerSyntax(template.getFileContent());
 		hasContext = entityManager.find(hasContext.getClass(), hasContext.getId());
 		auditService.storeIdInThreadLocalForAuditLog(hasContext);
 		if (hasTemplateWithSameName(template, hasContext)) {
-			throw new AMWException("The defined template name is already in use");
+			throw new ValidationException("The defined template name is already in use");
 		}
 		if (hasContext instanceof HasTypeContext
 				&& hasTemplateWithSameName(template, ((HasTypeContext<?>) hasContext).getTypeContext())) {
-			throw new AMWException("The defined template name is already in use");
+			throw new ValidationException("The defined template name is already in use");
 		}
 
 
@@ -242,13 +245,17 @@ public class TemplateEditor {
 	 */
 	public void removeTemplate(Integer templateId) throws TemplateNotDeletableException {
 		TemplateDescriptorEntity templateDescriptor = entityManager.find(TemplateDescriptorEntity.class, templateId);
+		this.removeTemplate(templateDescriptor);
+	}
+
+	private void removeTemplate(TemplateDescriptorEntity templateDescriptor) throws TemplateNotDeletableException {
 		if (templateDescriptor != null && templateDescriptor.getName() != null
 				&& SystemCallTemplate.getName().equals(templateDescriptor.getName())) {
 			String message = SystemCallTemplate.getName() + " Template can't be deleted since it is a system template!";
 			log.info(message);
 			throw new TemplateNotDeletableException(message);
 		}
-		AbstractContext owner = getOwnerOfTemplate(templateDescriptor);
+		AbstractContext owner = templateService.getOwnerOfTemplate(templateDescriptor);
 		if (owner != null) {
 			if (owner instanceof ResourceContextEntity && !permissionService.hasPermission(Permission.RESOURCE_TEMPLATE,
 																						   null,
@@ -279,53 +286,29 @@ public class TemplateEditor {
 			owner.removeTemplate(templateDescriptor);
 		}
 		entityManager.remove(templateDescriptor);
-		log.info("Template " + templateId + " has been deleted successfully.");
+		log.info("Template " + templateDescriptor.getId() + " has been deleted successfully.");
 	}
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	AbstractContext getOwnerOfTemplate(TemplateDescriptorEntity templateDescriptor) {
-		// ContextEntity
-		AbstractContext c;
-		c = (AbstractContext) getSingleObjectOrNull(entityManager.createQuery(
-				"select distinct n from ContextEntity n where :templ member of n.templates")
-				.setParameter("templ", templateDescriptor));
-		if (c != null) {
-			return c;
+	public void removeTemplate(String resourceGroupName, String releaseName, String templateName, boolean testingMode)
+			throws ValidationException, TemplateNotDeletableException, NotFoundException {
+		ResourceEntity resource = resourceLocator.getResourceByGroupNameAndRelease(resourceGroupName, releaseName);
+		if (resource == null) {
+			throw new ResourceNotFoundException("Resource not found");
 		}
-		c = (AbstractContext) getSingleObjectOrNull(entityManager.createQuery(
-				"select distinct n from ContextTypeEntity n where :templ member of n.templates")
-				.setParameter("templ", templateDescriptor));
-		if (c != null) {
-			return c;
-		}
-		c = (AbstractContext) getSingleObjectOrNull(entityManager.createQuery(
-				"select distinct n from ResourceContextEntity n where :templ member of n.templates")
-				.setParameter("templ", templateDescriptor));
-		if (c != null) {
-			return c;
-		}
-		c = (AbstractContext) getSingleObjectOrNull(entityManager
-				.createQuery(
-						"select distinct n from ResourceRelationContextEntity n where :templ member of n.templates")
-						.setParameter("templ", templateDescriptor));
-		if (c != null) {
-			return c;
-		}
-		c = (AbstractContext) getSingleObjectOrNull(entityManager
-				.createQuery(
-						"select distinct n from ResourceRelationTypeContextEntity n where :templ member of n.templates")
-						.setParameter("templ", templateDescriptor));
-		if (c != null) {
-			return c;
-		}
-		c = (AbstractContext) getSingleObjectOrNull(entityManager.createQuery(
-				"select distinct n from ResourceTypeContextEntity n where :templ member of n.templates")
-				.setParameter("templ", templateDescriptor));
-		if (c != null) {
-			return c;
-		}
-		return null;
+		List<TemplateDescriptorEntity> templates = templateService.getGlobalTemplateDescriptorsForResource(resource, testingMode);
 
+		TemplateDescriptorEntity temp = null;
+		for (TemplateDescriptorEntity template : templates) {
+			if (templateName.equals(template.getName())) {
+				temp = template;
+				break;
+			}
+		}
+
+		if (temp == null) {
+			throw new NotFoundException("Template not found");
+		}
+		this.removeTemplate(temp);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

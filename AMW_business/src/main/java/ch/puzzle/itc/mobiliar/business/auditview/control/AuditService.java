@@ -214,39 +214,4 @@ public class AuditService {
         ThreadLocalUtil.setThreadVariable(ThreadLocalUtil.KEY_RESOURCE_ID, resourceId);
     }
 
-    /**
-     * @return a list of three-element arrays, containing:
-     * <ol>
-     * <li>the entity instance</li>
-     * <li>revision entity, corresponding to the revision at which the entity was modified. If no custom
-     * revision entity is used, this will be an instance of {@link org.hibernate.envers.DefaultRevisionEntity}</li>
-     * <li>type of the revision (an enum instance of class {@link org.hibernate.envers.RevisionType})</li>
-     * </ol>
-     */
-    private <T> List getAllRevisionsForEntity(T entity, Integer id){
-        Objects.requireNonNull(entity, "Entity can not be null");
-        Objects.requireNonNull(id, "Id can not be null");
-
-        AuditReader reader = AuditReaderFactory.get(entityManager);
-        Number revisionNumberOneYearAgo = getRevisionNumberOneYearAgo(reader);
-
-        if (reader.isEntityClassAudited(entity.getClass())) {
-            AuditQuery query = reader.createQuery().forRevisionsOfEntity(entity.getClass(), false, true)
-                    .add(AuditEntity.id().eq(id))
-                    .add(AuditEntity.revisionNumber().gt(revisionNumberOneYearAgo))
-                    .addOrder(AuditEntity.revisionNumber().desc());
-            return (List<T>) query.getResultList();
-        }
-        return null;
-    }
-
-    private Number getRevisionNumberOneYearAgo(AuditReader reader) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        int currentYear = c.get(Calendar.YEAR);
-        c.set(Calendar.YEAR, currentYear -1);
-        return reader.getRevisionNumberForDate(c.getTime());
-    }
-
-
 }

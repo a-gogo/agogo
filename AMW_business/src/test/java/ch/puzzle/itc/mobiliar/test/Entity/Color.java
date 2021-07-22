@@ -20,8 +20,6 @@
 
 package ch.puzzle.itc.mobiliar.test.Entity;
 
-import lombok.Getter;
-
 import javax.persistence.*;
 
 @Entity
@@ -37,6 +35,7 @@ public class Color {
     @Version
     private long v;
 
+    @SuppressWarnings("unused")
     private Color() {
         // used by JPA
     }

@@ -41,7 +41,7 @@ import ch.puzzle.itc.mobiliar.business.generator.control.extracted.templates.App
 import ch.puzzle.itc.mobiliar.business.property.boundary.PropertyEditor;
 import ch.puzzle.itc.mobiliar.business.server.boundary.ServerView;
 import ch.puzzle.itc.mobiliar.business.server.entity.ServerTuple;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 
 @RequestScoped
 @Path("/hostNames")

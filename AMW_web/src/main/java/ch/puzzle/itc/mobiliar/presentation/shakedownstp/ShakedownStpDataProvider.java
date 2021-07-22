@@ -33,9 +33,9 @@ import org.richfaces.component.SequenceIterationStatus;
 import ch.puzzle.itc.mobiliar.business.shakedown.control.ShakedownStpService;
 import ch.puzzle.itc.mobiliar.business.shakedown.entity.ShakedownStpEntity;
 import ch.puzzle.itc.mobiliar.common.exception.ElementAlreadyExistsException;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.exception.NotAuthorizedException;
 import ch.puzzle.itc.mobiliar.common.exception.StpNotFoundException;
+import ch.puzzle.itc.mobiliar.common.exception.TemplateNotDeletableException;
 import ch.puzzle.itc.mobiliar.common.util.ConfigurationService;
 import ch.puzzle.itc.mobiliar.common.util.ConfigKey;
 import ch.puzzle.itc.mobiliar.presentation.CompositeBackingBean;
@@ -155,7 +155,7 @@ public class ShakedownStpDataProvider implements Serializable {
 		return stp;
 	}
 
-	public void deleteSTP() {
+	public void deleteSTP() throws TemplateNotDeletableException {
 		deleteSTP(currentSTPSelected().getId());
 		loadStps();
 	}
@@ -313,7 +313,7 @@ public class ShakedownStpDataProvider implements Serializable {
 		return isSucessfully;
 	}
 
-	private boolean deleteSTP(Integer stpId) {
+	private boolean deleteSTP(Integer stpId) throws TemplateNotDeletableException {
 		boolean isSucessfully = false;
 		try {
 			if(stpId == null){
@@ -335,9 +335,6 @@ public class ShakedownStpDataProvider implements Serializable {
 			}
 		} catch (StpNotFoundException stpe) {
 			String errorMessage = "Could not load selected STP for deleted";
-			GlobalMessageAppender.addErrorMessage(errorMessage);
-		}catch (GeneralDBException gdbe) {
-			String errorMessage = "Could not load STP";
 			GlobalMessageAppender.addErrorMessage(errorMessage);
 		}
 		return isSucessfully;

@@ -29,8 +29,8 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceGroupEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceTypeEntity;
 import ch.puzzle.itc.mobiliar.business.resourcerelation.entity.ConsumedResourceRelationEntity;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
 import ch.puzzle.itc.mobiliar.business.utils.ValidationHelper;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
 import ch.puzzle.itc.mobiliar.common.util.ConfigKey;
 import ch.puzzle.itc.mobiliar.common.util.ConfigurationService;
 
@@ -180,19 +180,6 @@ public class ResourceLocator {
             throws ValidationException {
         ValidationHelper.validateNotNullOrEmptyChecked(groupName);
         return resourceRepository.getResourcesByGroupNameWithAllRelationsOrderedByRelease(groupName);
-    }
-
-    /**
-     * @param name
-     * @param releaseName
-     * @return
-     * @throws ValidationException thrown if one of the arguments is either empty or null
-     */
-    public ResourceEntity getResourceByNameAndReleaseWithTemplates(String name, String releaseName)
-            throws ValidationException {
-        ValidationHelper.validateNotNullOrEmptyChecked(name, releaseName);
-        ReleaseEntity release = releaseLocator.getReleaseByName(releaseName);
-        return resourceRepository.getResourceByNameAndReleaseWithTemplates(name, release);
     }
 
     /**

@@ -12,7 +12,7 @@ public enum ConfigKey {
     LOGS_PATH("amw.logsPath", "AMW_LOGSPATH", false),
 
     /** Age of logs to be deleted in minutes */
-    LOGS_CLEANUP_AGE("amw.logsLeanupAge", "AMW_LOGSLEANUPAGE", new Integer(7*24*60).toString(), false),
+    LOGS_CLEANUP_AGE("amw.logsLeanupAge", "AMW_LOGSLEANUPAGE", Integer.valueOf(7*24*60).toString(), false),
     LOGS_CLEANUP_SCHEDULER_DISABLED("amw.logsCleanupSchedulerDisabled", "AMW_LOGSCLEANUPSCHEDULERDISABLED", "false", false),
     /** Path where the generator writes the files */
     GENERATOR_PATH("amw.generatorPath", "AMW_GENERATORPATH", false),

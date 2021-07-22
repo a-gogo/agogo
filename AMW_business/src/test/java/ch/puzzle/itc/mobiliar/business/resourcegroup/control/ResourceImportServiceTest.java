@@ -26,7 +26,6 @@ import java.util.*;
 
 import ch.puzzle.itc.mobiliar.builders.ReleaseEntityBuilder;
 import ch.puzzle.itc.mobiliar.common.util.ConfigKey;
-import ch.puzzle.itc.mobiliar.common.util.ConfigurationService;
 import org.junit.Before;
 import org.junit.Test;
 

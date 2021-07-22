@@ -36,7 +36,6 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.MERGE;
@@ -54,7 +53,7 @@ import static javax.persistence.CascadeType.PERSIST;
         @AssociationOverride(name = "propertyDescriptors", joinTable = @JoinTable(name = "TAMW_context_propDesc", joinColumns = @JoinColumn(name="TAMW_CONTEXT_ID", referencedColumnName="ID"))),
         @AssociationOverride(name = "templates", joinTable = @JoinTable(name = "TAMW_context_tmplDesc", joinColumns = @JoinColumn(name="TAMW_CONTEXT_ID", referencedColumnName="ID")))
 })
-public class ContextEntity extends AbstractContext implements Serializable {
+public class ContextEntity extends AbstractContext {
     public static final String LOAD_CONTEXT_BY_NAME_QUERY_NAME = "loadContextByName";
 
 

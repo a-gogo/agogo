@@ -47,9 +47,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 
 /**

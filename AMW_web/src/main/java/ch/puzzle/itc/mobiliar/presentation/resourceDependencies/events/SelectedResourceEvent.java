@@ -23,7 +23,6 @@ package ch.puzzle.itc.mobiliar.presentation.resourceDependencies.events;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * This is an event container for notification of observers that another resource has been selected on the gui. If no resource has been selected, the corresponding relation field is null.

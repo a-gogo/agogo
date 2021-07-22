@@ -32,7 +32,6 @@ import ch.puzzle.itc.mobiliar.business.releasing.entity.ReleaseEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.boundary.ResourceLocator;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.control.CopyResourceDomainService;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.control.CopyResourceResult;
-import ch.puzzle.itc.mobiliar.business.resourcegroup.control.ResourceImportService;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.control.ResourceRepository;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceEntity;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceGroupEntity;
@@ -73,9 +72,6 @@ public class MaiaAmwFederationServicePredecessorHandler {
 
     @Inject
     ForeignableService foreignableService;
-
-    @Inject
-    private ResourceImportService resourceImportService;
 
     @Inject
     private ResourceRelationService resourceRelationService;

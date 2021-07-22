@@ -20,10 +20,9 @@
 
 package ch.puzzle.itc.mobiliar.business.utils;
 
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
-import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.Specializes;
@@ -41,7 +40,7 @@ public class SessionContextIntegrationTestProducer extends SessionContextProduce
     public SessionContext createSessionContext(){
         sessionContext = Mockito.mock(SessionContext.class);
 
-        Mockito.when(sessionContext.isCallerInRole(Matchers.anyString())).thenReturn(true);
+        Mockito.when(sessionContext.isCallerInRole(ArgumentMatchers.anyString())).thenReturn(true);
         return sessionContext;
     }
 }

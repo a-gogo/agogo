@@ -1,7 +1,8 @@
 package ch.mobi.itc.mobiliar.rest.resources;
 
 import ch.puzzle.itc.mobiliar.business.resourcegroup.boundary.ResourceLocator;
-import ch.puzzle.itc.mobiliar.business.utils.ValidationException;
+import ch.puzzle.itc.mobiliar.common.exception.ValidationException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

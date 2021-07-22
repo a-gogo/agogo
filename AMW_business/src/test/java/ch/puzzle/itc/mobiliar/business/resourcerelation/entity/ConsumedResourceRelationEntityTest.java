@@ -22,7 +22,6 @@ package ch.puzzle.itc.mobiliar.business.resourcerelation.entity;
 
 import ch.puzzle.itc.mobiliar.builders.ResourceEntityBuilder;
 import ch.puzzle.itc.mobiliar.builders.ResourceRelationEntityBuilder;
-import ch.puzzle.itc.mobiliar.builders.TargetPlatformEntityBuilder;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.control.CopyResourceDomainService;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.control.CopyResourceDomainServiceTestHelper;
 import ch.puzzle.itc.mobiliar.business.resourcegroup.control.CopyUnit;

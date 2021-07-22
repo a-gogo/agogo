@@ -64,17 +64,15 @@ public class FunctionServiceTest {
 	private static final Integer FUNCTION_ID_9 = 9;
 	private static final Integer FUNCTION_ID_10 = 10;
     private static final Integer FUNCTION_ID_11 = 11;
-    private static final Integer FUNCTION_ID_12 = 12;
 
     private final AmwFunctionEntity FUNCTION_A = createFunction(FUNCTION_NAME_A, FUNCTION_ID_1);
     private final AmwFunctionEntity FUNCTION_A_OVERWRITE = createOverwritingFunction(FUNCTION_A, FUNCTION_ID_2);
     private final AmwFunctionEntity FUNCTION_A_OVERWRITE_2 = createOverwritingFunction(FUNCTION_A_OVERWRITE, FUNCTION_ID_6);
 
-    private final AmwFunctionEntity OTHER_FUNCTION_A = createFunction(FUNCTION_NAME_A, FUNCTION_ID_12);
+    private final AmwFunctionEntity OTHER_FUNCTION_A = createFunction(FUNCTION_NAME_A, FUNCTION_ID_11);
 
     private final AmwFunctionEntity FUNCTION_B = createFunction(FUNCTION_NAME_B, FUNCTION_ID_3);
 	private final AmwFunctionEntity FUNCTION_B_OVERWRITE = createOverwritingFunction(FUNCTION_B, FUNCTION_ID_4);
-    private final AmwFunctionEntity FUNCTION_B_OVERWRITE_2 = createOverwritingFunction(FUNCTION_B, FUNCTION_ID_11);
 
 	private final AmwFunctionEntity FUNCTION_C = createFunction(FUNCTION_NAME_C, FUNCTION_ID_5);
 	private final AmwFunctionEntity FUNCTION_C_OVERWRITE = createOverwritingFunction(FUNCTION_C, FUNCTION_ID_7);

@@ -31,7 +31,6 @@ import ch.puzzle.itc.mobiliar.business.deploy.entity.DeploymentEntity;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,9 +48,6 @@ public class DeploymentExecuterService {
 
 	@Inject
 	private LockingService lockingService;
-
-	@Inject
-	private EntityManager entityManager;
 
 	@Inject
 	private DeploymentAsynchronousExecuter deploymentAsynchronousExecuter;

@@ -56,7 +56,6 @@ public class ResourceActivation {
 	public void setResourceActivation(ResourceRelationContextEntity currentResourceRelationContext, ResourceGroupEntity resourceGroup, ResourceActivationEntity existingResourceActivation, Boolean active) {
 		//TODO cleanup active resource activation without "inactive" in between over the whole context hierarchy.
 	    	boolean alreadyDefinedOnCurrentContext;
-		ResourceRelationContextEntity resourceRelationContextEntity;
 		if (existingResourceActivation != null
 				&& existingResourceActivation.getResourceRelationContext().getContext().getId()
 						.equals(currentResourceRelationContext.getContext().getId())) {

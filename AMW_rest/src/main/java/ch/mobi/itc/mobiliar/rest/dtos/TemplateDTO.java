@@ -38,6 +38,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TemplateDTO {
 
+    private Integer id;
     private String relatedResourceIdentifier;
     private String name;
     private String targetPath;
@@ -45,12 +46,15 @@ public class TemplateDTO {
     private String fileContent;
 
     public TemplateDTO(TemplateDescriptorEntity template){
+        this.id = template.getId();
         this.relatedResourceIdentifier = template.getRelatedResourceIdentifier();
         this.name = template.getName();
         this.targetPath = template.getTargetPath();
         targetPlatforms = new HashSet<>();
-        for (ResourceGroupEntity pf : template.getTargetPlatforms()) {
-            targetPlatforms.add(pf.getName());
+        if (template.getTargetPlatforms() != null) {
+            for (ResourceGroupEntity pf : template.getTargetPlatforms()) {
+                targetPlatforms.add(pf.getName());
+            }
         }
         this.fileContent = template.getFileContent();
     }

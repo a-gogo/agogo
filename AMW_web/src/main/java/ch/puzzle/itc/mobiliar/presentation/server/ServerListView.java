@@ -34,7 +34,6 @@ import ch.puzzle.itc.mobiliar.business.resourcegroup.entity.ResourceGroupEntity;
 import ch.puzzle.itc.mobiliar.business.server.boundary.ServerView;
 import ch.puzzle.itc.mobiliar.business.server.entity.ServerTuple;
 import ch.puzzle.itc.mobiliar.business.utils.JpaWildcardConverter;
-import ch.puzzle.itc.mobiliar.common.exception.GeneralDBException;
 import ch.puzzle.itc.mobiliar.common.util.ConfigurationService;
 import ch.puzzle.itc.mobiliar.common.util.DefaultResourceTypeDefinition;
 import ch.puzzle.itc.mobiliar.common.util.ConfigKey;
@@ -83,7 +82,7 @@ public class ServerListView implements Serializable {
 	private boolean resourceReadPermission;
 
 	// called by preRenderView event
-	public void init() throws GeneralDBException {
+	public void init() {
 		//cache permissions in view
 		this.appServerReadPermission = securityDataProvider.hasPermissionForResourceType("RESOURCE", "READ", "APPLICATIONSERVER");
 		this.resourceReadPermission = securityDataProvider.hasPermission("RESOURCE", "READ");
@@ -101,7 +100,7 @@ public class ServerListView implements Serializable {
 		return FILTER_TOOLTIP;
 	}
 
-	public void loadRuntimes() throws GeneralDBException {
+	public void loadRuntimes() {
 		runtimes = commonServcie.getRuntimeResourceGroups();
 	}
 	

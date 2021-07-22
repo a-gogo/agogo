@@ -24,7 +24,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
